@@ -46,9 +46,6 @@ $(document).ready(function () {
             columns: [
                 {data:'name', name: 'name', orderable: false},
                 {data:'email', name: 'email'},
-                {data:'parent_name', name: 'parent_name'},
-                {data:'parent_email', name: 'parent_email'},
-                {data:'parent_phone_number', name: 'parent_phone_number'},
                 {data:'status', name: 'status'},
                 {data:'action', name: 'action'}
             ],

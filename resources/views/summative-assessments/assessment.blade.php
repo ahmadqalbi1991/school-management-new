@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title', 'Formative assessments')
+@section('title', 'Summative assessments')
 @section('content')
     @push('head')
         <link rel="stylesheet" href="{{ asset('plugins/DataTables/datatables.min.css') }}">
@@ -12,7 +12,7 @@
                     <div class="page-header-title">
                         <i class="ik ik-unlock bg-blue"></i>
                         <div class="d-inline">
-                            <h5>{{ __('Formative Assessments')}}</h5>
+                            <h5>{{ __('Summative Assessments')}}</h5>
                         </div>
                     </div>
                 </div>
@@ -23,7 +23,7 @@
                                 <a href="{{ route('dashboard') }}"><i class="ik ik-home"></i></a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="#">{{ __('Formative Assessments')}}</a>
+                                <a href="#">{{ __('Summative Assessments')}}</a>
                             </li>
                         </ol>
                     </nav>

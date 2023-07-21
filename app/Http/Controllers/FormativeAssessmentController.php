@@ -287,8 +287,6 @@ class FormativeAssessmentController extends Controller
                 }
             }
 
-            dd($result);
-
             $learner = User::find($learner_id);
             $term = Term::find($term_id);
 
@@ -346,6 +344,7 @@ class FormativeAssessmentController extends Controller
                                 'strand_id' => $strand->id,
                                 'sub_strand_id' => $sub_strand->id,
                                 'learning_activity_id' => $activity->id,
+                                'term_id' => $term_id
                             ])->first();
                             $activities_defination[$strand_key]['sub_strands'][$sub_strand_key]['activities'][$activity_key]['levels'][$level_key] = null;
                             if ($assessment_object) {

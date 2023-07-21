@@ -104,50 +104,50 @@
 {{--                    </div>--}}
 {{--                </div>--}}
 {{--            </div>--}}
-            <div class="col-12">
-                <div class="card table-card">
-                    <div class="card-header">
-                        <h3>{{ __('Teachers')}}</h3>
-                    </div>
-                    <div class="card-block">
-                        <div class="table-responsive">
-                            <table class="table table-hover mb-0">
-                                <thead>
-                                <tr>
-                                    <th>#</th>
-                                    <th>{{ __('Name')}}</th>
-                                    <th>{{ __('Email')}}</th>
-                                    <th>{{ __('Status')}}</th>
-                                    <th>{{ __('School')}}</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @foreach($teachers as $key => $teacher)
-                                    <tr>
-                                        <td>{{ $key + 1 }}</td>
-                                        <td>{{ $teacher->name }}</td>
-                                        <td>{{ $teacher->email }}</td>
-                                        <td>
-                                            @if($teacher->status === 'active')
-                                                <div class="p-status bg-green"></div>
-                                            @endif
-                                            @if($teacher->status === 'disabled')
-                                                <div class="p-status bg-red"></div>
-                                            @endif
-                                            @if($teacher->status === 'blocked')
-                                                <div class="p-status bg-yellow"></div>
-                                            @endif
-                                        </td>
-                                        <td>{{ $teacher->school->school_name }}</td>
-                                    </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+{{--            <div class="col-12">--}}
+{{--                <div class="card table-card">--}}
+{{--                    <div class="card-header">--}}
+{{--                        <h3>{{ __('Teachers')}}</h3>--}}
+{{--                    </div>--}}
+{{--                    <div class="card-block">--}}
+{{--                        <div class="table-responsive">--}}
+{{--                            <table class="table table-hover mb-0">--}}
+{{--                                <thead>--}}
+{{--                                <tr>--}}
+{{--                                    <th>#</th>--}}
+{{--                                    <th>{{ __('Name')}}</th>--}}
+{{--                                    <th>{{ __('Email')}}</th>--}}
+{{--                                    <th>{{ __('Status')}}</th>--}}
+{{--                                    <th>{{ __('School')}}</th>--}}
+{{--                                </tr>--}}
+{{--                                </thead>--}}
+{{--                                <tbody>--}}
+{{--                                @foreach($teachers as $key => $teacher)--}}
+{{--                                    <tr>--}}
+{{--                                        <td>{{ $key + 1 }}</td>--}}
+{{--                                        <td>{{ $teacher->name }}</td>--}}
+{{--                                        <td>{{ $teacher->email }}</td>--}}
+{{--                                        <td>--}}
+{{--                                            @if($teacher->status === 'active')--}}
+{{--                                                <div class="p-status bg-green"></div>--}}
+{{--                                            @endif--}}
+{{--                                            @if($teacher->status === 'disabled')--}}
+{{--                                                <div class="p-status bg-red"></div>--}}
+{{--                                            @endif--}}
+{{--                                            @if($teacher->status === 'blocked')--}}
+{{--                                                <div class="p-status bg-yellow"></div>--}}
+{{--                                            @endif--}}
+{{--                                        </td>--}}
+{{--                                        <td>{{ $teacher->school->school_name }}</td>--}}
+{{--                                    </tr>--}}
+{{--                                @endforeach--}}
+{{--                                </tbody>--}}
+{{--                            </table>--}}
+{{--                        </div>--}}
 
-                    </div>
-                </div>
-            </div>
+{{--                    </div>--}}
+{{--                </div>--}}
+{{--            </div>--}}
             <!-- product and new customar end -->
         </div>
     </div>
