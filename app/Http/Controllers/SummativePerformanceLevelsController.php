@@ -133,6 +133,7 @@ class SummativePerformanceLevelsController extends Controller
     {
         try {
             $input = $request->except('_token');
+            $input['created_by'] = Auth::id();
             SummativePerformnceLevel::where('id', $id)->update($input);
 
             return redirect()->route('summative-performance-levels.index')->with('success', 'Performance Level Updated');
