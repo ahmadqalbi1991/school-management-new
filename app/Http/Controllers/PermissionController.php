@@ -7,6 +7,7 @@ use Auth;
 use DataTables;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -82,7 +83,7 @@ class PermissionController extends Controller
     public function create(PermissionRequest $request): RedirectResponse
     {
         try {
-            $permission = Permission::create(['name' => $request->name]);
+            $permission = Permission::create(['name' => strtolower(str_replace(' ', '_', $request->name))]);
             $permission->syncRoles($request->roles);
 
             if ($permission) {
@@ -107,7 +108,7 @@ class PermissionController extends Controller
     {
         //
         $permission = Permission::find($request->id);
-        $permission->name = $request->name;
+        $permission->name = strtolower(str_replace(' ', '_', $request->name));
         $permission->save();
 
         return $permission;
