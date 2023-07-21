@@ -166,8 +166,8 @@ class FormativeAssessmentController extends Controller
     public function reports()
     {
         try {
-            $classes = SchoolClass::where(['status' => 1])->get();
-            $terms = Term::all();
+            $classes = SchoolClass::where(['status' => 1, 'school_id' => Auth::user()->school_id])->get();
+            $terms = Term::where(['school_id' => Auth::user()->school_id])->get();
 
             return view('formative-assessments.reports', compact('classes', 'terms'));
         } catch (\Exception $e) {
@@ -286,6 +286,8 @@ class FormativeAssessmentController extends Controller
                     ];
                 }
             }
+
+            dd($result);
 
             $learner = User::find($learner_id);
             $term = Term::find($term_id);
