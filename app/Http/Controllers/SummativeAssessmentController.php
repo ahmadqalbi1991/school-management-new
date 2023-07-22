@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Jobs\EmailJob;
 use App\Models\AssignedSubject;
+use App\Models\Exam;
 use App\Models\SchoolClass;
 use App\Models\Stream;
 use App\Models\Subjects;
@@ -156,7 +157,7 @@ class SummativeAssessmentController extends Controller
     {
         try {
             $input = $request->all();
-            $data = User::where([
+            $users = User::where([
                 'stream_id' => $input['stream_id'],
                 'role' => 'learner',
                 'status' => 'active'
@@ -164,29 +165,44 @@ class SummativeAssessmentController extends Controller
                 ->with('summative_assessments', function ($q) use ($input) {
                     return $q->where([
                         'stream_id' => $input['stream_id'],
-                        'term_id' => $input['term_id']
-                    ]);
+                        'term_id' => $input['term_id'],
+                        'subject_id' => $input['subject_id']
+                    ])
+                        ->with('level');
                 })
                 ->whereHas('summative_assessments')
                 ->get();
 
-            $hasManagePermission = Auth::user()->can('manage_summative_assessments');
+            $data = [];
+            $total = 0;
+            foreach ($users as $user) {
+                $level = $score = '';
+                if (!empty($user->summative_assessments[0]) && !empty($user->summative_assessments[0]->level)) {
+                    $level = $user->summative_assessments[0]->level->title;
+                    $score = $user->summative_assessments[0]->points;
+                }
+                $total += $score;
+                $data[] = [
+                    'remark' => $level,
+                    'score' => $score,
+                    'name' => $user->name,
+                    'admission_number' => $user->admission_number,
+                    'id' => $user->id
+                ];
+            }
+
+            $class_average = round($total / $users->count(), 2);
+            $remark = checkSummetiveCriteria($class_average);
+
+            $data[] = [
+                'remark' => $remark,
+                'score' => $class_average . '%',
+                'admission_number' => 'Class Average',
+                'name' => '',
+                'id' => null
+            ];
 
             return Datatables::of($data)
-                ->addColumn('action', function ($data) use ($hasManagePermission, $request) {
-                    $output = '';
-                    if ($hasManagePermission) {
-                        $output = '<div class="">
-                                    <a target="_blank" href="' . route('summative-reports.download-pdf', ['learner_id' => $data->id, 'stream_id' => $request->stream_id, 'term_id' => $request->term_id, 'exam_id' => $request->exam_id]) . '"><i class="fas fa-file-pdf f-16 text-pink"></i></a>
-                                    <a href="' . route('summative-reports.download-pdf', ['learner_id' => $data->id, 'stream_id' => $request->stream_id, 'term_id' => $request->term_id, 'exam_id' => $request->exam_id, 'send_email' => true]) . '"><i class="fas fa-envelope f-16 text-blue"></i></a>
-                                    <a href="' . route('summative-reports.view-result', ['learner_id' => $data->id, 'stream_id' => $request->stream_id, 'term_id' => $request->term_id, 'exam_id' => $request->exam_id]) . '">
-                                    <i class="ik ik-eye f-16 text-green"></i>
-                                    </a>
-                                </div>';
-                    }
-
-                    return $output;
-                })
                 ->make(true);
         } catch (\Exception $e) {
             $bug = $e->getMessage();
@@ -194,12 +210,12 @@ class SummativeAssessmentController extends Controller
         }
     }
 
-    public function viewResult($learner_id, $term_id, $stream_id, $exam_id) {
+    public function viewResult($learner_id, $term_id, $stream_id, $exam_id)
+    {
         try {
             $stream = Stream::where('id', $stream_id)
                 ->with('school_class')
                 ->first();
-            dd($stream);
             $learner = User::where('id', $learner_id)->first();
             $assessments = SummativeAssessment::where([
                 'stream_id' => $stream_id,
@@ -276,6 +292,81 @@ class SummativeAssessmentController extends Controller
             } else {
                 return $pdf->stream('summative_report_card_' . $term->term . '.pdf');
             }
+        } catch (\Exception $e) {
+            $bug = $e->getMessage();
+            return redirect()->back()->with('error', $bug);
+        }
+    }
+
+    public function generateClassPdf(Request $request) {
+        try {
+            $input = $request->except('_token');
+//            dd($input);
+            $teacher = TeacherManagement::where([
+                'class_id' => $input['class_id'],
+                'stream_id' => $input['stream_id'],
+            ])->with('teacher')->first();
+            $exam = Exam::where('id', $input['exam_id'])->first();
+            $subject = Subjects::find($input['subject_id']);
+            $school = getSchoolSettings();
+            $stream = Stream::where('id', $input['stream_id'])
+                ->with('school_class', function ($q) {
+                    return $q->with('class_subjects', function ($q) {
+                        return $q->with('subject');
+                    });
+                })
+                ->first();
+            $users = User::where([
+                'stream_id' => $input['stream_id'],
+                'role' => 'learner',
+                'status' => 'active'
+            ])
+                ->with('summative_assessments', function ($q) use ($input) {
+                    return $q->where([
+                        'stream_id' => $input['stream_id'],
+                        'term_id' => $input['term_id'],
+                        'subject_id' => $input['subject_id']
+                    ])
+                        ->with('level');
+                })
+                ->whereHas('summative_assessments')
+                ->get();
+
+            $result = [];
+            $total = 0;
+            foreach ($users as $user) {
+                $level = $score = '';
+                if (!empty($user->summative_assessments[0]) && !empty($user->summative_assessments[0]->level)) {
+                    $level = $user->summative_assessments[0]->level->title;
+                    $score = $user->summative_assessments[0]->points;
+                }
+                $total += $score;
+                $result[] = [
+                    'remark' => $level,
+                    'score' => $score,
+                    'name' => $user->name,
+                    'admission_number' => $user->admission_number,
+                    'id' => $user->id
+                ];
+            }
+
+            $term = Term::find($input['term_id']);
+            $admins = getSchoolAdmins($school->id);
+            $levels = SummativePerformnceLevel::whereIn('created_by', $admins)->latest()->get();
+
+            $data = [
+                'school' => $school,
+                'stream' => $stream,
+                'results' => $result,
+                'term' => $term,
+                'levels' => $levels,
+                'exam' => $exam,
+                'subject' => $subject,
+                'teacher' => $teacher
+            ];
+
+            $pdf = PDF::loadView('pdfs.summative-class', $data);
+            return $pdf->stream('class_summative_report_' . $stream->school_class->class . '_' . $stream->title  . '_' .  $term->term . '.pdf');
         } catch (\Exception $e) {
             $bug = $e->getMessage();
             return redirect()->back()->with('error', $bug);

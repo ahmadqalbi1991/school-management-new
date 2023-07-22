@@ -3,6 +3,7 @@
 use App\Models\PerformanceLevel;
 use App\Models\School;
 use App\Models\SchoolAdmins;
+use App\Models\SummativePerformnceLevel;
 use Illuminate\Support\Facades\Auth;
 
 function getSchoolSettings()
@@ -30,6 +31,18 @@ function initials($str)
     foreach (explode(' ', $str) as $word)
         $ret .= strtoupper($word[0]);
     return $ret;
+}
+
+function checkSummetiveCriteria($points) {
+    $admins = getSchoolAdmins();
+    $level = SummativePerformnceLevel::when(in_array(Auth::user()->role, ['admin', 'teacher']), function ($q) use ($admins) {
+        return $q->whereIn('created_by', $admins);
+    })
+        ->where('min_point', '<=', $points)
+        ->where('max_point', '>=', $points)
+        ->first();
+
+    return $level->title;
 }
 
 function checkPointsCriteria($points, $total_check = false) {

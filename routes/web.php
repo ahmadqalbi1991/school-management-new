@@ -148,6 +148,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/view-learner-subjects/{learner_id}/{stream_id}/{term_id}', [FormativeAssessmentController::class, 'viewSubjects'])->name('view-subjects');
         Route::get('/view-learner-result/{learner_id}/{term_id}/{stream_id}/{exam_id}', [SummativeAssessmentController::class, 'viewResult'])->name('view-result');
         Route::get('/download-pdf/{learner_id}/{stream_id}/{term_id}/{exam_id}/{send_email?}', [SummativeAssessmentController::class, 'downloadPdf'])->name('download-pdf');
+        Route::post('/generate-report', [SummativeAssessmentController::class, 'generateClassPdf'])->name('generate-report');
     });
 
     Route::group(['middleware' => 'can:manage_students_subjects', 'as' => 'learners-subjects.', 'prefix' => 'learners-subjects'], function () {

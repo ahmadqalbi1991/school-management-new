@@ -64,12 +64,15 @@ $(document).ready(function() {
             success: function (response) {
                 $('#stream-id').html(response.streams).select2()
                 $('#stream-id').prop('disabled', false)
+                $('#subject_id').html(response.subjects).select2()
+                $('#subject_id').prop('disabled', false)
             }
         })
     })
 
-    $('#exam_id').on('change', function () {
+    $('#subject_id').on('change', function () {
         getReports();
+        $('#generate-report-btn').removeClass('d-none');
         $('#show_table').show()
     })
 
@@ -96,19 +99,23 @@ $(document).ready(function() {
             ajax: {
                 url: '/summative-reports/get-list',
                 type: "get",
-                data: {term_id: $('#term_id').val(), stream_id: $('#stream-id').val(), 'exam_id': $('#exam_id').val()},
+                data: {
+                    term_id: $('#term_id').val(),
+                    stream_id: $('#stream-id').val(),
+                    exam_id: $('#exam_id').val(),
+                    subject_id: $('#subject_id').val(),
+                    class_id: $('#class_id').val()
+                },
                 headers: {
                     'X-CSRF-TOKEN': token
                 }
             },
             columns: [
+                {data:'admission_number', name: 'admission_number', orderable: false},
                 {data:'name', name: 'name', orderable: false},
-                {data:'email', name: 'email'},
-                {data:'parent_name', name: 'parent_name'},
-                {data:'parent_email', name: 'parent_email'},
-                {data:'parent_phone_number', name: 'parent_phone_number'},
-                {data:'status', name: 'status'},
-                {data:'action', name: 'action'}
+                {data:'score', name: 'score', orderable: false},
+                {data:'remark', name: 'remark', orderable: false},
+                // {data:'action', name: 'action'}
             ],
             buttons: [
                 {

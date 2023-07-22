@@ -107,7 +107,7 @@ class TermsController extends Controller
     {
         try {
             $exams = Exam::where('term_id', $id)->get();
-            $option = '<option>Select Exam</option>';
+            $option = '<option>Select Assessment</option>';
             foreach ($exams as $exam) {
                 $option .= '<option value="' . $exam->id . '">' . $exam->title . '</option>';
             }
