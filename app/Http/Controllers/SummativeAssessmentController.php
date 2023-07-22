@@ -199,6 +199,7 @@ class SummativeAssessmentController extends Controller
             $stream = Stream::where('id', $stream_id)
                 ->with('school_class')
                 ->first();
+            dd($stream);
             $learner = User::where('id', $learner_id)->first();
             $assessments = SummativeAssessment::where([
                 'stream_id' => $stream_id,

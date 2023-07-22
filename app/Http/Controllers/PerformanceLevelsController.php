@@ -23,8 +23,15 @@ class PerformanceLevelsController extends Controller
             if ($request->has('edit') && $request->get('pass_key')) {
                 $level = PerformanceLevel::where(['id' => $request->get('pass_key')])->first();
             }
+            $admins = getSchoolAdmins();
+            $min = PerformanceLevel::whereIn('created_by', $admins)->max('max_point');
+            if (!$min) {
+                $min = 0;
+            } else {
+                $min += 1;
+            }
 
-            return view('performance-levels.index', compact('level'));
+            return view('performance-levels.index', compact('level', 'min'));
         } catch (\Exception $e) {
             $bug = $e->getMessage();
 
@@ -77,6 +84,9 @@ class PerformanceLevelsController extends Controller
         $hasManagePermission = Auth::user()->can('manage_performance_levels');
 
         return Datatables::of($data)
+            ->addColumn('points', function ($data) {
+                return $data->min_point . '-' . $data->max_point;
+            })
             ->addColumn('action', function ($data) use ($hasManagePermission) {
                 $output = '';
                 if ($hasManagePermission) {

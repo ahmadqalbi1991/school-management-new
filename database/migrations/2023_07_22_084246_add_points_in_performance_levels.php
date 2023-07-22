@@ -13,8 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('learner_subjects', function (Blueprint $table) {
-            $table->boolean('all_students')->default(0);
+        Schema::table('performance_levels', function (Blueprint $table) {
+            $table->float('min_point')->nullable();
+            $table->float('max_point')->nullable();
         });
     }
 
@@ -25,8 +26,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('learner_subjects', function (Blueprint $table) {
-            $table->dropColumn('all_students');
+        Schema::table('performance_levels', function (Blueprint $table) {
+            $table->dropColumn('min_point');
+            $table->dropColumn('max_point');
         });
     }
 };

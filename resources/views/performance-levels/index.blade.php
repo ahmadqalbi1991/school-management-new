@@ -57,9 +57,30 @@
                                                    value="{{ !empty($level) ? $level->title : '' }}"
                                             >
                                         </div>
-                                        <div class="form-group">
-                                            <label for="points">{{ __('Points')}}<span class="text-red">*</span></label>
-                                            <input type="number" name="points" value="{{ !empty($level) ? $level->points : '0' }}" min="0" class="form-control" required>
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <div class="form-group">
+                                                    <label for="min_points">{{ __('Minimum Points')}}<span
+                                                            class="text-red">*</span></label>
+                                                    <input type="number" name="min_point" step="0.1"
+                                                           data-parsley-type-min='0.1' data-parsley-min="{{ $min }}"
+                                                           data-parsley-max="100"
+                                                           value="{{ !empty($level) ? $level->min_point : $min }}"
+                                                           min="{{ $min }}" max="100"
+                                                           class="form-control" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="form-group">
+                                                    <label for="max_points">{{ __('Maximum Points')}}<span
+                                                            class="text-red">*</span></label>
+                                                    <input type="number" name="max_point" step="0.1"
+                                                           data-parsley-type-min='0.1'
+                                                           value="{{ !empty($level) ? $level->max_point : '0' }}"
+                                                           min="0" max="100"
+                                                           class="form-control" required>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">

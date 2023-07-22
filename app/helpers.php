@@ -33,30 +33,22 @@ function initials($str)
 }
 
 function checkPointsCriteria($points, $total_check = false) {
-    $initial_point = 0;
     $admins = getSchoolAdmins();
     $levels = PerformanceLevel::when(in_array(Auth::user()->role, ['admin', 'teacher']), function ($q) use ($admins) {
         return $q->whereIn('created_by', $admins);
-    })->orderby('points')->get();
+    })->get();
 
-    foreach ($levels as $key => $level) {
-        if ($points >= $initial_point && $points <= $level->points) {
-            return $level->title;
-        }
+    $min = $levels->min('min_point');
+    $max = $levels->max('max_point');
 
-        if (($total_check)) {
-            $level_obj = PerformanceLevel::when(in_array(Auth::user()->role, ['admin', 'teacher']), function ($q) use ($admins) {
-                return $q->whereIn('created_by', $admins);
-            })
-                ->orderBy('points', 'desc')
-                ->where('points', '<=', $points)
-                ->first();
-
-            if ($level_obj) {
-                return $level_obj->title;
-            }
-        }
-
-        $initial_point = $level->points + .1;
+    if ($points < $min) {
+        $level = $levels->where('min_point', $min)->first();
+    } else if ($points > $max) {
+        $level = $levels->where('max_point', $max)->first();
+    } else {
+        $level = $levels->where('min_point', '<=', $points)
+            ->where('max_point', '>=', $points)->first();
     }
+
+    return $level->title;
 }

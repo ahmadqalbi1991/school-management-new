@@ -7,7 +7,7 @@
     .school-detail-wrapper > div {
         float: left;
         padding: 0 20px;
-        height: 200px;
+        height: 140px;
     }
 
     .school-img {
@@ -16,8 +16,6 @@
     }
 
     .school-img img {
-        top: 35%;
-        position: absolute;
         width: 75%;
     }
 
@@ -28,13 +26,18 @@
     .pdf-wrapper {
         font-family: sans-serif;
         padding: 0 25px;
-        font-size: 14px;
+        font-size: 12px;
     }
 
     .term-details {
         width: 100%;
         text-align: center;
-        font-size: 16px;
+        font-size: 12px;
+    }
+
+    .term-details h4 {
+        margin-top: 0!important;
+        margin-bottom: 0!important;
     }
 
     .learners-details, .levels-details {
@@ -70,10 +73,11 @@
 
     th, td {
         padding: 15px;
+        font-size: 12px;
     }
 
     .subjects-table {
-        margin-top: 3rem;
+        margin-top: 1rem;
     }
 
     .school-address h5 {
@@ -85,12 +89,12 @@
     .school-address p {
         margin: 0;
         margin-bottom: 0.6rem;
-        font-size: 14px;
+        font-size: 12px;
     }
 
     .general-text {
         margin-top: 25px;
-        font-size: 18px;
+        font-size: 14px;
         font-weight: 600;
     }
 
@@ -102,7 +106,7 @@
     .signatures > div {
         width: 50%;
         float: left;
-        font-size: 18px;
+        font-size: 12px;
     }
 
     .border {
@@ -112,7 +116,7 @@
     }
 
     footer {
-        font-size: 14px !important;
+        font-size: 12px !important;
         width: 100%;
         line-height: 50px;
         text-align: right;
@@ -132,7 +136,7 @@
     </div>
     <div class="term-details">
         <p>{{ $term->term }}, {{ $term->year }} ({{ \Carbon\Carbon::parse($term->start_date)->format('d M, Y') }} - {{ \Carbon\Carbon::parse($term->end_date)->format('d M, Y') }})</p>
-        <h4>{{ __('Formative Assessment Summary Report') }}</h4>
+        <h4>{{ __('Summative Assessment Summary Report') }}</h4>
     </div>
     <div class="learners-details">
         <p><strong>{{ __('Learner') }}: </strong>{{ $learner->name }}</p>
@@ -175,7 +179,7 @@
         <div class="principle">
             <p>{{ __('Signature') }}</p>
             <div class="border"></div>
-            <p>Principle</p>
+            <p>Principal</p>
         </div>
     </div>
     <footer>

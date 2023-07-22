@@ -89,7 +89,7 @@
                                                 </div>
                                             </th>
                                         @endforeach
-                                        <th>{{ __('Points') }}</th>
+{{--                                        <th>{{ __('Points') }}</th>--}}
                                     </tr>
                                     </thead>
                                     @php
@@ -141,7 +141,7 @@
                                                         </td>
                                                     @endforeach
                                                     <td>
-                                                        {{ $point }}
+{{--                                                        {{ $point }}--}}
                                                     </td>
                                                 </tr>
                                             @endforeach

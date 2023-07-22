@@ -275,8 +275,7 @@ class FormativeAssessmentController extends Controller
                     ->get();
 
                 if ($attempted_activities->count()) {
-                    $attempted_points = $attempted_activities->pluck('level')->pluck('points')->sum() / ($total_learning_activities ? $total_learning_activities : 1);
-
+                    $attempted_points = $attempted_activities->pluck('level')->pluck('points')->sum() / ($total_learning_activities ? $attempted_activities->pluck('level')->pluck('points')->count() : 1);
                     $result[] = [
                         'id' => $subject->subject->id,
                         'name' => $subject->subject->title,
