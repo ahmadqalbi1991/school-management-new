@@ -195,6 +195,7 @@ class UserController extends Controller
                 $payload = [
                     'name' => $request->name,
                     'email' => $request->email,
+                    'school_id' => $request->school_id,
                 ];
                 // update password if user input a new password
                 if (isset($request->password) && $request->password) {
