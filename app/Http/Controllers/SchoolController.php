@@ -111,7 +111,7 @@ class SchoolController extends Controller
     {
         try {
             $input = $request->except('_token');
-            $input['active'] = $input['status'] === 'active' ? 1 : 0;
+            $input['active'] = !empty($input['active']) ? 1 : 0;
             $input['slug'] = Str::slug($input['school_name']);
             $ids = !empty($input['admin_ids']) ? $input['admin_ids'] : [];
 
@@ -185,7 +185,7 @@ class SchoolController extends Controller
     {
         try {
             $input = $request->except('_token');
-            $input['active'] = !empty($input['status']) ? 1 : 0;
+            $input['active'] = !empty($input['active']) ? 1 : 0;
             $input['slug'] = Str::slug($input['school_name']);
             $ids = !empty($input['admin_ids']) ? $input['admin_ids'] : [];
 
