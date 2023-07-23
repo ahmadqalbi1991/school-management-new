@@ -79,7 +79,7 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="email">{{ __('Email')}}<span class="text-red">*</span></label>
+                                            <label for="email">{{ __('Email')}}</label>
                                             <input type="text" class="form-control @error('email') is-invalid @enderror" id="email"
                                                    @if(!empty($learner)) disabled @endif
                                                    value="{{ !empty($learner) ? $learner->email : '' }}" name="email"
