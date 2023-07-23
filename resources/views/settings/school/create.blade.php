@@ -103,7 +103,7 @@
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <h4 class="sub-title">{{ __('Status')}}</h4>
-                                            <input value="1" name="status" type="checkbox" class="js-single" checked/>
+                                            <input value="1" name="active" type="checkbox" class="js-single" checked/>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">

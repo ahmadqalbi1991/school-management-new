@@ -19,7 +19,7 @@ class School extends Model
         'school_website',
         'school_moto',
         'slug',
-        'status'
+        'active'
     ];
 
     public function admins(): HasMany
