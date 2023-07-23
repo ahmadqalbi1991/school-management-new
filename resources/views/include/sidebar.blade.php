@@ -3,6 +3,7 @@
         <a class="header-brand" href="{{route('dashboard')}}">
             <div class="logo-img">
                 <img height="30"
+                     @dd(getSchoolSettings())
                      src="{{ !empty(getSchoolSettings()->logo) ? asset(getSchoolSettings()->logo) : asset('img/logo_white.png')}}"
                      class="header-brand-img" title="RADMIN">
             </div>
