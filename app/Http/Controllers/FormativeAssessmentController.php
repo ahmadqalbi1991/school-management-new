@@ -44,15 +44,14 @@ class FormativeAssessmentController extends Controller
             }
 
             if ($class_slug && $stream_slug && !$subject_slug) {
-                $classObj = SchoolClass::where('slug', $class_slug)->first();
+                $classObj = SchoolClass::where(['slug' => $class_slug, 'school_id' => Auth::user()->school_id])->first();
                 $assigned_subjects = AssignedSubject::where('teacher_id', Auth::id())->get();
                 $assigned_ids = $assigned_subjects->pluck('subject_id')->toArray();
-                $subjects = Subjects::where('class_id', $classObj->id)
-                    ->whereIn('id', $assigned_ids)
-                    ->get();
+                $subjects = getSchoolSubjects();
                 $stream = Stream::where('school_id', Auth::user()->school_id)
                     ->where('slug', $stream_slug)
                     ->first();
+
                 $exist = TeacherManagement::where([
                     'teacher_id' => Auth::id(),
                     'stream_id' => $stream->id,
@@ -78,9 +77,8 @@ class FormativeAssessmentController extends Controller
                     return redirect()->back()->with('error', 'You don`t have access to this page');
                 }
                 $admins = getSchoolAdmins();
-                $class = SchoolClass::where('slug', $class_slug)->first();
+                $class = SchoolClass::where(['slug' => $class_slug, 'school_id' => Auth::user()->school_id])->first();
                 $stream = Stream::where([
-                    'slug' => $stream_slug,
                     'class_id' => $class->id
                 ])->first();
                 $assigned_learners = LearnerSubject::where([
@@ -94,9 +92,7 @@ class FormativeAssessmentController extends Controller
                 ])
                     ->whereIn('id', $assigned_learners->pluck('learner_id')->toArray())
                     ->get();
-                $levels = PerformanceLevel::when(in_array(Auth::user()->role, ['admin', 'teacher']), function ($q) use ($admins) {
-                    return $q->whereIn('created_by', $admins);
-                })->latest()->get();
+                $levels = PerformanceLevel::get();
                 $terms = $subject->terms;
                 $strands = $subject->strands;
 
@@ -317,10 +313,7 @@ class FormativeAssessmentController extends Controller
 
             $activities_defination = [];
             $strands = $subject->strands;
-            $admins = getSchoolAdmins();
-            $levels = PerformanceLevel::when(in_array(Auth::user()->role, ['admin', 'teacher']), function ($q) use ($admins) {
-                return $q->whereIn('created_by', $admins);
-            })->latest()->get();
+            $levels = PerformanceLevel::get();
             foreach ($strands as $strand_key => $strand) {
                 $activities_defination[$strand_key]['title'] = $strand->title;
                 $activities_defination[$strand_key]['id'] = $strand->id;
@@ -440,7 +433,7 @@ class FormativeAssessmentController extends Controller
             $learner = User::find($learner_id);
             $term = Term::find($term_id);
             $admins = getSchoolAdmins($school->id);
-            $levels = PerformanceLevel::whereIn('created_by', $admins)->latest()->get();
+            $levels = PerformanceLevel::latest()->get();
             $data = [
                 'school' => $school,
                 'stream' => $stream,

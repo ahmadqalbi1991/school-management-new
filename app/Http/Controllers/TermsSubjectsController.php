@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\SchoolClass;
 use App\Models\Subjects;
 use App\Models\Term;
 use App\Models\TermSubject;
@@ -28,10 +29,12 @@ class TermsSubjectsController extends Controller
                     ->first();
                 $selected_ids = $term->subjects->pluck('subject_id');
             }
-            $terms = Term::latest()->get();
-            $subjects = Subjects::all();
+            $school_id = Auth::user()->school_id;
+            $terms = Term::where('school_id', $school_id)->latest()->get();
+            $classes = SchoolClass::where('school_id', $school_id)->get();
+            $subjects = getSchoolSubjects();
 
-            return view('term-subjects.index', compact('term', 'terms', 'subjects', 'selected_ids'));
+            return view('term-subjects.index', compact('term', 'terms', 'subjects', 'selected_ids', 'classes'));
         } catch (\Exception $e) {
             $bug = $e->getMessage();
             return redirect()->back()->with('error', $bug);
@@ -61,14 +64,12 @@ class TermsSubjectsController extends Controller
             })
             ->addColumn('action', function ($data) use ($hasManagePermission) {
                 $output = '';
-                if ($hasManagePermission) {
-                    $output .= '<div class="">';
-                    if (Auth::user()->role === 'super_admin') {
-                        $output .= '<a href="' . route('term-subjects.index', ['edit' => 1, 'pass_key' => $data->id]) . '"><i class="ik ik-edit f-16 text-blue"></i></a>';
-                        $output .= '<a href="' . route('term-subjects.delete', ['id' => $data->id]) . '"><i class="ik ik-trash-2 f-16 text-red"></i></a>';
-                    }
-                    $output .= '</div>';
+                $output .= '<div class="">';
+                if (Auth::user()->role === 'admin') {
+                    $output .= '<a href="' . route('term-subjects.index', ['edit' => 1, 'pass_key' => $data->id]) . '"><i class="ik ik-edit f-16 text-blue"></i></a>';
+                    $output .= '<a href="' . route('term-subjects.delete', ['id' => $data->id]) . '"><i class="ik ik-trash-2 f-16 text-red"></i></a>';
                 }
+                $output .= '</div>';
 
                 return $output;
             })

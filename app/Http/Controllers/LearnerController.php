@@ -116,24 +116,17 @@ class LearnerController extends Controller
     public function store(Request $request)
     {
         try {
-            $validation = Validator::make($request->all(), [
-                'email' => 'unique:users'
-            ]);
-            if ($validation->fails()) {
-                return redirect()->back()->withErrors($validation);
-            }
-
             $password = '123456789';
             $input = $request->except('_token');
             $input['password'] = bcrypt($password);
             $input['role'] = 'learner';
             $user = User::create($input);
 
-            if ($user) {
+            if ($user && !empty($input['parent_email'])) {
                 $details = [
                     'title' => 'Registration Successful',
                     'body' => 'Congratulations! Your account has been created on ' . env('APP_NAME') . '. Please use the following details to login. <br/>Email: <strong>' . $input['email'] . '</strong> <br/>Password: <strong>' . $password . '</strong>',
-                    'email' => $input['email'],
+                    'email' => $input['parent_email'],
                     'show_btns' => 1,
                     'link' => route('login'),
                     'subject' => 'Registration Successful'
@@ -215,7 +208,9 @@ class LearnerController extends Controller
     public function addLearnerSubjects(Request $request)
     {
         try {
-            $classes = SchoolClass::all();
+            $classes = SchoolClass::when(Auth::user()->role === 'admin', function ($q) {
+                return $q->where('school_id', Auth::user()->school_id);
+            })->get();
             $learner = $class_id = $learner_data = $streams = $subjects = $subjects_ids = null;
             if ($request->has('pass_key') && $request->has('edit')) {
                 $learner = User::where('id', $request->get('pass_key'))

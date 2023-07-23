@@ -227,4 +227,26 @@ $(document).ready(function() {
         paging: false,
         ordering: false
     });
+
+    $('.summative-save').on('click', function () {
+        let data = {
+            subject_id: $('#subject_id').val(),
+            stream_id: $('#stream_id').val(),
+            class_id: $('#class_id').val(),
+            term_id: $('#term_id').val(),
+            exam_id: $('#exam_id').val(),
+            learner_id: $('#learner_id_' + $(this).data('key')).val(),
+            points: $('#score_' + $(this).data('learner-id')).val()
+        }
+
+        $.ajax({
+            url: '/summative-assessments/save-learner-assessment',
+            type: 'POST',
+            data: data,
+            headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
+            success: function (response) {
+
+            }
+        })
+    })
 })

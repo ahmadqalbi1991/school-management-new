@@ -148,5 +148,19 @@
             dropBorder: "1px solid #1abc9c",
         })
     });
+
+    $('#class_id').on('change', function () {
+        $.ajax({
+            url: '/get-streams/' + $(this).val(),
+            type: 'GET',
+            success: function (response) {
+                $('#stream_id').html(response.streams).select2()
+                $('#stream_id').prop('disabled', false)
+                $('#subject_id').html(response.subjects).select2()
+                $('#subject_id').prop('disabled', false)
+            }
+        })
+    })
+
     $('select').select2();
 })(jQuery);

@@ -1,11 +1,12 @@
 @extends('layouts.main')
-@section('title', 'Classes')
+@section('title', 'Subjects')
 @section('content')
     <!-- push external head elements to head -->
     @push('head')
         <link rel="stylesheet" href="{{ asset('plugins/DataTables/datatables.min.css') }}">
         <link rel="stylesheet" href="{{ asset('plugins/select2/dist/css/select2.min.css') }}">
     @endpush
+
 
     <div class="container-fluid">
         <div class="page-header">
@@ -14,8 +15,8 @@
                     <div class="page-header-title">
                         <i class="ik ik-unlock bg-blue"></i>
                         <div class="d-inline">
-                            <h5>{{ __('Classes')}}</h5>
-                            <span>{{ __('Classes details')  }}</span>
+                            <h5>{{ __('Subjects')}}</h5>
+                            <span>{{ empty($subject) ? __('Add subject details') : __('Edit subject details') }}</span>
                         </div>
                     </div>
                 </div>
@@ -26,7 +27,7 @@
                                 <a href="{{ route('dashboard') }}"><i class="ik ik-home"></i></a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="#">{{ __('Classes')}}</a>
+                                <a href="#">{{ __('Subject')}}</a>
                             </li>
                         </ol>
                     </nav>
@@ -36,31 +37,44 @@
         <div class="row clearfix">
             <!-- start message area-->
             @include('include.message')
-            @can('manage_learners')
+            <!-- end message area-->
+            <!-- only those have manage_permission permission will get access -->
+            @can('manage_subjects')
                 <div class="col-md-12">
                     <div class="card">
-                        <div class="card-header"><h3>{{ __('Add Class')}}</h3></div>
+                        <div class="card-header"><h3>{{ empty($subject) ? __('Add subject') : __('Edit subject') }}</h3></div>
                         <div class="card-body">
                             <form class="forms-sample" method="POST" data-parsley-validate
-                                  action="{{ empty($class) ? route('classes.store') : route('classes.update', ['id' => $class->id])}}">
+                                  action="{{ route('subjects.assign-subject') }}">
                                 @csrf
                                 <div class="row">
-                                    <div class="col-sm-6">
+                                    <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
-                                            <label for="class">{{ __('Class')}}<span class="text-red">*</span></label>
-                                            <input type="text" class="form-control" id="class"
-                                                   value="{{ !empty($class) ? $class->class : '' }}" name="class"
-                                                   placeholder="Class Name" required>
+                                            <label for="subject_id">{{ __('Subjects')}}<span class="text-red">*</span></label>
+                                            <select name="subject_id[]" id="subject_id" multiple class="form-control select2">
+                                                <option value="">{{ __('Select Subjects') }}</option>
+                                                @foreach($subjects as $subject)
+                                                    <option value="{{ $subject->id }}">{{ $subject->title }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="school_id">{{ __('School')}}<span class="text-red">*</span></label>
+                                            <select name="school_id" id="school_id" class="form-control select2">
+                                                <option value="">{{ __('Select School') }}</option>
+                                                @foreach($schools as $school)
+                                                    <option value="{{ $school->id }}">{{ $school->school_name }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="class">{{ __('School')}}<span class="text-red">*</span></label>
-                                            <select class="select2 form-control" name="school_id" id="school_id" required>
-                                                <option value="">{{ __('Select School') }}</option>
-                                                @foreach($schools as $school)
-                                                    <option @if(!empty($class) && $class->school_id === $school->id) selected @endif value="{{ $school->id }}">{{ $school->school_name }}</option>
-                                                @endforeach
+                                            <label for="class_id">{{ __('Classes')}}<span class="text-red">*</span></label>
+                                            <select name="class_id" id="class_id" class="form-control select2">
+                                                <option value="">{{ __('Select Classes') }}</option>
                                             </select>
                                         </div>
                                     </div>
@@ -77,25 +91,6 @@
                 </div>
             @endcan
         </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card p-3">
-                    <div class="card-body">
-                        <table id="classes_table" class="table">
-                            <thead>
-                            <tr>
-                                <th>{{ __('Class')}}</th>
-                                <th>{{ __('School')}}</th>
-                                <th>{{ __('Actions')}}</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
     <!-- push external js -->
     @push('script')
@@ -103,6 +98,6 @@
         <script src="{{ asset('plugins/DataTables/datatables.min.js') }}"></script>
         <script src="{{ asset('plugins/DataTables/Cell-edit/dataTables.cellEdit.js') }}"></script>
         <!--server side permission table script-->
-        <script src="{{ asset('js/classes.js') }}"></script>
+        <script src="{{ asset('js/subjects.js') }}"></script>
     @endpush
 @endsection

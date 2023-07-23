@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AssignedSubject;
+use App\Models\AssignedSubjectsClass;
 use App\Models\ClassSubject;
+use App\Models\School;
 use App\Models\SchoolClass;
 use App\Models\Subjects;
 use Illuminate\Http\Request;
@@ -43,7 +46,12 @@ class SubjectsController extends Controller
      */
     public function getList()
     {
-        $data = Subjects::with('school_class')->latest()->get();
+        $data = [];
+        if (Auth::user()->role === 'super_admin') {
+            $data = Subjects::with('school_class')->latest()->get();
+        } else if (Auth::user()->role === 'admin') {
+            $data = getSchoolSubjects();
+        }
         $hasManagePermission = Auth::user()->can('manage_subjects');
 
         return Datatables::of($data)
@@ -133,6 +141,46 @@ class SubjectsController extends Controller
             $subject->delete();
 
             return redirect()->back()->with('success', 'Subject deleted successfully');
+        } catch (\Exception $e) {
+            $bug = $e->getMessage();
+            return redirect()->back()->with('error', $bug);
+        }
+    }
+
+    /**
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
+     */
+    public function assignedSubjects() {
+        try {
+            $subjects = Subjects::all();
+            $schools = School::where('active', 1)->get();
+
+            return view('subjects.assigned-subjects', compact('subjects', 'schools'));
+        } catch (\Exception $e) {
+            $bug = $e->getMessage();
+            return redirect()->back()->with('error', $bug);
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function assignSubjects (Request $request) {
+        try {
+            $input = $request->except('_token');
+            $subject_ids = $input['subject_id'];
+            unset($input['subject_id']);
+
+            foreach ($subject_ids as $id) {
+                $input['subject_id'] = $id;
+                $exist = AssignedSubjectsClass::where($input)->exists();
+                if (!$exist) {
+                    AssignedSubjectsClass::create($input);
+                }
+            }
+
+            return back()->with('success', 'Subjects added to class');
         } catch (\Exception $e) {
             $bug = $e->getMessage();
             return redirect()->back()->with('error', $bug);

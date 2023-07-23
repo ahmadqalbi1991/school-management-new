@@ -43,7 +43,9 @@ class ClassesController extends Controller
      */
     public function getList()
     {
-        $data = SchoolClass::latest()->get();
+        $data = SchoolClass::when(Auth::user()->role === 'admin', function ($q) {
+            return $q->where('school_id', Auth::user()->school_id);
+        })->latest()->get();
         $hasManagePermission = Auth::user()->can('manage_classes');
 
         return Datatables::of($data)
@@ -166,8 +168,7 @@ class ClassesController extends Controller
     public function getStreams($id) {
         try {
             $streams = Stream::where('class_id', $id)->get();
-            $subjects = Subjects::where('class_id', $id)
-                ->get();
+            $subjects = getSchoolSubjects();
 
             $stream_html = '<option value="">Select Stream</option>';
             $subjects_html = '<option value="">Select Subjects</option>';

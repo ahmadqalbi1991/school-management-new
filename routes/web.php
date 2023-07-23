@@ -115,8 +115,10 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::group(['as' => 'subjects.', 'prefix' => 'subjects'], function () {
         Route::get('/', [SubjectsController::class, 'index'])->name('index');
+        Route::get('/assigned-subjects', [SubjectsController::class, 'assignedSubjects'])->name('assigned-subjects');
         Route::get('/get-list', [SubjectsController::class, 'getList'])->name('get-list');
         Route::post('/store', [SubjectsController::class, 'store'])->name('store');
+        Route::post('/assign-subjects', [SubjectsController::class, 'assignSubjects'])->name('assign-subject');
         Route::post('/update/{id}', [SubjectsController::class, 'update'])->name('update');
         Route::get('/delete/{id}', [SubjectsController::class, 'destroy'])->name('delete');
     });
@@ -129,6 +131,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::group(['middleware' => 'can:manage_summative_assessments', 'as' => 'summative-assessments.', 'prefix' => 'summative-assessments'], function () {
         Route::get('/{class?}/{stream?}/{subject?}', [SummativeAssessmentController::class, 'index'])->name('index');
         Route::post('/save-formative-assessment', [SummativeAssessmentController::class, 'save'])->name('save');
+        Route::post('/save-learner-assessment', [SummativeAssessmentController::class, 'saveLearnerAssessment']);
     });
 
     Route::post('/get-summative-assessments', [SummativeAssessmentController::class, 'getAssessments']);

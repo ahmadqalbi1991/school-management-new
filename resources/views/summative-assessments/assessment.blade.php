@@ -102,6 +102,7 @@
                                 </th>
                                 <th>{{ __('Scores') }}</th>
                                 <th>{{ __('Remarks') }}</th>
+                                <th></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -118,9 +119,13 @@
                                             <input type="number" required class="radmin-input" name="points[{{ $key }}]" id="score_{{ $learner->id }}" min="{{ $min }}"
                                                    data-parsley-min="{{ $min }}" data-parsley-max="{{ $max }}" max="{{ $max }}">
                                             <strong>%</strong>
+                                            <input type="hidden" id="learner_id_{{ $key }}" value="{{ $learner->id }}">
                                         </div>
                                     </td>
                                     <td id="level_title_{{ $learner->id }}"></td>
+                                    <td>
+                                        <button type="button" class="btn btn-success btn-rounded summative-save" data-key="{{ $key }}" data-learner-id="{{ $learner->id }}">{{ __('Save') }}</button>
+                                    </td>
                                 </tr>
                             @endforeach
                             </tbody>
@@ -128,7 +133,7 @@
                     </div>
                 </div>
                 <div class="card-footer text-right">
-                    <button id="save-btn" type="submit" class="btn btn-rounded btn-success">{{ __('Save') }}</button>
+                    <button id="save-btn" type="submit" class="btn btn-rounded btn-success">{{ __('Save All') }}</button>
                 </div>
             </div>
         </form>

@@ -40,15 +40,7 @@ class SummativeAssessmentController extends Controller
             }
 
             if ($class_slug && $stream_slug && !$subject_slug) {
-                $assigned_subjects = AssignedSubject::where('teacher_id', Auth::id())->get();
-                $assigned_ids = $assigned_subjects->pluck('subject_id')->toArray();
-                $stream = Stream::where(['school_id' => Auth::user()->school_id, 'slug' => $stream_slug])
-                    ->first();
-                $assigned_classes = TeacherManagement::where(['teacher_id' => Auth::id(), 'stream_id' => $stream->id])->get();
-                $assigned_class_ids = $assigned_classes->pluck('class_id')->toArray();
-                $subjects = Subjects::whereIn('class_id', $assigned_class_ids)
-                    ->whereIn('id', $assigned_ids)
-                    ->get();
+                $subjects = getSchoolSubjects();
 
                 return view('summative-assessments.subjects', compact('subjects', 'class_slug', 'stream_slug'));
             }
@@ -367,6 +359,24 @@ class SummativeAssessmentController extends Controller
 
             $pdf = PDF::loadView('pdfs.summative-class', $data);
             return $pdf->stream('class_summative_report_' . $stream->school_class->class . '_' . $stream->title  . '_' .  $term->term . '.pdf');
+        } catch (\Exception $e) {
+            $bug = $e->getMessage();
+            return redirect()->back()->with('error', $bug);
+        }
+    }
+
+    public function saveLearnerAssessment(Request $request) {
+        try {
+            $input = $request->all();
+            $point = (float)$input['points'];
+            unset($input['points']);
+            SummativeAssessment::where($input)->delete();
+            $level = SummativePerformnceLevel::where('min_point', '<=', $point)
+                ->where('max_point', '>=', $point)->first();
+            $input['performance_level_id'] = $level->id;
+            $input['points'] = $point;
+
+            SummativeAssessment::create($input);
         } catch (\Exception $e) {
             $bug = $e->getMessage();
             return redirect()->back()->with('error', $bug);

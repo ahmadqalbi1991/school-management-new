@@ -57,6 +57,12 @@
                                                    value="{{ !empty($level) ? $level->title : '' }}"
                                             >
                                         </div>
+                                        <div class="form-group">
+                                            <label for="points">{{ __('Points')}}<span class="text-red">*</span></label>
+                                            <input type="number" name="points" class="form-control" required
+                                                   value="{{ !empty($level) ? $level->points : 0 }}"
+                                            >
+                                        </div>
                                         <div class="row">
                                             <div class="col-6">
                                                 <div class="form-group">

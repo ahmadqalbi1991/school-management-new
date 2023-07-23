@@ -130,7 +130,7 @@
                                                                 @php
                                                                     $point = $activities_defination[$strand_key]['sub_strands'][$sub_strand_key]['activities'][$activity_key]['levels'][$level_key]['points'];
                                                                     $total_attempted += 1;
-                                                                    $subject_total = $point + $subject_total;
+                                                                    $subject_total += $point;
                                                                 @endphp
                                                                 <h5>
                                                                    <strong>

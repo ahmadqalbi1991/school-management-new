@@ -48,23 +48,12 @@
                                   action="{{ empty($subject) ? route('subjects.store') : route('subjects.update', ['id' => $subject->id])}}">
                                 @csrf
                                 <div class="row">
-                                    <div class="col-sm-6">
+                                    <div class="col-12">
                                         <div class="form-group">
                                             <label for="title">{{ __('Name')}}<span class="text-red">*</span></label>
                                             <input type="text" class="form-control" id="title"
                                                    value="{{ !empty($subject) ? $subject->title : '' }}" name="title"
                                                    placeholder="Subject Title" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label for="class_id">{{ __('Classes')}}<span class="text-red">*</span></label>
-                                            <select name="class_id" id="class_id" class="form-control select2">
-                                                <option value="">{{ __('Select Classes') }}</option>
-                                                @foreach($classes as $class)
-                                                    <option @if(!empty($subject) && $subject->class_id === $class->id) selected @endif value="{{ $class->id }}">{{ $class->class }}</option>
-                                                @endforeach
-                                            </select>
                                         </div>
                                     </div>
                                     <div class="col-sm-12 text-right">

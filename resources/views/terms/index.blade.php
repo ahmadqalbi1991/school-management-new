@@ -40,66 +40,65 @@
         <div class="row clearfix">
             <!-- start message area-->
             @include('include.message')
-            @can('manage_terms')
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header"><h3>{{ __('Add Term')}}</h3></div>
-                        <div class="card-body">
-                            <form class="forms-sample" method="POST" data-parsley-validate
-                                  action="{{ empty($term) ? route('terms.store') : route('terms.update', ['id' => $term->id])}}">
-                                @csrf
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label for="title">{{ __('Year')}}<span class="text-red">*</span></label>
-                                            <select required name="year" id="year" class="form-control select2">
-                                                <option value="">{{ __('Select Year') }}</option>
-                                                @for($i = \Carbon\Carbon::now()->format('Y'); $i <= \Carbon\Carbon::now()->format('Y') + 100; $i++)
-                                                    <option @if(!empty($term) && $term->year == $i) selected
-                                                            @endif value="{{ $i }}">{{ $i }}</option>
-                                                @endfor
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label for="title">{{ __('Term')}}<span class="text-red">*</span></label>
-                                            <input type="text" value="{{ !empty($term) ? $term->term : '' }}" required
-                                                   class="form-control" name="term" id="title"
-                                                   placeholder="Enter the term">
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label for="start_date">{{ __('Start Date')}}<span class="text-red">*</span></label>
-                                            <input type="date"
-                                                   value="{{ !empty($term) ? $term->start_date : \Carbon\Carbon::now()->format('Y-m-d') }}"
-                                                   required class="form-control" id="start_date"
-                                                   name="start_date">
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label for="end_date">{{ __('End Date')}}<span
-                                                    class="text-red">*</span></label>
-                                            <input type="date"
-                                                   value="{{ !empty($term) ? $term->end_date : \Carbon\Carbon::now()->format('Y-m-d') }}"
-                                                   required class="form-control" id="end_date"
-                                                   name="end_date">
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12 text-right">
-                                        <div class="form-group">
-                                            <button type="submit"
-                                                    class="btn btn-success btn-rounded">{{ __('Save')}}</button>
-                                        </div>
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header"><h3>{{ __('Add Term')}}</h3></div>
+                    <div class="card-body">
+                        <form class="forms-sample" method="POST" data-parsley-validate
+                              action="{{ empty($term) ? route('terms.store') : route('terms.update', ['id' => $term->id])}}">
+                            @csrf
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="title">{{ __('Year')}}<span class="text-red">*</span></label>
+                                        <select required name="year" id="year" class="form-control select2">
+                                            <option value="">{{ __('Select Year') }}</option>
+                                            @for($i = \Carbon\Carbon::now()->format('Y'); $i <= \Carbon\Carbon::now()->format('Y') + 100; $i++)
+                                                <option @if(!empty($term) && $term->year == $i) selected
+                                                        @endif value="{{ $i }}">{{ $i }}</option>
+                                            @endfor
+                                        </select>
                                     </div>
                                 </div>
-                            </form>
-                        </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="title">{{ __('Term')}}<span class="text-red">*</span></label>
+                                        <input type="text" value="{{ !empty($term) ? $term->term : '' }}" required
+                                               class="form-control" name="term" id="title"
+                                               placeholder="Enter the term">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="start_date">{{ __('Start Date')}}<span
+                                                class="text-red">*</span></label>
+                                        <input type="date"
+                                               value="{{ !empty($term) ? $term->start_date : \Carbon\Carbon::now()->format('Y-m-d') }}"
+                                               required class="form-control" id="start_date"
+                                               name="start_date">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="end_date">{{ __('End Date')}}<span
+                                                class="text-red">*</span></label>
+                                        <input type="date"
+                                               value="{{ !empty($term) ? $term->end_date : \Carbon\Carbon::now()->format('Y-m-d') }}"
+                                               required class="form-control" id="end_date"
+                                               name="end_date">
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 text-right">
+                                    <div class="form-group">
+                                        <button type="submit"
+                                                class="btn btn-success btn-rounded">{{ __('Save')}}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
-            @endcan
+            </div>
         </div>
         <div class="row">
             <div class="col-md-12">
