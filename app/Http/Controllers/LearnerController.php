@@ -31,7 +31,11 @@ class LearnerController extends Controller
             }
             $schools = School::where('active', 1)->get();
             $classes = SchoolClass::where('school_id', Auth::user()->school_id)->get();
-            $streams = Stream::with(['school', 'school_class'])->get();
+            $streams = Stream::with(['school', 'school_class'])
+                ->when(Auth::user()->role === 'admin', function ($q) {
+                    return $q->where('school_id', Auth::user()->school_id);
+                })
+                ->get();
 
             return view('learners.index', compact('learner', 'schools', 'streams', 'classes'));
         } catch (\Exception $e) {
