@@ -61,7 +61,7 @@ class SchoolController extends Controller
                     $btn = 'success';
                 }
                 if ($hasManagePermission) {
-                    $output = '<a href="" class="btn btn-' . $btn . '">' . $status .'</a>';
+                    $output = '<a href="javascript:void(0)" class="btn btn-' . $btn . '">' . $status .'</a>';
                 }
 
                 return $output;
@@ -113,8 +113,8 @@ class SchoolController extends Controller
             $input = $request->except('_token');
             $input['active'] = $input['status'] === 'active' ? 1 : 0;
             $input['slug'] = Str::slug($input['school_name']);
-            $ids = $input['admin_ids'];
-            unset($input['admin_ids']);
+            $ids = !empty($input['admin_ids']) ? $input['admin_ids'] : [];
+
             if ($request->has('logo')) {
                 $imageName = $input['slug'] . '_' . time().'.'.$request->logo->extension();
                 $request->logo->move(public_path('images/schools/' . $input['slug'] . '/logo'), $imageName);
@@ -187,7 +187,8 @@ class SchoolController extends Controller
             $input = $request->except('_token');
             $input['active'] = !empty($input['status']) ? 1 : 0;
             $input['slug'] = Str::slug($input['school_name']);
-            $ids = $input['admin_ids'];
+            $ids = !empty($input['admin_ids']) ? $input['admin_ids'] : [];
+
             unset($input['admin_ids'], $input['status']);
             if ($request->has('logo')) {
                 $imageName = $input['slug'] . '_' . time().'.'.$request->logo->extension();

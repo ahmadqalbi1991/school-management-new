@@ -18,7 +18,8 @@ class School extends Model
         'active',
         'school_website',
         'school_moto',
-        'slug'
+        'slug',
+        'status'
     ];
 
     public function admins(): HasMany
