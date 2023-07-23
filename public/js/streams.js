@@ -138,5 +138,17 @@
             }
         });
     });
+
+    $('#school_id').on('change', function () {
+        $.ajax({
+            url: '/get-school-classes/' + $(this).val(),
+            type: 'GET',
+            success: function (response) {
+                $('#class_id').show();
+                $('#class_id').html(response).select2();
+            }
+        })
+    });
+
     $('select').select2();
 })(jQuery);

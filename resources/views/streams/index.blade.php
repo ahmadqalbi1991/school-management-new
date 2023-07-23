@@ -58,9 +58,11 @@
                                             <label for="class_id">{{ __('Class')}}<span class="text-red">*</span></label>
                                             <select name="class_id" id="class_id" required class="form-control select2">
                                                 <option value="">{{ __('Select Class') }}</option>
-                                                @foreach($classes as $class)
-                                                    <option @if((!empty($stream)) && ($class->id === $stream->class_id)) selected @endif value="{{ $class->id }}">{{ $class->class }}</option>
-                                                @endforeach
+                                                @if(!empty($stream))
+                                                    @foreach($classes as $class)
+                                                        <option @if($class->id === $stream->class_id) selected @endif value="{{ $class->id }}">{{ $class->class }}</option>
+                                                    @endforeach
+                                                @endif
                                             </select>
                                         </div>
                                     </div>

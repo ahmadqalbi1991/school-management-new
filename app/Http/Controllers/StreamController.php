@@ -26,7 +26,10 @@ class StreamController extends Controller
             if ($request->has('edit') && $request->get('pass_key')) {
                 $stream = Stream::where(['id' => $request->get('pass_key')])->first();
             }
-            $classes = SchoolClass::all();
+            $classes = SchoolClass::when(!empty($stream), function ($q) use ($stream) {
+                return $q->where('school_id', $stream->school_id);
+            })->get();
+
             $schools = School::where('active', 1)->get();
 
             return view('streams.index', compact('stream', 'classes', 'schools'));
