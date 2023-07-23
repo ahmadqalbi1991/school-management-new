@@ -107,7 +107,8 @@ class UserController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => $password,
-                'role' => 'admin'
+                'role' => 'admin',
+                'school_id' => $request->school_id
             ]);
 
             if ($user) {
@@ -145,12 +146,13 @@ class UserController extends Controller
     {
         try {
             $user = User::with('roles', 'permissions')->find($id);
+            $schools = School::where('active', 1)->get();
 
             if ($user) {
                 $user_role = $user->roles->first();
                 $roles = Role::pluck('name', 'id');
 
-                return view('user-edit', compact('user', 'user_role', 'roles'));
+                return view('user-edit', compact('user', 'user_role', 'roles', 'schools'));
             }
 
             return redirect('404');
