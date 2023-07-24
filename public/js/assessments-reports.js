@@ -44,7 +44,8 @@ $(document).ready(function () {
                 }
             },
             columns: [
-                {data:'name', name: 'name', orderable: false},
+                {data:'checkbox', name: 'checkbox', orderable: false},
+                {data:'name', name: 'name'},
                 {data:'email', name: 'email'},
                 {data:'status', name: 'status'},
                 {data:'action', name: 'action'}
@@ -166,4 +167,30 @@ $(document).ready(function () {
         paging: false,
         ordering: false
     });
+
+    function checkAllCheckBoxes() {
+        let all_selected = false;
+        $('.learner-checkboxes').map((index, checkbox) => {
+            if ($(checkbox).is(':checked')) {
+                all_selected = true
+            }
+        })
+
+        if (all_selected) {
+            $('#generate-all-formative-report').prop('disabled', false);
+        } else {
+            $('#generate-all-formative-report').prop('disabled', true);
+        }
+    }
+
+    $(document).on('click', '.learner-checkboxes', function () {
+        checkAllCheckBoxes()
+    })
+
+    $('#all-formative-assessment').on('click', function () {
+        $('.learner-checkboxes').map((index, checkbox) => {
+            $(checkbox).prop('checked', true)
+        });
+        checkAllCheckBoxes()
+    })
 })

@@ -192,6 +192,9 @@ class FormativeAssessmentController extends Controller
             $hasManagePermission = Auth::user()->can('manage_formative_assessments');
 
             return Datatables::of($data)
+                ->addColumn('checkbox', function ($data) {
+                    return '<input type="checkbox" name="learners[]" class="learner-checkboxes" value="' . $data->id . '" id="learner_checkbox_' . $data->id . '" />';
+                })
                 ->addColumn('action', function ($data) use ($hasManagePermission, $request) {
                     $output = '';
                     if ($hasManagePermission) {
@@ -207,6 +210,7 @@ class FormativeAssessmentController extends Controller
 
                     return $output;
                 })
+                ->rawColumns(['checkbox', 'action'])
                 ->make(true);
         } catch (\Exception $e) {
             $bug = $e->getMessage();
@@ -369,81 +373,9 @@ class FormativeAssessmentController extends Controller
     public function downloadPdf($learner_id, $stream_id, $term_id, $send_email = false)
     {
         try {
-            $school = getSchoolSettings();
-            $stream = Stream::where('id', $stream_id)
-                ->with('school_class', function ($q) {
-                    return $q->with('class_subjects', function ($q) {
-                        return $q->with('subject');
-                    });
-                })
-                ->first();
-
-            $learner_subjects = LearnerSubject::where([
-                'class_id' => $stream->school_class->id,
-                'stream_id' => $stream->id,
-                'learner_id' => $learner_id
-            ])
-                ->with('subject')
-                ->get();
-
-            $result = [];
-            foreach ($learner_subjects as $subject) {
-                $strands = Strand::where('subject_id', $subject->subject->id)
-                    ->with('sub_strands', function ($q) {
-                        return $q->with('learning_activities');
-                    })
-                    ->get();
-                $total_learning_activities = 0;
-                $learning_activities_ids = [];
-                if ($strands->count()) {
-                    foreach ($strands as $strand) {
-                        foreach ($strand->sub_strands->pluck('learning_activities') as $learning_activity) {
-                            foreach ($learning_activity as $activity) {
-                                $learning_activities_ids[] = $activity->id;
-                            }
-                            $learning_activities_ids = array_unique($learning_activities_ids);
-                            $total_learning_activities += count($learning_activity);
-                        }
-                    }
-                }
-
-                $attempted_activities = StudentAssessment::where([
-                    'learner_id' => $learner_id,
-                    'subject_id' => $subject->subject->id,
-                    'stream_id' => $stream_id,
-                    'term_id' => $term_id,
-                ])
-                    ->with('level')
-                    ->whereIn('learning_activity_id', $learning_activities_ids)
-                    ->get();
-
-                if ($attempted_activities->count()) {
-                    $attempted_points = $attempted_activities->pluck('level')->pluck('points')->sum() / ($total_learning_activities ? $total_learning_activities : 1);
-
-                    $result[] = [
-                        'id' => $subject->subject->id,
-                        'name' => $subject->subject->title,
-                        'total_learning_activity' => $total_learning_activities,
-                        'attempted_activities' => $attempted_activities->pluck('level')->pluck('points')->count(),
-                        'attempted_points' => round($attempted_points, 2),
-                    ];
-                }
-            }
-
-            $learner = User::find($learner_id);
-            $term = Term::find($term_id);
-            $admins = getSchoolAdmins($school->id);
-            $levels = PerformanceLevel::latest()->get();
-            $data = [
-                'school' => $school,
-                'stream' => $stream,
-                'term' => $term,
-                'learner' => $learner,
-                'results' => $result,
-                'levels' => $levels,
-                'admins' => $admins
-            ];
-
+            $data = self::generatePdf($learner_id, $stream_id, $term_id);
+            $learner = $data['learner'];
+            $term = $data['term'];
             $pdf = PDF::loadView('pdfs.result', $data);
             if ($send_email) {
                 $content = $pdf->output();
@@ -465,6 +397,116 @@ class FormativeAssessmentController extends Controller
                 return $pdf->stream('report_card_' . $term->term . '.pdf');
             }
 
+        } catch (\Exception $e) {
+            $bug = $e->getMessage();
+            return redirect()->back()->with('error', $bug);
+        }
+    }
+
+    /**
+     * @param $learner_id
+     * @param $stream_id
+     * @param $term_id
+     * @return array
+     */
+    private static function generatePdf($learner_id, $stream_id, $term_id) {
+        $school = getSchoolSettings();
+        $stream = Stream::where('id', $stream_id)
+            ->with('school_class', function ($q) {
+                return $q->with('class_subjects', function ($q) {
+                    return $q->with('subject');
+                });
+            })
+            ->first();
+
+        $learner_subjects = LearnerSubject::where([
+            'class_id' => $stream->school_class->id,
+            'stream_id' => $stream->id,
+            'learner_id' => $learner_id
+        ])
+            ->with('subject')
+            ->get();
+
+        $result = [];
+        foreach ($learner_subjects as $subject) {
+            $strands = Strand::where('subject_id', $subject->subject->id)
+                ->with('sub_strands', function ($q) {
+                    return $q->with('learning_activities');
+                })
+                ->get();
+            $total_learning_activities = 0;
+            $learning_activities_ids = [];
+            if ($strands->count()) {
+                foreach ($strands as $strand) {
+                    foreach ($strand->sub_strands->pluck('learning_activities') as $learning_activity) {
+                        foreach ($learning_activity as $activity) {
+                            $learning_activities_ids[] = $activity->id;
+                        }
+                        $learning_activities_ids = array_unique($learning_activities_ids);
+                        $total_learning_activities += count($learning_activity);
+                    }
+                }
+            }
+
+            $attempted_activities = StudentAssessment::where([
+                'learner_id' => $learner_id,
+                'subject_id' => $subject->subject->id,
+                'stream_id' => $stream_id,
+                'term_id' => $term_id,
+            ])
+                ->with('level')
+                ->whereIn('learning_activity_id', $learning_activities_ids)
+                ->get();
+
+            if ($attempted_activities->count()) {
+                $attempted_points = $attempted_activities->pluck('level')->pluck('points')->sum() / ($total_learning_activities ? $total_learning_activities : 1);
+
+                $result[] = [
+                    'id' => $subject->subject->id,
+                    'name' => $subject->subject->title,
+                    'total_learning_activity' => $total_learning_activities,
+                    'attempted_activities' => $attempted_activities->pluck('level')->pluck('points')->count(),
+                    'attempted_points' => round($attempted_points, 2),
+                ];
+            }
+        }
+
+        $learner = User::find($learner_id);
+        $term = Term::find($term_id);
+        $admins = getSchoolAdmins($school->id);
+        $levels = PerformanceLevel::latest()->get();
+        $data = [
+            'school' => $school,
+            'stream' => $stream,
+            'term' => $term,
+            'learner' => $learner,
+            'results' => $result,
+            'levels' => $levels,
+            'admins' => $admins
+        ];
+
+        return $data;
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function bulkDownloadPdf(Request $request) {
+        try {
+            $input = $request->except('_token');
+            $learners = $input['learners'];
+            $html = '';
+            foreach ($learners as $learner) {
+                $data = self::generatePdf($learner, $input['stream_id'], $input['term_id']);
+                $term = $data['term'];
+                $view = view('pdfs.result')->with($data);
+                $html .= $view->render();
+            }
+
+            $pdf = PDF::loadHtml($html);
+            $pdf->setPaper('a4', 'portrait');
+            return $pdf->stream('report_card_' . $term->term . '.pdf');
         } catch (\Exception $e) {
             $bug = $e->getMessage();
             return redirect()->back()->with('error', $bug);

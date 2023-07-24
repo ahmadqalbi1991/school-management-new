@@ -143,6 +143,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/view-learner-subjects/{learner_id}/{stream_id}/{term_id}', [FormativeAssessmentController::class, 'viewSubjects'])->name('view-subjects');
         Route::get('/view-learner-result/{subject_id}/{learner_id}/{term_id}/{stream_id}', [FormativeAssessmentController::class, 'viewResult'])->name('view-result');
         Route::get('/download-pdf/{learner_id}/{stream_id}/{term_id}/{send_email?}', [FormativeAssessmentController::class, 'downloadPdf'])->name('download-pdf');
+        Route::post('/bulk-download-pdf', [FormativeAssessmentController::class, 'bulkDownloadPdf'])->name('bulk-download-pdf');
     });
 
     Route::group(['middleware' => 'can:manage_summative_assessments', 'as' => 'summative-reports.', 'prefix' => 'summative-reports'], function () {
