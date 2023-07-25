@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
     $('#scr-vtr-dynamic').DataTable({
         scrollY: '50vh',
         scrollCollapse: true,
@@ -111,11 +111,12 @@ $(document).ready(function() {
                 }
             },
             columns: [
-                {data:'admission_number', name: 'admission_number', orderable: false},
-                {data:'name', name: 'name', orderable: false},
-                {data:'score', name: 'score', orderable: false},
-                {data:'remark', name: 'remark', orderable: false},
-                // {data:'action', name: 'action'}
+                {data: 'checkbox', name: 'checkbox', orderable: false},
+                {data: 'admission_number', name: 'admission_number'},
+                {data: 'name', name: 'name'},
+                {data: 'score', name: 'score'},
+                {data: 'remark', name: 'remark', orderable: false},
+                {data: 'action', name: 'action', orderable: false}
             ],
             buttons: [
                 {
@@ -177,13 +178,13 @@ $(document).ready(function() {
             /*
              * create an element id to change permission names, while inline datatable updated
             */
-            createdRow: function ( row, data, index ) {
+            createdRow: function (row, data, index) {
                 var td_index = data.DT_RowIndex;
-                $('td', row).eq(0).attr('id', 'perm_'+data.id);
+                $('td', row).eq(0).attr('id', 'perm_' + data.id);
                 $('td', row).eq(0).attr('title', 'Click to edit permission');
             },
             initComplete: function () {
-                var api =  this.api();
+                var api = this.api();
                 api.columns(searchable).every(function () {
                     var column = this;
                     var input = document.createElement("input");
@@ -195,26 +196,26 @@ $(document).ready(function() {
                             column.search($(this).val(), false, false, true).draw();
                         });
 
-                    $('input', this.column(column).header()).on('click', function(e) {
+                    $('input', this.column(column).header()).on('click', function (e) {
                         e.stopPropagation();
                     });
                 });
 
-                api.columns(selectable).every( function (i, x) {
+                api.columns(selectable).every(function (i, x) {
                     var column = this;
 
-                    var select = $('<select style="width: 140px; height:25px; border:1px solid whitesmoke; font-size: 12px; font-weight:bold;"><option value="">'+$(column.header()).text()+'</option></select>')
+                    var select = $('<select style="width: 140px; height:25px; border:1px solid whitesmoke; font-size: 12px; font-weight:bold;"><option value="">' + $(column.header()).text() + '</option></select>')
                         .appendTo($(column.header()).empty())
-                        .on('change', function(e){
+                        .on('change', function (e) {
                             var val = $.fn.dataTable.util.escapeRegex(
                                 $(this).val()
                             );
-                            column.search(val ? '^'+val+'$' : '', true, false ).draw();
+                            column.search(val ? '^' + val + '$' : '', true, false).draw();
                             e.stopPropagation();
                         });
 
-                    $.each(dropdownList[i], function(j, v) {
-                        select.append('<option value="'+v+'">'+v+'</option>')
+                    $.each(dropdownList[i], function (j, v) {
+                        select.append('<option value="' + v + '">' + v + '</option>')
                     });
                 });
             }
@@ -248,5 +249,41 @@ $(document).ready(function() {
 
             }
         })
+    })
+
+    function checkAllCheckBoxes() {
+        let all_selected = false;
+        $('.learner-checkboxes').map((index, checkbox) => {
+            if ($(checkbox).is(':checked')) {
+                all_selected = true
+            }
+        })
+
+        if (all_selected) {
+            $('#generate-all-summative-report').prop('disabled', false);
+        } else {
+            $('#generate-all-summative-report').prop('disabled', true);
+        }
+    }
+
+    $(document).on('click', '.learner-checkboxes', function () {
+        checkAllCheckBoxes()
+    })
+
+    $('#all-summative-assessment').on('click', function () {
+        $('.learner-checkboxes').map((index, checkbox) => {
+            $(checkbox).prop('checked', true)
+        });
+        checkAllCheckBoxes()
+    })
+
+    $('#generate-all-summative-report').on('click', function () {
+        $('#summative-form').append('<input type="hidden" name="class_id" value="' + $('#class_id').val() + '" />')
+            .append('<input type="hidden" name="stream_id" value="' + $('#stream-id').val() + '" />')
+            .append('<input type="hidden" name="term_id" value="' + $('#term_id').val() + '" />')
+            .append('<input type="hidden" name="exam_id" value="' + $('#exam_id').val() + '" />')
+            .append('<input type="hidden" name="subject_id" value="' + $('#subject_id').val() + '" />')
+
+        $('#summative-form').submit();
     })
 })

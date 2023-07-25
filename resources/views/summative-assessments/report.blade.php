@@ -74,14 +74,31 @@
                                 </tr>
                                 </thead>
                                 <tbody>
+                                @php
+                                    $total = 0
+                                @endphp
                                 @foreach($assessments as $assessment)
                                     <tr>
+                                        @php
+                                            $total += $assessment->points
+                                        @endphp
                                         <td>{{ $assessment->subject->title }}</td>
                                         <td>{{ $assessment->points }}%</td>
                                         <td>{{ $assessment->level->title }}</td>
                                     </tr>
                                 @endforeach
                                 </tbody>
+                                <tfoot>
+                                <tr>
+                                    @php
+                                        $count = count($assessments) > 0 ? count($assessments) : 1;
+                                        $average = $total / $count;
+                                    @endphp
+                                    <th>Average</th>
+                                    <th>{{ $average }}%</th>
+                                    <th>{{ checkSummetiveCriteria($average) }}</th>
+                                </tr>
+                                </tfoot>
                             </table>
                         </div>
                     </div>

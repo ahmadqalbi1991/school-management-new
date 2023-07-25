@@ -26,4 +26,9 @@ class School extends Model
     {
         return $this->hasMany(SchoolAdmins::class);
     }
+
+    public function learners(): HasMany
+    {
+        return $this->hasMany(User::class, 'school_id', 'id')->where(['role' => 'learner', 'status' => 'active']);
+    }
 }

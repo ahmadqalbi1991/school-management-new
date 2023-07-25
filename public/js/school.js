@@ -30,12 +30,12 @@
                 }
             },
             columns: [
-                {data:'logo', name: 'logo'},
-                {data:'school_name', name: 'school_name', orderable: false},
-                {data:'phone_number', name: 'phone_number'},
-                {data:'school_website', name: 'school_website'},
-                {data:'active', name: 'active'},
-                {data:'action', name: 'action'}
+                {data:'logo', name: 'logo', orderable: false},
+                {data:'school_name', name: 'school_name'},
+                {data:'phone_number', name: 'phone_number', orderable: false},
+                {data:'total_learners', name: 'total_learners'},
+                {data:'active', name: 'active', orderable: false},
+                {data:'action', name: 'action', orderable: false}
 
             ],
             buttons: [

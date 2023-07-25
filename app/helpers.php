@@ -44,7 +44,7 @@ function checkSummetiveCriteria($points) {
         ->where('max_point', '>=', $points)
         ->first();
 
-    return $level->title;
+    return ! empty($level) ? $level->title : '';
 }
 
 function checkPointsCriteria($points, $total_check = false) {

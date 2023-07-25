@@ -84,12 +84,12 @@
                                                    placeholder="Phone Number" required>
                                         </div>
                                         <div class="form-group">
-                                            <label for="school_website">{{ __('School Website')}}<span class="text-red">*</span></label>
+                                            <label for="school_website">{{ __('School Website')}}</label>
                                             <input type="text" class="form-control" id="school_website"
                                                    @if(!empty($learner)) disabled @endif
                                                    value="{{ !empty($learner) ? $learner->school_website : '' }}"
                                                    name="school_website"
-                                                   placeholder="School Website" required>
+                                                   placeholder="School Website">
                                         </div>
                                     </div>
                                     <div class="col-sm-6">

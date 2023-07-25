@@ -160,14 +160,31 @@
             </tr>
             </thead>
             <tbody>
+            @php
+                $total = 0;
+            @endphp
             @foreach($assessments as $assessment)
                 <tr>
+                    @php
+                        $total += $assessment->points
+                    @endphp
                     <td>{{ $assessment->subject->title }}</td>
                     <td style="text-align: right">{{ $assessment->points }}%</td>
                     <td>{{ $assessment->level->title }}</td>
                 </tr>
             @endforeach
             </tbody>
+            <tfoot>
+            <tr>
+                @php
+                    $count = count($assessments) > 0 ? count($assessments) : 1;
+                    $average = $total / $count;
+                @endphp
+                <th>Average</th>
+                <th style="text-align: right">{{ $average }}%</th>
+                <th>{{ checkSummetiveCriteria($average) }}</th>
+            </tr>
+            </tfoot>
         </table>
     </div>
     <div class="signatures">
@@ -186,3 +203,4 @@
         <p>Powered by CRE.CO.KE</p>
     </footer>
 </div>
+<p style="page-break-before: always;"></p>

@@ -82,7 +82,8 @@
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
                                     <label>{{ __('Subjects') }}</label>
-                                    <select name="subject_id" required id="subject_id" disabled class="form-control select2">
+                                    <select name="subject_id" required id="subject_id" disabled
+                                            class="form-control select2">
                                         <option value="" selected>{{ __('Select Subject') }}</option>
                                     </select>
                                 </div>
@@ -90,7 +91,8 @@
                             <div class="col-sm-12 col-md-4 text-right d-none" id="generate-report-btn">
                                 <div class="form-group">
                                     <label for="">&nbsp;</label>
-                                    <button class="btn btn-primary btn-rounded" type="submit">{{ __('Generate Report Card') }}</button>
+                                    <button class="btn btn-primary btn-rounded"
+                                            type="submit">{{ __('Generate Class Report Card') }}</button>
                                 </div>
                             </div>
                         </div>
@@ -101,21 +103,36 @@
         <div class="row" id="show_table" style="display: none">
             <div class="col-md-12">
                 <div class="card p-3">
-                    <div class="card-body">
-                        <table id="learners_table" class="table">
-                            <thead>
-                            <tr>
-                                <th>{{ __('Admission Number')}}</th>
-                                <th>{{ __('Name')}}</th>
-                                <th>{{ __('Score')}}</th>
-                                <th>{{ __('Remark')}}</th>
-{{--                                <th>{{ __('Action')}}</th>--}}
-                            </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
-                    </div>
+                    <form action="{{ route('summative-reports.bulk-download-pdf') }}" data-parsley-validate
+                          id="summative-form"
+                          method="post">
+                        @csrf
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-12">
+                                    <table id="learners_table" class="table">
+                                        <thead>
+                                        <tr>
+                                            <th>
+                                                <input type="checkbox" id="all-summative-assessment">
+                                            </th>
+                                            <th>{{ __('Admission Number')}}</th>
+                                            <th>{{ __('Name')}}</th>
+                                            <th>{{ __('Score')}}</th>
+                                            <th>{{ __('Remark')}}</th>
+                                            <th>{{ __('Action')}}</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-12 text-right">
+                                    <button type="button" class="btn btn-primary btn-rounded" disabled  id="generate-all-summative-report">{{ __('Print Selected Reports') }}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

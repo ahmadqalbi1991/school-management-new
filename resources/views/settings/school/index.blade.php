@@ -55,7 +55,7 @@
                                 <th>{{ __('Logo') }}</th>
                                 <th>{{ __('Name')}}</th>
                                 <th>{{ __('Contact Number')}}</th>
-                                <th>{{ __('Website')}}</th>
+                                <th>{{ __('Learners')}}</th>
                                 <th>{{ __('Status')}}</th>
                                 <th>{{ __('Action')}}</th>
                             </tr>

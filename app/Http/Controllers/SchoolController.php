@@ -36,10 +36,13 @@ class SchoolController extends Controller
      */
     public function getList()
     {
-        $data = School::latest()->get();
+        $data = School::with('learners')->latest()->get();
         $hasManagePermission = Auth::user()->can('manage_settings');
 
         return Datatables::of($data)
+            ->addColumn('total_learners', function ($data) {
+                return $data->learners()->count();
+            })
             ->addColumn('logo', function ($data) {
                 $imgUrl = asset('img/No-img.png');
                 if ($data->logo) {

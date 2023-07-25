@@ -179,7 +179,8 @@ class SummativeAssessmentController extends Controller
                     'score' => $score,
                     'name' => $user->name,
                     'admission_number' => $user->admission_number,
-                    'id' => $user->id
+                    'id' => $user->id,
+                    'checkbox' => true
                 ];
             }
 
@@ -191,10 +192,28 @@ class SummativeAssessmentController extends Controller
                 'score' => $class_average . '%',
                 'admission_number' => 'Class Average',
                 'name' => '',
-                'id' => null
+                'id' => null,
+                'checkbox' => false
             ];
 
             return Datatables::of($data)
+                ->addColumn('checkbox', function ($record) {
+                    if ($record['checkbox']) {
+                        return '<input type="checkbox" name="learners[]" class="learner-checkboxes" value="' . $record['id'] . '" id="learner_checkbox_' . $record['id'] . '" />';
+                    }
+                })
+                ->addColumn('action', function ($record) use ($input) {
+                    if ($record['id']) {
+                        $output = '<div class="">
+                                        <a href="' . route('summative-reports.download-pdf', ['learner_id' => $record['id'], 'term_id' => $input['term_id'], 'stream_id' => $input['stream_id'], 'exam_id' => $input['exam_id']]) . '"><i class="fas fa-file-pdf f-16 text-pink"></i></a>
+                                        <a href="' . route('summative-reports.download-pdf', ['learner_id' => $record['id'], 'term_id' => $input['term_id'], 'stream_id' => $input['stream_id'], 'exam_id' => $input['exam_id'], 'send-email' => 1]) . '"><i class="fas fa-envelope f-16 text-blue"></i></a>
+                                        <a href="' . route('summative-reports.view-result', ['learner_id' => $record['id'], 'term_id' => $input['term_id'], 'stream_id' => $input['stream_id'], 'exam_id' => $input['exam_id']]) . '"><i class="fas fa-eye f-16 text-green"></i></a>
+                                        </div>';
+
+                        return $output;
+                    }
+                })
+                ->rawColumns(['checkbox', 'action'])
                 ->make(true);
         } catch (\Exception $e) {
             $bug = $e->getMessage();
@@ -202,6 +221,13 @@ class SummativeAssessmentController extends Controller
         }
     }
 
+    /**
+     * @param $learner_id
+     * @param $term_id
+     * @param $stream_id
+     * @param $exam_id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
+     */
     public function viewResult($learner_id, $term_id, $stream_id, $exam_id)
     {
         try {
@@ -236,33 +262,9 @@ class SummativeAssessmentController extends Controller
     public function downloadPdf($learner_id, $stream_id, $term_id, $exam_id, $send_email = false)
     {
         try {
-            $school = getSchoolSettings();
-            $stream = Stream::where('id', $stream_id)
-                ->with('school_class')
-                ->first();
-
-            $learner = User::find($learner_id);
-            $term = Term::find($term_id);
-            $admins = getSchoolAdmins($school->id);
-            $levels = SummativePerformnceLevel::whereIn('created_by', $admins)->get();
-            $assessments = SummativeAssessment::where([
-                'stream_id' => $stream_id,
-                'term_id' => $term_id,
-                'learner_id' => $learner_id,
-                'exam_id' => $exam_id
-            ])
-                ->with(['level', 'subject'])
-                ->get();
-
-            $data = [
-                'school' => $school,
-                'stream' => $stream,
-                'term' => $term,
-                'learner' => $learner,
-                'assessments' => $assessments,
-                'levels' => $levels,
-                'admins' => $admins
-            ];
+            $data = self::generatePdf($learner_id, $stream_id, $term_id, $exam_id);
+            $learner = $data['learner'];
+            $term = $data['term'];
 
             $pdf = PDF::loadView('pdfs.summative-result', $data);
             if ($send_email) {
@@ -290,10 +292,13 @@ class SummativeAssessmentController extends Controller
         }
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function generateClassPdf(Request $request) {
         try {
             $input = $request->except('_token');
-//            dd($input);
             $teacher = TeacherManagement::where([
                 'class_id' => $input['class_id'],
                 'stream_id' => $input['stream_id'],
@@ -365,6 +370,10 @@ class SummativeAssessmentController extends Controller
         }
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|void
+     */
     public function saveLearnerAssessment(Request $request) {
         try {
             $input = $request->all();
@@ -378,6 +387,60 @@ class SummativeAssessmentController extends Controller
 
             SummativeAssessment::create($input);
         } catch (\Exception $e) {
+            $bug = $e->getMessage();
+            return redirect()->back()->with('error', $bug);
+        }
+    }
+
+    private static function generatePdf($learner_id, $stream_id, $term_id, $exam_id) {
+        $school = getSchoolSettings();
+        $stream = Stream::where('id', $stream_id)
+            ->with('school_class')
+            ->first();
+
+        $learner = User::find($learner_id);
+        $term = Term::find($term_id);
+        $admins = getSchoolAdmins($school->id);
+        $levels = SummativePerformnceLevel::whereIn('created_by', $admins)->get();
+        $assessments = SummativeAssessment::where([
+            'stream_id' => $stream_id,
+            'term_id' => $term_id,
+            'learner_id' => $learner_id,
+            'exam_id' => $exam_id
+        ])
+            ->with(['level', 'subject'])
+            ->get();
+
+        $data = [
+            'school' => $school,
+            'stream' => $stream,
+            'term' => $term,
+            'learner' => $learner,
+            'assessments' => $assessments,
+            'levels' => $levels,
+            'admins' => $admins
+        ];
+
+        return $data;
+    }
+
+    public function bulkDownloadPdf(Request $request) {
+        try {
+            $input = $request->except('_token');
+            $learners = $input['learners'];
+            $html = '';
+            foreach ($learners as $learner) {
+                $data = self::generatePdf($learner, $input['stream_id'], $input['term_id'], $input['exam_id']);
+                $term = $data['term'];
+                $view = view('pdfs.summative-result')->with($data);
+                $html .= $view->render();
+            }
+
+            $pdf = PDF::loadHtml($html);
+            $pdf->setPaper('a4', 'portrait');
+            return $pdf->stream('report_card_' . $term->term . '.pdf');
+        } catch (\Exception $e) {
+            dd($e);
             $bug = $e->getMessage();
             return redirect()->back()->with('error', $bug);
         }
