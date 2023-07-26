@@ -65,6 +65,7 @@ class SummativeAssessmentController extends Controller
                 $admins = getSchoolAdmins();
                 $min = SummativePerformnceLevel::whereIn('created_by', $admins)->min('min_point');
                 $max = SummativePerformnceLevel::whereIn('created_by', $admins)->max('max_point');
+                dd($min, $max);
 
                 return view('summative-assessments.assessment', compact('terms', 'class', 'class_slug', 'stream_slug', 'learners', 'subject', 'stream', 'min', 'max'));
             }
