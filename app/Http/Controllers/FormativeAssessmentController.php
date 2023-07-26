@@ -376,8 +376,7 @@ class FormativeAssessmentController extends Controller
             $data = self::generatePdf($learner_id, $stream_id, $term_id);
             $learner = $data['learner'];
             $term = $data['term'];
-            dd($data['results']);
-            return view('pdfs.result')->with($data);
+
             $pdf = PDF::loadView('pdfs.result', $data);
             if ($send_email) {
                 $content = $pdf->output();
