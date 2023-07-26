@@ -376,6 +376,8 @@ class FormativeAssessmentController extends Controller
             $data = self::generatePdf($learner_id, $stream_id, $term_id);
             $learner = $data['learner'];
             $term = $data['term'];
+            dd($data['results']);
+            return view('pdfs.result')->with($data);
             $pdf = PDF::loadView('pdfs.result', $data);
             if ($send_email) {
                 $content = $pdf->output();
@@ -459,8 +461,9 @@ class FormativeAssessmentController extends Controller
                 ->get();
 
             if ($attempted_activities->count()) {
-                $attempted_points = $attempted_activities->pluck('level')->pluck('points')->sum() / ($total_learning_activities ? $total_learning_activities : 1);
-
+                $total_attempted_activities = $attempted_activities->count();
+                $total_attempted_activities = $total_attempted_activities > 0 ? $total_attempted_activities : 1;
+                $attempted_points = $attempted_activities->pluck('level')->pluck('points')->sum() / $total_attempted_activities;
                 $result[] = [
                     'id' => $subject->subject->id,
                     'name' => $subject->subject->title,
