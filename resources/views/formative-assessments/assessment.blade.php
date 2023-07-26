@@ -69,10 +69,10 @@
                                     <select name="term_id" required id="term_id" class="form-control select2">
                                         <option value="" selected>{{ __('Select Term') }}</option>
                                         @foreach($terms as $term)
-                                            <option value="{{ $term->term->id }}">
-                                                {{ $term->term->term }} - {{ $term->term->year }}
-                                                ({{ \Carbon\Carbon::parse($term->term->start_date)->format('d M, Y') }}
-                                                - {{ \Carbon\Carbon::parse($term->term->end_date)->format('d M, Y') }})
+                                            <option value="{{ $term->id }}">
+                                                {{ $term->term }} - {{ $term->year }}
+                                                ({{ \Carbon\Carbon::parse($term->start_date)->format('d M, Y') }}
+                                                - {{ \Carbon\Carbon::parse($term->end_date)->format('d M, Y') }})
                                             </option>
                                         @endforeach
                                     </select>
