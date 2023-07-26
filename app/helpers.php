@@ -18,6 +18,7 @@ function getSchoolAdmins($id = null)
     if ($id === null) {
         $id = Auth::user()->school_id;
     }
+    dd($id);
     $admins = SchoolAdmins::where('school_id', $id)->get();
     return $admins->pluck('admin_id')->toArray();
 }
