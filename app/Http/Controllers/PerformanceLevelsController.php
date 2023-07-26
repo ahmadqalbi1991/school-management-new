@@ -27,7 +27,7 @@ class PerformanceLevelsController extends Controller
             if (!$min) {
                 $min = 0;
             } else {
-                $min += 1;
+                $min += 0.1;
             }
 
             return view('performance-levels.index', compact('level', 'min'));
