@@ -93,7 +93,7 @@ class FormativeAssessmentController extends Controller
                     ->whereIn('id', $assigned_learners->pluck('learner_id')->toArray())
                     ->get();
                 $levels = PerformanceLevel::get();
-                $terms = $subject->terms;
+                $terms = Term::where('school_id', Auth::user()->school_id)->get();
                 $strands = $subject->strands;
 
                 return view('formative-assessments.assessment', compact('terms', 'strands', 'levels', 'learners', 'class', 'stream', 'subject'));
