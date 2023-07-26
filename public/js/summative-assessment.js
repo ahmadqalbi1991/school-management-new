@@ -39,7 +39,7 @@ $(document).ready(function () {
             }
 
             $.ajax({
-                url: '/get-summative-assessments/',
+                url: '/get-summative-assessments',
                 type: 'POST',
                 data: {data},
                 headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
