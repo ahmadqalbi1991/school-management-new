@@ -63,6 +63,7 @@ class SummativeAssessmentController extends Controller
                 $subject = Subjects::where('slug', $subject_slug)->first();
                 $terms = Term::where('school_id', Auth::user()->school_id)->get();
                 $admins = getSchoolAdmins();
+                dd($admins);
                 $min = SummativePerformnceLevel::whereIn('created_by', $admins)->min('min_point');
                 $max = SummativePerformnceLevel::whereIn('created_by', $admins)->max('max_point');
 
