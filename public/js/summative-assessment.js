@@ -76,6 +76,18 @@ $(document).ready(function () {
         $('#show_table').show()
     })
 
+    $('#stream-id').on('change', function () {
+        $.ajax({
+            url: '/get-learners/' + $(this).val(),
+            type: 'GET',
+            success: function (response) {
+                $('#learners_id').html(response).select2()
+                $('#learners_id').prop('disabled', false)
+                $("#generate-report-btn button").prop('disabled', false)
+            }
+        })
+    })
+
     function getReports() {
         var searchable = [];
         var selectable = [];

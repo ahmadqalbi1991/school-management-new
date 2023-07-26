@@ -47,12 +47,16 @@
                                 <span>{{ __('Summative Assessment')}}</span>
                             </a>
                         </div>
-                        <div class="nav-item {{ ($segment1 == 'summative-reports') ? 'active' : '' }}">
-                            <a href="{{route('summative-reports.index')}}">
-                                <i class="fas fa-chart-bar"></i>
-                                <span>{{ __('Summative Reports')}}</span>
-                            </a>
-                        </div>
+                            <div
+                                class="nav-item {{ ($segment1 == 'summative-reports') ? 'active open' : '' }} has-sub">
+                                <a href="#"><i class="ik ik-user"></i><span>{{ __('Summative Reports')}}</span></a>
+                                <div class="submenu-content">
+                                        <a href="{{route('summative-reports.index')}}"
+                                           class="menu-item {{ ($segment2 == '') ? 'active' : '' }}">{{ __('Class Summative Reports') }}</a>
+                                    <a href="{{route('summative-reports.learners-reports')}}"
+                                           class="menu-item {{ ($segment2 == 'learners-reports') ? 'active' : '' }}">{{ __('Learners Summative Reports') }}</a>
+                                </div>
+                            </div>
                     @endcan
                 @endif
                 @can('manage_user')

@@ -147,7 +147,8 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
     Route::group(['middleware' => 'can:manage_summative_assessments', 'as' => 'summative-reports.', 'prefix' => 'summative-reports'], function () {
-        Route::get('/', [SummativeAssessmentController::class, 'learnersView'])->name('index');
+        Route::get('/', [SummativeAssessmentController::class, 'classReports'])->name('index');
+        Route::get('/learners-reports', [SummativeAssessmentController::class, 'learnersReports'])->name('learners-reports');
         Route::get('/get-list', [SummativeAssessmentController::class, 'getLearners']);
         Route::get('/view-learner-subjects/{learner_id}/{stream_id}/{term_id}', [FormativeAssessmentController::class, 'viewSubjects'])->name('view-subjects');
         Route::get('/view-learner-result/{learner_id}/{term_id}/{stream_id}/{exam_id}', [SummativeAssessmentController::class, 'viewResult'])->name('view-result');

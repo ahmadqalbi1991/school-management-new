@@ -128,13 +128,29 @@ class SummativeAssessmentController extends Controller
     /**
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
      */
-    public function learnersView()
+    public function classReports()
     {
         try {
             $classes = SchoolClass::where('school_id', Auth::user()->school_id)->get();
             $terms = Term::where('school_id', Auth::user()->school_id)->get();
 
             return view('summative-assessments.reports', compact('classes', 'terms'));
+        } catch (\Exception $e) {
+            $bug = $e->getMessage();
+            return redirect()->back()->with('error', $bug);
+        }
+    }
+
+    /**
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
+     */
+    public function learnersReports()
+    {
+        try {
+            $classes = SchoolClass::where('school_id', Auth::user()->school_id)->get();
+            $terms = Term::where('school_id', Auth::user()->school_id)->get();
+
+            return view('summative-assessments.learners-reports', compact('classes', 'terms'));
         } catch (\Exception $e) {
             $bug = $e->getMessage();
             return redirect()->back()->with('error', $bug);
