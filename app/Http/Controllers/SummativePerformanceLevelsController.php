@@ -45,8 +45,7 @@ class SummativePerformanceLevelsController extends Controller
      */
     public function getList()
     {
-        $admins = getSchoolAdmins();
-        dd($admins);
+        $admins = getSchoolAdmins(Auth::user()->school_id);
         $data = SummativePerformnceLevel::when(in_array(Auth::user()->role, ['admin', 'teacher']), function ($q) use ($admins) {
             return $q->whereIn('created_by', $admins);
         })->latest()->get();
