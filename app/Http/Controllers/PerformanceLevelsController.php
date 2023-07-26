@@ -24,7 +24,7 @@ class PerformanceLevelsController extends Controller
                 $level = PerformanceLevel::where(['id' => $request->get('pass_key')])->first();
             }
             $min = PerformanceLevel::max('max_point');
-            if (!$min) {
+            if (!$min || $level) {
                 $min = 0;
             } else {
                 $min += 0.1;
@@ -51,7 +51,7 @@ class PerformanceLevelsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -97,7 +97,7 @@ class PerformanceLevelsController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -108,7 +108,7 @@ class PerformanceLevelsController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -119,8 +119,8 @@ class PerformanceLevelsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -140,7 +140,7 @@ class PerformanceLevelsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
