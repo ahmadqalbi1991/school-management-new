@@ -28,7 +28,7 @@ class TeacherController extends Controller
             if ($request->has('edit') && $request->get('pass_key')) {
                 $teacher = User::where(['id' => $request->get('pass_key'), 'role' => 'teacher'])->first();
             }
-            $schools = School::where('active', 1)->get();
+            $schools = getSchools();
 
             return view('teachers.index', compact('teacher', 'schools'));
         } catch (\Exception $e) {

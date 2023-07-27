@@ -166,11 +166,13 @@
             @foreach($assessments as $assessment)
                 <tr>
                     @php
-                        $total += $assessment->points
+                        $point = !empty($assessment->assessment->points) ? $assessment->assessment->points : 0;
+                        $level = !empty($assessment->assessment->level->title) ? $assessment->assessment->level->title : '';
+                        $total += $point;
                     @endphp
                     <td>{{ $assessment->subject->title }}</td>
-                    <td style="text-align: right">{{ $assessment->points }}%</td>
-                    <td>{{ $assessment->level->title }}</td>
+                    <td style="text-align: right">{{ $point }}%</td>
+                    <td>{{$level }}</td>
                 </tr>
             @endforeach
             </tbody>

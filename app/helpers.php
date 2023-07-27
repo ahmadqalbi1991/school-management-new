@@ -79,3 +79,13 @@ function getSchoolSubjects() {
 
     return $data;
 }
+
+function getSchools() {
+    if (Auth::user()->role === 'super_admin') {
+        $schools = School::all();
+    } else {
+        $schools = School::where('id', Auth::user()->school_id)->get();
+    }
+
+    return $schools;
+}

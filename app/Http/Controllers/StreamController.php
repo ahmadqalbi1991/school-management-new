@@ -30,7 +30,7 @@ class StreamController extends Controller
                 return $q->where('school_id', $stream->school_id);
             })->get();
 
-            $schools = School::where('active', 1)->get();
+            $schools = getSchools();
 
             return view('streams.index', compact('stream', 'classes', 'schools'));
         } catch (\Exception $e) {

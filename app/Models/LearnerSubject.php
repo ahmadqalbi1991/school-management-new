@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class LearnerSubject extends Model
 {
@@ -30,5 +31,10 @@ class LearnerSubject extends Model
     public function learner(): BelongsTo
     {
         return $this->belongsTo(User::class, 'learner_id', 'id');
+    }
+
+    public function assessment(): HasOne
+    {
+        return $this->hasOne(SummativeAssessment::class, 'subject_id', 'subject_id');
     }
 }

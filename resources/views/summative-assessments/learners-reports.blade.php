@@ -81,15 +81,6 @@
                             </div>
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
-                                    <label>{{ __('Subjects') }}</label>
-                                    <select name="subject_id" required id="subject_id" disabled
-                                            class="form-control select2">
-                                        <option value="" selected>{{ __('Select Subject') }}</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-sm-12 col-md-4">
-                                <div class="form-group">
                                     <label>{{ __('Learners') }}</label>
                                     <select name="learners[]" multiple required id="learners_id" disabled
                                             class="form-control select2">

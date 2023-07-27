@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Imports\LearnerImport;
 use App\Jobs\EmailJob;
+use App\Models\AssignedSubjectsClass;
 use App\Models\ClassSubject;
 use App\Models\LearnerSubject;
 use App\Models\School;
@@ -29,7 +30,7 @@ class LearnerController extends Controller
             if ($request->has('edit') && $request->get('pass_key')) {
                 $learner = User::where(['id' => $request->get('pass_key'), 'role' => 'learner'])->first();
             }
-            $schools = School::where('active', 1)->get();
+            $schools = getSchools();
             $classes = SchoolClass::where('school_id', Auth::user()->school_id)->get();
             $streams = Stream::with(['school', 'school_class'])
                 ->when(Auth::user()->role === 'admin', function ($q) {
@@ -220,7 +221,7 @@ class LearnerController extends Controller
 
                 $class_id = $learner->stream->school_class->id;
                 $streams = Stream::where('class_id', $class_id)->get();
-                $subjects = ClassSubject::with('subject')
+                $subjects = AssignedSubjectsClass::with('subject')
                     ->where('class_id', $class_id)->get();
 
                 $learner_data = LearnerSubject::where('learner_id', $request->get('pass_key'))
@@ -304,23 +305,59 @@ class LearnerController extends Controller
     {
         try {
             $input = $request->except('_token');
-            $learner_ids = $input['learner_ids'];
+            $learner_ids = [];
+            if (!empty($input['learner_ids'])) {
+                $learner_ids = $input['learner_ids'];
+                unset($input['learner_ids']);
+            }
+
+            $all_students = false;
+            if (!empty($input['all_students'])) {
+                $all_students = true;
+                unset($input['all_students']);
+            }
             $subject_ids = $input['subject_ids'];
-            unset($input['subject_ids'], $input['learner_ids']);
+            unset($input['subject_ids']);
 
-            foreach ($learner_ids as $learner_id) {
-                foreach ($subject_ids as $id) {
-                    $exists_subject = LearnerSubject::where([
-                        'subject_id' => $id,
-                        'learner_id' => $learner_id,
-                        'class_id' => $input['class_id'],
-                        'stream_id' => $input['stream_id']
-                    ])->first();
+            if (count($learner_ids)) {
+                foreach ($learner_ids as $learner_id) {
+                    foreach ($subject_ids as $id) {
+                        $exists_subject = LearnerSubject::where([
+                            'subject_id' => $id,
+                            'learner_id' => $learner_id,
+                            'class_id' => $input['class_id'],
+                            'stream_id' => $input['stream_id']
+                        ])->first();
 
-                    if (!$exists_subject) {
-                        $input['subject_id'] = $id;
-                        $input['learner_id'] = $learner_id;
-                        LearnerSubject::create($input);
+                        if (!$exists_subject) {
+                            $input['subject_id'] = $id;
+                            $input['learner_id'] = $learner_id;
+                            LearnerSubject::create($input);
+                        }
+                    }
+                }
+            }
+
+            if ($all_students) {
+                $learners = User::where([
+                    'role' => 'learner',
+                    'stream_id' => $input['stream_id']
+                ])->get();
+                $learner_ids = $learners->pluck('id')->toArray();
+                foreach ($learner_ids as $learner_id) {
+                    foreach ($subject_ids as $id) {
+                        $exists_subject = LearnerSubject::where([
+                            'subject_id' => $id,
+                            'learner_id' => $learner_id,
+                            'class_id' => $input['class_id'],
+                            'stream_id' => $input['stream_id']
+                        ])->first();
+
+                        if (!$exists_subject) {
+                            $input['subject_id'] = $id;
+                            $input['learner_id'] = $learner_id;
+                            LearnerSubject::create($input);
+                        }
                     }
                 }
             }

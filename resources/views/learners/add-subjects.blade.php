@@ -89,7 +89,7 @@
                                         <div class="form-group">
                                             <label for="subject-id">{{ __('Subjects')}}<span
                                                     class="text-red">*</span></label>
-                                            <select name="subject_ids[]" id="subject-id"
+                                            <select name="subject_ids[]" id="subject-id" required
                                                     @if(empty($learner))
                                                         disabled
                                                     @endif

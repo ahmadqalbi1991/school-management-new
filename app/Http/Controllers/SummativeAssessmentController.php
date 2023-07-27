@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Jobs\EmailJob;
 use App\Models\AssignedSubject;
 use App\Models\Exam;
+use App\Models\LearnerSubject;
 use App\Models\SchoolClass;
 use App\Models\Stream;
 use App\Models\Subjects;
@@ -251,14 +252,18 @@ class SummativeAssessmentController extends Controller
                 ->with('school_class')
                 ->first();
             $learner = User::where('id', $learner_id)->first();
-            $assessments = SummativeAssessment::where([
-                'stream_id' => $stream_id,
-                'term_id' => $term_id,
-                'learner_id' => $learner_id,
-                'exam_id' => $exam_id
-            ])
-                ->with(['level', 'subject'])
+            $assessments = LearnerSubject::where(['stream_id' => $stream_id, 'learner_id' => $learner_id])
+                ->with('assessment', function ($q) use ($stream_id, $exam_id, $term_id, $learner_id) {
+                    return $q->where([
+                        'stream_id' => $stream_id,
+                        'exam_id' => $exam_id,
+                        'term_id' => $term_id,
+                        'learner_id' => $learner_id
+                    ]);
+                })
+                ->with('subject')
                 ->get();
+
             $term = Term::where('id', $term_id)->first();
 
             return view('summative-assessments.report', compact('learner', 'stream', 'assessments', 'term'));
@@ -418,13 +423,16 @@ class SummativeAssessmentController extends Controller
         $term = Term::find($term_id);
         $admins = getSchoolAdmins($school->id);
         $levels = SummativePerformnceLevel::whereIn('created_by', $admins)->get();
-        $assessments = SummativeAssessment::where([
-            'stream_id' => $stream_id,
-            'term_id' => $term_id,
-            'learner_id' => $learner_id,
-            'exam_id' => $exam_id
-        ])
-            ->with(['level', 'subject'])
+        $assessments = LearnerSubject::where(['stream_id' => $stream_id, 'learner_id' => $learner_id])
+            ->with('assessment', function ($q) use ($stream_id, $exam_id, $term_id, $learner_id) {
+                return $q->where([
+                    'stream_id' => $stream_id,
+                    'exam_id' => $exam_id,
+                    'term_id' => $term_id,
+                    'learner_id' => $learner_id
+                ]);
+            })
+            ->with('subject')
             ->get();
 
         $data = [
@@ -440,6 +448,10 @@ class SummativeAssessmentController extends Controller
         return $data;
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function bulkDownloadPdf(Request $request) {
         try {
             $input = $request->except('_token');
@@ -456,7 +468,6 @@ class SummativeAssessmentController extends Controller
             $pdf->setPaper('a4', 'portrait');
             return $pdf->stream('report_card_' . $term->term . '.pdf');
         } catch (\Exception $e) {
-            dd($e);
             $bug = $e->getMessage();
             return redirect()->back()->with('error', $bug);
         }

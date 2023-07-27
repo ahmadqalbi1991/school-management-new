@@ -24,7 +24,7 @@ class ClassesController extends Controller
     {
         try {
             $class = null;
-            $schools = School::where('active', 1)->get();
+            $schools = getSchools();
             if ($request->has('edit') && $request->get('pass_key')) {
                 $class = SchoolClass::where(['id' => $request->get('pass_key')])->first();
             }
