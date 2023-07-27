@@ -183,8 +183,8 @@
                     $average = $total / $count;
                 @endphp
                 <th>Average</th>
-                <th style="text-align: right">{{ $average }}%</th>
-                <th>{{ checkSummetiveCriteria($average) }}</th>
+                <th style="text-align: right">{{ round($average, 2) }}%</th>
+                <th>{{ checkSummetiveCriteria(round($average, 2)) }}</th>
             </tr>
             </tfoot>
         </table>
