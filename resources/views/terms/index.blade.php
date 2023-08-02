@@ -88,6 +88,12 @@
                                                name="end_date">
                                     </div>
                                 </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <h4 class="sub-title">{{ __('Lock Term')}}</h4>
+                                        <input value="1" name="lock_term" type="checkbox" class="js-single" @if(empty($term)) disabled @elseif($term->lock_term) checked @endif/>
+                                    </div>
+                                </div>
                                 <div class="col-sm-12 text-right">
                                     <div class="form-group">
                                         <button type="submit"

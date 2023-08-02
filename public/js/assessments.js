@@ -47,7 +47,11 @@ $(document).ready(function() {
                 headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
                 success: function (response) {
                     let checkboxes = $('.assessment-checkboxes')
+                    let lock_term = false
                     if (response) {
+                        if (response['lock_term']) {
+                            lock_term = true
+                        }
                         checkboxes.each((index, elem) => {
                             elem = $(elem)
                             if(response[elem.attr('data-learner-id')] == elem.val()) {
@@ -56,8 +60,10 @@ $(document).ready(function() {
                         })
                     }
 
-                    checkboxes.prop('disabled', false)
-                    $('#save-btn').prop('disabled', false)
+                    if (!lock_term) {
+                        checkboxes.prop('disabled', false)
+                        $('#save-btn').prop('disabled', false)
+                    }
                 }
             })
         } else {

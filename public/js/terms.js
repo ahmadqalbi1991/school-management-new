@@ -148,6 +148,12 @@
             dropPrimaryColor: "#1abc9c",
             dropBorder: "1px solid #1abc9c",
         })
+
+        var elemsingle = document.querySelector('.js-single');
+        var switchery = new Switchery(elemsingle, {
+            color: '#4099ff',
+            jackColor: '#fff'
+        });
     });
     $('select').select2();
 })(jQuery);

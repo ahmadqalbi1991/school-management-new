@@ -83,6 +83,10 @@ class SummativeAssessmentController extends Controller
     {
         try {
             $input = $request->except('_token');
+            $exam_lock = checkSummativeExamLock($input['exam_id']);
+            if (!$exam_lock) {
+                return redirect()->back()->with('error', 'Exam is locked, you are not allowed update or create this exam');
+            }
             $learners = $input['learners'];
             $points = $input['points'];
             unset($input['learners'], $input['points']);
@@ -115,11 +119,12 @@ class SummativeAssessmentController extends Controller
     {
         try {
             $input = $request->all();
-            $assessments = SummativeAssessment::where($input['data'])
+            $data['lock_exam'] = checkSummativeExamLock($input['data']['exam_id']);
+            $data['assessments'] = SummativeAssessment::where($input['data'])
                 ->with('level')
                 ->get();
 
-            return $assessments;
+            return $data;
         } catch (\Exception $e) {
             $bug = $e->getMessage();
             return redirect()->back()->with('error', $bug);
@@ -398,6 +403,10 @@ class SummativeAssessmentController extends Controller
     public function saveLearnerAssessment(Request $request) {
         try {
             $input = $request->all();
+            $exam_lock = checkSummativeExamLock($input['exam_id']);
+            if (!$exam_lock) {
+                return redirect()->back()->with('error', 'Exam is locked, you are not allowed update or create this exam');
+            }
             $point = (float)$input['points'];
             unset($input['points']);
             SummativeAssessment::where($input)->delete();

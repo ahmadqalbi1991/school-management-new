@@ -1,11 +1,13 @@
 <?php
 
 use App\Models\AssignedSubjectsClass;
+use App\Models\Exam;
 use App\Models\PerformanceLevel;
 use App\Models\School;
 use App\Models\SchoolAdmins;
 use App\Models\Subjects;
 use App\Models\SummativePerformnceLevel;
+use App\Models\Term;
 use Illuminate\Support\Facades\Auth;
 
 function getSchoolSettings()
@@ -88,4 +90,15 @@ function getSchools() {
     }
 
     return $schools;
+}
+
+function checkFormativeTermLock($id) {
+    $term = Term::where('id', $id)->first();
+    return !empty($term) ? $term->lock_term : 0;
+}
+
+
+function checkSummativeExamLock($id) {
+    $exam = Exam::where('id', $id)->first();
+    return !empty($exam) ? $exam->exam_lock : 0;
 }

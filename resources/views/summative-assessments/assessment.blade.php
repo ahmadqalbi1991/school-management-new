@@ -116,15 +116,20 @@
                                     </td>
                                     <td>
                                         <div class="form-group">
-                                            <input type="number" required class="radmin-input" name="points[{{ $key }}]" id="score_{{ $learner->id }}" min="{{ $min }}"
-                                                   data-parsley-min="{{ $min }}" data-parsley-max="{{ $max }}" max="{{ $max }}">
+                                            <input type="number" required class="radmin-input points" disabled
+                                                   name="points[{{ $key }}]" id="score_{{ $learner->id }}"
+                                                   min="{{ $min }}"
+                                                   data-parsley-min="{{ $min }}" data-parsley-max="{{ $max }}"
+                                                   max="{{ $max }}">
                                             <strong>%</strong>
                                             <input type="hidden" id="learner_id_{{ $key }}" value="{{ $learner->id }}">
                                         </div>
                                     </td>
                                     <td id="level_title_{{ $learner->id }}"></td>
                                     <td>
-                                        <button type="button" class="btn btn-success btn-rounded summative-save" data-key="{{ $key }}" data-learner-id="{{ $learner->id }}">{{ __('Save') }}</button>
+                                        <button type="button" id="learner_save_btn_{{ $learner->id }}" disabled
+                                                class="btn btn-success btn-rounded summative-save" data-key="{{ $key }}"
+                                                data-learner-id="{{ $learner->id }}">{{ __('Save') }}</button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -133,7 +138,8 @@
                     </div>
                 </div>
                 <div class="card-footer text-right">
-                    <button id="save-btn" type="submit" class="btn btn-rounded btn-success">{{ __('Save All') }}</button>
+                    <button id="save-btn" type="submit" disabled
+                            class="btn btn-rounded btn-success">{{ __('Save All') }}</button>
                 </div>
             </div>
         </form>

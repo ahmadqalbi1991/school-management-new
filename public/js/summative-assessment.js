@@ -30,6 +30,7 @@ $(document).ready(function () {
 
     $('#exam_id').on('change', function () {
         if ($(this).val()) {
+            let exam_lock = false
             let data = {
                 subject_id: $('#subject_id').val(),
                 class_id: $('#class_id').val(),
@@ -44,11 +45,21 @@ $(document).ready(function () {
                 data: {data},
                 headers: {'X-CSRF-Token': $('meta[name="csrf-token"]').attr('content')},
                 success: function (response) {
-                    response.map((data, index) => {
+                    if (response['lock_exam']) {
+                        exam_lock = true;
+                    }
+                    response['assessments'].map((data, index) => {
                         $('#score_' + data.learner_id).val(data.points)
                         $('#level_title_' + data.learner_id).text(data.level.title)
+                        if (!exam_lock) {
+                            $('#learner_save_btn_' + data.learner_id).prop('disabled', false)
+                        }
                     })
-                    $('#save-btn').prop('disabled', false)
+
+                    if (!exam_lock) {
+                        $('.points').prop('disabled', false)
+                        $('#save-btn').prop('disabled', false)
+                    }
                 }
             })
         } else {

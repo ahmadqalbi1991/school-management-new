@@ -136,6 +136,12 @@
                 });
             }
         });
+
+        var elemsingle = document.querySelector('.js-single');
+        var switchery = new Switchery(elemsingle, {
+            color: '#4099ff',
+            jackColor: '#fff'
+        });
     });
     $('select').select2();
 })(jQuery);

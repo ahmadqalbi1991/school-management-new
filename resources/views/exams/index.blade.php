@@ -60,7 +60,7 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="term_id">{{ __('Details')}}<span
+                                            <label for="term_id">{{ __('Term')}}<span
                                                     class="text-red">*</span></label>
                                             <select name="term_id" id="term_id" class="select2 form-control">
                                                 <option value="">{{ __('Select Term') }}</option>
@@ -69,6 +69,12 @@
                                                         value="{{ $term->id }}">{{ $term->term }} {{ $term->year }}</option>
                                                 @endforeach
                                             </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <h4 class="sub-title">{{ __('Lock Exam')}}</h4>
+                                            <input value="1" name="exam_lock" type="checkbox" class="js-single" @if(empty($exam)) disabled @elseif($exam->exam_lock) checked @endif/>
                                         </div>
                                     </div>
                                     <div class="col-sm-12 text-right">

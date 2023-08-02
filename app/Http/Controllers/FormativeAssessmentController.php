@@ -76,7 +76,6 @@ class FormativeAssessmentController extends Controller
                 if (!$exist) {
                     return redirect()->back()->with('error', 'You don`t have access to this page');
                 }
-                $admins = getSchoolAdmins();
                 $class = SchoolClass::where(['slug' => $class_slug, 'school_id' => Auth::user()->school_id])->first();
                 $stream = Stream::where([
                     'class_id' => $class->id
@@ -112,6 +111,10 @@ class FormativeAssessmentController extends Controller
     {
         try {
             $input = $request->except('_token');
+            $term_lock = checkFormativeTermLock($input['termi_id']);
+            if ($term_lock) {
+                return redirect()->back()->with('error', 'You are not allowed to update or create term result, because term is locked');
+            }
             $assessments = $input['assessments'];
             unset($input['assessments']);
             StudentAssessment::where($input)->delete();
@@ -145,6 +148,8 @@ class FormativeAssessmentController extends Controller
             $input = $request->all();
             $assessments = StudentAssessment::where($input['data'])->get();
             $return_object = [];
+            $term_lock = checkFormativeTermLock($input['data']['term_id']);
+            $return_object['lock_term'] = $term_lock;
             foreach ($assessments as $assessment) {
                 $return_object[$assessment->learner_id] = $assessment->performance_level_id;
             }
