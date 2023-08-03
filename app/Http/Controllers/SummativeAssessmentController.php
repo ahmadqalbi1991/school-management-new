@@ -292,6 +292,7 @@ class SummativeAssessmentController extends Controller
             $learner = $data['learner'];
             $term = $data['term'];
 
+            return view('pdfs.summative-result')->with($data);
             $pdf = PDF::loadView('pdfs.summative-result', $data);
             if ($send_email) {
                 $content = $pdf->output();
@@ -422,6 +423,13 @@ class SummativeAssessmentController extends Controller
         }
     }
 
+    /**
+     * @param $learner_id
+     * @param $stream_id
+     * @param $term_id
+     * @param $exam_id
+     * @return array
+     */
     private static function generatePdf($learner_id, $stream_id, $term_id, $exam_id) {
         $school = getSchoolSettings();
         $stream = Stream::where('id', $stream_id)
