@@ -97,10 +97,10 @@
                                                 @if(!empty($learner))
                                                     @foreach($subjects as $subject)
                                                         <option
-                                                            @if(in_array($subject->id, $subjects_ids))
+                                                            @if(in_array($subject->subject_id, $subjects_ids))
                                                                 selected
                                                             @endif
-                                                            value="{{ $subject->id }}">{{ $subject->subject->title }}</option>
+                                                            value="{{ $subject->subject_id }}">{{ $subject->subject->title }}</option>
                                                     @endforeach
                                                 @endif
                                             </select>

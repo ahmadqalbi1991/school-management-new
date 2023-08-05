@@ -55,13 +55,18 @@ class SummativeAssessmentController extends Controller
                     'class_id' => $class->id,
                     'slug' => $stream_slug
                 ])->first();
-                $learners = User::where([
-                    'stream_id' => $stream->id,
-                    'school_id' => Auth::user()->school_id,
-                    'status' => 'active',
-                    'role' => 'learner'
-                ])->get();
                 $subject = Subjects::where('slug', $subject_slug)->first();
+                $assigned_learners = LearnerSubject::where([
+                    'class_id' => $class->id,
+                    'stream_id' => $stream->id,
+                    'subject_id' => $subject->id
+                ])->get();
+                $learners = User::where([
+                    'school_id' => Auth::user()->school_id,
+                    'stream_id' => $stream->id
+                ])
+                    ->whereIn('id', $assigned_learners->pluck('learner_id')->toArray())
+                    ->get();
                 $terms = Term::where('school_id', Auth::user()->school_id)->get();
                 $admins = getSchoolAdmins();
                 $min = SummativePerformnceLevel::whereIn('created_by', $admins)->min('min_point');
@@ -84,7 +89,7 @@ class SummativeAssessmentController extends Controller
         try {
             $input = $request->except('_token');
             $exam_lock = checkSummativeExamLock($input['exam_id']);
-            if (!$exam_lock) {
+            if ($exam_lock) {
                 return redirect()->back()->with('error', 'Exam is locked, you are not allowed update or create this exam');
             }
             $learners = $input['learners'];

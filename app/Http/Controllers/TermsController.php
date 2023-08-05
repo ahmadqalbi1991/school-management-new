@@ -131,6 +131,9 @@ class TermsController extends Controller
         try {
             $input = $request->except('_token');
             $input['school_id'] = Auth::user()->school_id;
+            if (empty($input['lock_term'])) {
+                $input['lock_term'] = 0;
+            }
 
             Term::where('id', $id)->update($input);
             return redirect()->back()->with('success', 'Term updated successfully');

@@ -95,7 +95,8 @@ class FormativeAssessmentController extends Controller
                 $terms = Term::where('school_id', Auth::user()->school_id)->get();
                 $strands = $subject->strands;
 
-                return view('formative-assessments.assessment', compact('terms', 'strands', 'levels', 'learners', 'class', 'stream', 'subject'));
+//                return view('formative-assessments.assessment', compact('terms', 'strands', 'levels', 'learners', 'class', 'stream', 'subject'));
+                return view('formative-assessments.assessments', compact('terms', 'strands', 'levels', 'learners', 'class', 'stream', 'subject'));
             }
         } catch (\Exception $e) {
             $bug = $e->getMessage();
@@ -111,7 +112,7 @@ class FormativeAssessmentController extends Controller
     {
         try {
             $input = $request->except('_token');
-            $term_lock = checkFormativeTermLock($input['termi_id']);
+            $term_lock = checkFormativeTermLock($input['term_id']);
             if ($term_lock) {
                 return redirect()->back()->with('error', 'You are not allowed to update or create term result, because term is locked');
             }
@@ -404,6 +405,7 @@ class FormativeAssessmentController extends Controller
             }
 
         } catch (\Exception $e) {
+            dd($e);
             $bug = $e->getMessage();
             return redirect()->back()->with('error', $bug);
         }
@@ -435,7 +437,7 @@ class FormativeAssessmentController extends Controller
 
         $result = [];
         foreach ($learner_subjects as $subject) {
-            $strands = Strand::where('subject_id', $subject->subject->id)
+            $strands = Strand::where('subject_id', $subject->subject_id)
                 ->with('sub_strands', function ($q) {
                     return $q->with('learning_activities');
                 })
@@ -456,7 +458,7 @@ class FormativeAssessmentController extends Controller
 
             $attempted_activities = StudentAssessment::where([
                 'learner_id' => $learner_id,
-                'subject_id' => $subject->subject->id,
+                'subject_id' => $subject->subject_id,
                 'stream_id' => $stream_id,
                 'term_id' => $term_id,
             ])

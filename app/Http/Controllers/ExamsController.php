@@ -124,6 +124,9 @@ class ExamsController extends Controller
         try {
             $input = $request->except('_token');
             $input['school_id'] = Auth::user()->school_id;
+            if (empty($input['exam_lock'])) {
+                $input['exam_lock'] = 0;
+            }
             Exam::where('id', $id)->update($input);
 
             return redirect()->back()->with('success', 'Exam updated successfully');
