@@ -7,7 +7,6 @@
             <div class="row align-items-end">
                 <div class="col-lg-8">
                     <div class="page-header-title">
-                        <i class="ik ik-unlock bg-blue"></i>
                         <div class="d-inline">
                             <h5>{{ __('Formative Assessments')}}</h5>
                         </div>
@@ -44,6 +43,9 @@
                             </a>
                         </div>
                     @endforeach
+                </div>
+                <div class="d-flex justify-content-center mt-5">
+                    {{ $subjects->links() }}
                 </div>
             </div>
         </div>

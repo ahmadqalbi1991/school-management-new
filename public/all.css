@@ -11674,3 +11674,17 @@ input.radmin-input {
     border: 1px solid #cbcbcb;
     border-radius: 3px;
 }
+
+.pagination a {
+    padding: 4px 10px;
+    border: 1px solid #3b579c;
+    border-radius: 50%;
+    margin: 0 5px;
+    color: #3b579c;
+    font-weight: 700;
+}
+
+.pagination a.active, .pagination a:hover {
+    background: #3b579c;
+    color: #fff !important;
+}

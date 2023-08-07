@@ -67,16 +67,25 @@ function checkPointsCriteria($points, $total_check = false) {
     return $level->title;
 }
 
-function getSchoolSubjects() {
+function getSchoolSubjects($all = true, $page = 1) {
     $data = [];
+    $limit = 1;
+    $offset = $page - 1;
     $assigned_subjects = AssignedSubjectsClass::where('school_id', Auth::user()->school_id)->get();
 
     if (!empty($assigned_subjects)) {
         $assigned_subjects = $assigned_subjects->pluck('subject_id')->toArray();
-        $data = Subjects::with('school_class')
-            ->whereIn('id', $assigned_subjects)
-            ->latest()
-            ->get();
+        if (!$all) {
+            $data = Subjects::with('school_class')
+                ->whereIn('id', $assigned_subjects)
+                ->orderBy('title')
+                ->paginate(8);
+        } else {
+            $data = Subjects::with('school_class')
+                ->whereIn('id', $assigned_subjects)
+                ->orderBy('title')
+                ->get();
+        }
     }
 
     return $data;

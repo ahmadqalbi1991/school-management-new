@@ -7,7 +7,6 @@
             <div class="row align-items-end">
                 <div class="col-lg-8">
                     <div class="page-header-title">
-                        <i class="ik ik-unlock bg-blue"></i>
                         <div class="d-inline">
                             <h5>{{ __('Summative Assessments')}}</h5>
                         </div>
@@ -59,6 +58,9 @@
                         </div>
                     @endforeach
                 </div>
+            </div>
+            <div class="d-flex justify-content-center w-100 mt-5">
+                {{ $streams->links() }}
             </div>
         </div>
     </div>

@@ -10,7 +10,6 @@
             <div class="row align-items-end">
                 <div class="col-lg-8">
                     <div class="page-header-title">
-                        <i class="ik ik-unlock bg-blue"></i>
                         <div class="d-inline">
                             <h5>{{ __('Formative Assessments Report')}}</h5>
                         </div>

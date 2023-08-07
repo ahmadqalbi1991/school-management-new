@@ -35,13 +35,13 @@ class SummativeAssessmentController extends Controller
                 $streams = Stream::where('school_id', Auth::user()->school_id)
                     ->whereIn('id', $assigned_ids)
                     ->with('school_class')
-                    ->get();
+                    ->paginate(8);
 
                 return view('summative-assessments.streams', compact('streams'));
             }
 
             if ($class_slug && $stream_slug && !$subject_slug) {
-                $subjects = getSchoolSubjects();
+                $subjects = getSchoolSubjects(false);
 
                 return view('summative-assessments.subjects', compact('subjects', 'class_slug', 'stream_slug'));
             }

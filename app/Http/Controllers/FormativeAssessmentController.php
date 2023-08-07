@@ -30,7 +30,7 @@ class FormativeAssessmentController extends Controller
      * @param $subject_slug
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse|void
      */
-    public function index($class_slug = null, $stream_slug = null, $subject_slug = null)
+    public function index(Request $request, $class_slug = null, $stream_slug = null, $subject_slug = null)
     {
         try {
             if (!$stream_slug && !$class_slug) {
@@ -39,15 +39,14 @@ class FormativeAssessmentController extends Controller
                 $streams = Stream::where('school_id', Auth::user()->school_id)
                     ->whereIn('id', $assigned_ids)
                     ->with('school_class')
-                    ->get();
+                    ->paginate(10);
+
                 return view('formative-assessments.streams', compact('streams'));
             }
 
             if ($class_slug && $stream_slug && !$subject_slug) {
                 $classObj = SchoolClass::where(['slug' => $class_slug, 'school_id' => Auth::user()->school_id])->first();
-                $assigned_subjects = AssignedSubject::where('teacher_id', Auth::id())->get();
-                $assigned_ids = $assigned_subjects->pluck('subject_id')->toArray();
-                $subjects = getSchoolSubjects();
+                $subjects = getSchoolSubjects(false);
                 $stream = Stream::where('school_id', Auth::user()->school_id)
                     ->where('slug', $stream_slug)
                     ->first();
@@ -95,7 +94,6 @@ class FormativeAssessmentController extends Controller
                 $terms = Term::where('school_id', Auth::user()->school_id)->get();
                 $strands = $subject->strands;
 
-//                return view('formative-assessments.assessment', compact('terms', 'strands', 'levels', 'learners', 'class', 'stream', 'subject'));
                 return view('formative-assessments.assessments', compact('terms', 'strands', 'levels', 'learners', 'class', 'stream', 'subject'));
             }
         } catch (\Exception $e) {
