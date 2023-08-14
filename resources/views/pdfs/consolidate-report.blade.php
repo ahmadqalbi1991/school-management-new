@@ -7,7 +7,7 @@
     .school-detail-wrapper > div {
         float: left;
         padding: 0 20px;
-        height: 140px;
+        height: 120px;
     }
 
     .school-img {
@@ -26,23 +26,24 @@
     .pdf-wrapper {
         font-family: sans-serif;
         padding: 0 25px;
-        font-size: 10px;
+        font-size: 12px;
     }
 
     .term-details {
         width: 100%;
         text-align: center;
-        font-size: 10px;
+        font-size: 12px;
     }
 
-    .term-details h4 {
+    .term-details h4, .term-details p {
         margin-top: 0!important;
         margin-bottom: 0!important;
     }
 
     .learners-details, .levels-details {
         width: 100%;
-        margin: 25px 0;
+        margin: 15px 0;
+        margin-bottom: 10px !important;
         text-align: center;
     }
 
@@ -72,8 +73,8 @@
     }
 
     th, td {
-        padding: 15px;
-        font-size: 10px;
+        padding: 8px;
+        font-size: 12px;
     }
 
     .subjects-table {
@@ -81,15 +82,15 @@
     }
 
     .school-address h5 {
-        font-size: 14px;
+        font-size: 20px;
         margin: 0;
-        margin-bottom: 1rem;
+        margin-bottom: 0.5rem;
     }
 
     .school-address p {
         margin: 0;
-        margin-bottom: 0.6rem;
-        font-size: 10px;
+        margin-bottom: 0.2rem;
+        font-size: 12px;
     }
 
     .general-text {
@@ -99,14 +100,14 @@
     }
 
     .signatures {
-        margin: 2rem 0;
+        margin: 1rem 0;
         width: 100%;
     }
 
     .signatures > div {
         width: 50%;
         float: left;
-        font-size: 10px;
+        font-size: 12px;
     }
 
     .border {

@@ -130,7 +130,7 @@
                             <!-- only those have manage_user permission will get access -->
                             <a href="{{ route('subjects.index') }}"
                                class="menu-item {{ ($segment1 == 'subjects' && empty($segment2)) ? 'active' : '' }}">{{ __('Subjects List')}}</a>
-                            @if(Auth::user()->role === 'super-admin')
+                            @if(Auth::user()->role === 'super_admin')
                                 <a href="{{ route('subjects.assigned-subjects') }}"
                                    class="menu-item {{ ($segment1 == 'subjects' && $segment2 === 'assigned-subjects') ? 'active' : '' }}">{{ __('Assigned Subjects')}}</a>
                             @endif
