@@ -188,9 +188,15 @@ $(document).ready(function () {
     })
 
     $('#all-formative-assessment').on('click', function () {
-        $('.learner-checkboxes').map((index, checkbox) => {
-            $(checkbox).prop('checked', true)
-        });
+        if ($(this).is(':checked')) {
+            $('.learner-checkboxes').map((index, checkbox) => {
+                $(checkbox).prop('checked', true)
+            });
+        } else {
+            $('.learner-checkboxes').map((index, checkbox) => {
+                $(checkbox).prop('checked', false)
+            });
+        }
         checkAllCheckBoxes()
     })
 })

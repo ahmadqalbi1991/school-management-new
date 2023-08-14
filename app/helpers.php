@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Activity;
 use App\Models\AssignedSubjectsClass;
 use App\Models\Exam;
 use App\Models\PerformanceLevel;
@@ -110,4 +111,16 @@ function checkFormativeTermLock($id) {
 function checkSummativeExamLock($id) {
     $exam = Exam::where('id', $id)->first();
     return !empty($exam) ? $exam->exam_lock : 0;
+}
+
+function saveActivity($activity) {
+    Activity::create(['user_id' => Auth::id(), 'activity' => $activity]);
+}
+
+function getImage($image) {
+    if ($image) {
+        return asset($image);
+    } else {
+        return "https://conference.onsemble.net/wp-content/themes/vanilla-onsemble22-new/img/placeholder-img.png";
+    }
 }

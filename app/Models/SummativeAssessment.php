@@ -29,4 +29,14 @@ class SummativeAssessment extends Model
     {
         return $this->belongsTo(Subjects::class, 'subject_id', 'id');
     }
+
+    public function learner(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'learner_id', 'id');
+    }
+
+    public function exam(): BelongsTo
+    {
+        return $this->belongsTo(Exam::class, 'exam_id', 'id');
+    }
 }

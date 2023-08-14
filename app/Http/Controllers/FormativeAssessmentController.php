@@ -129,6 +129,7 @@ class FormativeAssessmentController extends Controller
             }
 
             StudentAssessment::insert($subject_assessment);
+            saveActivity(' saved the formative assessment');
 
             return redirect()->back()->with('success', 'Assessment Created');
         } catch (\Exception $e) {

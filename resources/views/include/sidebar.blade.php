@@ -47,16 +47,16 @@
                                 <span>{{ __('Summative Assessment')}}</span>
                             </a>
                         </div>
-                            <div
-                                class="nav-item {{ ($segment1 == 'summative-reports') ? 'active open' : '' }} has-sub">
-                                <a href="#"><i class="ik ik-user"></i><span>{{ __('Summative Reports')}}</span></a>
-                                <div class="submenu-content">
-                                        <a href="{{route('summative-reports.index')}}"
-                                           class="menu-item {{ ($segment2 == '') ? 'active' : '' }}">{{ __('Class Summative Reports') }}</a>
-                                    <a href="{{route('summative-reports.learners-reports')}}"
-                                           class="menu-item {{ ($segment2 == 'learners-reports') ? 'active' : '' }}">{{ __('Learners Summative Reports') }}</a>
-                                </div>
+                        <div
+                            class="nav-item {{ ($segment1 == 'summative-reports') ? 'active open' : '' }} has-sub">
+                            <a href="#"><i class="ik ik-user"></i><span>{{ __('Summative Reports')}}</span></a>
+                            <div class="submenu-content">
+                                <a href="{{route('summative-reports.index')}}"
+                                   class="menu-item {{ ($segment2 == '') ? 'active' : '' }}">{{ __('Class Summative Reports') }}</a>
+                                <a href="{{route('summative-reports.learners-reports')}}"
+                                   class="menu-item {{ ($segment2 == 'learners-reports') ? 'active' : '' }}">{{ __('Learners Summative Reports') }}</a>
                             </div>
+                        </div>
                     @endcan
                 @endif
                 @can('manage_user')
@@ -106,12 +106,20 @@
                     </div>
                 @endcan
                 @can('manage_learners')
-                    <div class="nav-item {{ ($segment1 == 'learners') ? 'active' : '' }}">
+                    <div class="nav-item {{ ($segment1 == 'learners' && !$segment2) ? 'active' : '' }}">
                         <a href="{{route('learners.index')}}">
                             <i class="ik ik-user"></i>
                             <span>{{ __('Learners')}}</span>
                         </a>
                     </div>
+                    @if(Auth::user()->role === 'admin')
+                        <div class="nav-item {{ ($segment2 == 'learners-management') ? 'active' : '' }}">
+                            <a href="{{route('learners.learners-management')}}">
+                                <i class="fas fa-users-cog"></i>
+                                <span>{{ __('Learners Management')}}</span>
+                            </a>
+                        </div>
+                    @endif
                 @endcan
                 @if(Auth::user()->role !== 'teacher')
 
@@ -122,8 +130,10 @@
                             <!-- only those have manage_user permission will get access -->
                             <a href="{{ route('subjects.index') }}"
                                class="menu-item {{ ($segment1 == 'subjects' && empty($segment2)) ? 'active' : '' }}">{{ __('Subjects List')}}</a>
-                            <a href="{{ route('subjects.assigned-subjects') }}"
-                               class="menu-item {{ ($segment1 == 'subjects' && $segment2 === 'assigned-subjects') ? 'active' : '' }}">{{ __('Assigned Subjects')}}</a>
+                            @if(Auth::user()->role === 'super-admin')
+                                <a href="{{ route('subjects.assigned-subjects') }}"
+                                   class="menu-item {{ ($segment1 == 'subjects' && $segment2 === 'assigned-subjects') ? 'active' : '' }}">{{ __('Assigned Subjects')}}</a>
+                            @endif
                             <a href="{{ route('strands.index') }}"
                                class="menu-item {{ ($segment1 == 'strands') ? 'active' : '' }}">{{ __('Strands')}}</a>
                             <a href="{{ route('sub-strands.index') }}"
@@ -174,6 +184,16 @@
                             <span>{{ __('Streams')}}</span>
                         </a>
                     </div>
+                @endcan
+                @can('manage_consolidate_reports')
+                    @if(Auth::user()->role === 'admin')
+                        <div class="nav-item {{ ($segment1 == 'consolidate-reports') ? 'active' : '' }}">
+                            <a href="{{route('consolidate-reports.index')}}">
+                                <i class="ik ik-pie-chart"></i>
+                                <span>{{ __('Consolidate Reports')}}</span>
+                            </a>
+                        </div>
+                    @endif
                 @endcan
             </nav>
         </div>

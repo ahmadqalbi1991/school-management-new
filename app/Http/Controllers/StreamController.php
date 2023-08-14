@@ -171,16 +171,29 @@ class StreamController extends Controller
 
     /**
      * @param $id
+     * @param $move
      * @return \Illuminate\Http\RedirectResponse|string
      */
-    public function getLearners($id) {
+    public function getLearners($id, $move = false) {
         try {
-            $learners = User::where('stream_id', $id)->get();
-            $html = '<option value="">Select Learner(s)</option>';
-            foreach ($learners as $learner) {
-                $html .= '<option value="' . $learner->id . '">' . $learner->name . '</option>';
+            $learners = User::where([
+                'stream_id' => $id,
+                'role' => 'learner'
+            ])->get();
+            if (!$move) {
+                $html = '<option value="">Select Learner(s)</option>';
+                foreach ($learners as $learner) {
+                    $html .= '<option value="' . $learner->id . '">' . $learner->name . '</option>';
+                }
+                return $html;
+            } else {
+                return Datatables::of($learners)
+                    ->addColumn('checkbox', function ($data) {
+                        return '<input type="checkbox" name="learners[]" class="learner-checkboxes" value="' . $data->id . '" id="learner_checkbox_' . $data->id . '" />';
+                    })
+                    ->rawColumns(['checkbox'])
+                    ->make(true);
             }
-            return $html;
         } catch (\Exception $e) {
             $bug = $e->getMessage();
             return redirect()->back()->with('error', $bug);

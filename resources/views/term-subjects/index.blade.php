@@ -45,15 +45,27 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <div class="form-group">
-                                        <label for="title">{{ __('Term')}}<span class="text-red">*</span></label>
-                                        <select required name="term_id" id="term_id" class="form-control select2">
+                                        <label for="title">{{ __('Year')}}<span class="text-red">*</span></label>
+                                        <select required name="year" id="year" class="form-control select2">
+                                            <option value="">{{ __('Select Year') }}</option>
+                                            @for($i = \Carbon\Carbon::now()->format('Y'); $i >= \Carbon\Carbon::now()->format('Y') - 30; $i--)
+                                                <option @if(!empty($term) && $term->year == $i) selected @endif value="{{ $i }}">{{ $i }}</option>
+                                            @endfor
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="term_id">{{ __('Term')}}<span class="text-red">*</span></label>
+                                        <select required @if(empty($term)) disabled @endif name="term_id" id="term_id"
+                                                class="form-control select2">
                                             <option value="">{{ __('Select Term') }}</option>
-                                            @foreach($terms as $term_obj)
-                                                <option @if(!empty($term) && $term->id === $term_obj->id) selected
-                                                        @endif value="{{ $term_obj->id }}">{{ $term_obj->term }}
-                                                    ({{ $term_obj->year }})
-                                                </option>
-                                            @endforeach
+                                            @if(!empty($terms))
+                                                @foreach($terms as $term_obj)
+                                                    <option @if(!empty($term) && $term->id === $term_obj->id) selected
+                                                            @endif value="{{ $term_obj->id }}">{{ $term_obj->term }}</option>
+                                                @endforeach
+                                            @endif
                                         </select>
                                     </div>
                                 </div>

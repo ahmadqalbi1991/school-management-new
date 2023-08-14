@@ -108,6 +108,7 @@ class SummativeAssessmentController extends Controller
 
                 SummativeAssessment::create($input);
             }
+            saveActivity(' saved the summative assessment');
 
             return redirect()->back()->with('success', 'Summative Assessment Created');
         } catch (\Exception $e) {
@@ -125,9 +126,28 @@ class SummativeAssessmentController extends Controller
         try {
             $input = $request->all();
             $data['lock_exam'] = checkSummativeExamLock($input['data']['exam_id']);
-            $data['assessments'] = SummativeAssessment::where($input['data'])
+            $assessments = SummativeAssessment::where($input['data'])
                 ->with('level')
+                ->with('learner')
                 ->get();
+            $summative_learners = $assessments->pluck('learner');
+            $learners = [];
+            $option = '';
+            foreach ($summative_learners as $learner) {
+                $learners = collect($learners);
+                $exist_learner = $learners->where('id', $learner->id)->first();
+                if (empty($exist_learner)) {
+                    $learners[] = [
+                        'id' => $learner->id,
+                        'name' => $learner->name
+                    ];
+                    $option .= '<option value="' . $learner->id . '">' . $learner->name . '</option>';
+                }
+            }
+
+
+            $data['assessments'] = $assessments;
+            $data['learners'] = $option;
 
             return $data;
         } catch (\Exception $e) {
@@ -159,9 +179,8 @@ class SummativeAssessmentController extends Controller
     {
         try {
             $classes = SchoolClass::where('school_id', Auth::user()->school_id)->get();
-            $terms = Term::where('school_id', Auth::user()->school_id)->get();
 
-            return view('summative-assessments.learners-reports', compact('classes', 'terms'));
+            return view('summative-assessments.learners-reports', compact('classes'));
         } catch (\Exception $e) {
             $bug = $e->getMessage();
             return redirect()->back()->with('error', $bug);
@@ -455,6 +474,7 @@ class SummativeAssessmentController extends Controller
                 ]);
             })
             ->with('subject')
+            ->whereHas('subject')
             ->get();
 
         $data = [
@@ -489,6 +509,43 @@ class SummativeAssessmentController extends Controller
             $pdf = PDF::loadHtml($html);
             $pdf->setPaper('a4', 'portrait');
             return $pdf->stream('report_card_' . $term->term . '.pdf');
+        } catch (\Exception $e) {
+            $bug = $e->getMessage();
+            return redirect()->back()->with('error', $bug);
+        }
+    }
+
+    public function getReportLearners(Request $request) {
+        try {
+            $input = $request->all();
+            $assessments = SummativeAssessment::where([
+                'class_id' => $input['class_id'],
+                'stream_id' => $input['stream_id'],
+                'term_id' => $input['term_id'],
+            ])
+                ->whereIn('exam_id', $input['exam_ids'])
+                ->with('level')
+                ->with('learner')
+                ->get();
+
+            $learners = [];
+            $option = '';
+            if ($assessments->count()) {
+                $summative_learners = $assessments->pluck('learner');
+                foreach ($summative_learners as $learner) {
+                    $learners = collect($learners);
+                    $exist_learner = $learners->where('id', $learner->id)->first();
+                    if (empty($exist_learner)) {
+                        $learners[] = [
+                            'id' => $learner->id,
+                            'name' => $learner->name
+                        ];
+                        $option .= '<option value="' . $learner->id . '">' . $learner->name . '</option>';
+                    }
+                }
+            }
+
+            return $option;
         } catch (\Exception $e) {
             $bug = $e->getMessage();
             return redirect()->back()->with('error', $bug);

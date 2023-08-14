@@ -1,13 +1,39 @@
-(function($) {
-    'use strict';
-    // permission table
-    $(document).ready(function()
-    {
+$(document).ready(function() {
+    $('#class_id_previous').on('change', function () {
+        $.ajax({
+            url: '/get-streams/' + $(this).val(),
+            type: 'GET',
+            success: function (response) {
+                $('#stream_id_previous').html(response.streams).select2()
+                $('#stream_id_previous').prop('disabled', false)
+            }
+        })
+    })
+
+    $('#class_id_next').on('change', function () {
+        $.ajax({
+            url: '/get-streams/' + $(this).val(),
+            type: 'GET',
+            success: function (response) {
+                $('#stream_id_next').html(response.streams).select2()
+                $('#stream_id_next').prop('disabled', false)
+            }
+        })
+    })
+
+    $('#stream_id_previous').on('change', function () {
+         getLearners();
+        $('#learners_table').DataTable().destroy();
+        $('#learners-div').show();
+        $('#next-class-div').show()
+    })
+
+    function getLearners() {
         var searchable = [];
         var selectable = [];
         var token = $('#token').val();
 
-        var dTable = $('#exams_tables').DataTable({
+        var dTable = $('#learners_table').DataTable({
 
             order: [],
             lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
@@ -23,22 +49,22 @@
             pagingType: "full_numbers",
             dom: "<'row'<'col-sm-2'l><'col-sm-7 text-center'B><'col-sm-3'f>>tipr",
             ajax: {
-                url: '/exams/get-list',
+                url: '/get-learners/' + $('#stream_id_previous').val() + '/1',
                 type: "get",
                 headers: {
                     'X-CSRF-TOKEN': token
                 }
             },
             columns: [
-                {data:'title', name: 'title', orderable: false},
-                {data:'term', name: 'term'},
-                {data:'action', name: 'action'},
+                {data:'checkbox', name: 'checkbox', orderable: false},
+                {data:'name', name: 'name'},
+                {data:'email', name: 'email'}
             ],
             buttons: [
                 {
                     extend: 'copy',
                     className: 'btn-sm btn-info',
-                    title: 'Performance levels',
+                    title: 'Learners',
                     header: false,
                     footer: true,
                     exportOptions: {
@@ -48,7 +74,7 @@
                 {
                     extend: 'csv',
                     className: 'btn-sm btn-success',
-                    title: 'Performance levels',
+                    title: 'Learners',
                     header: false,
                     footer: true,
                     exportOptions: {
@@ -58,7 +84,7 @@
                 {
                     extend: 'excel',
                     className: 'btn-sm btn-warning',
-                    title: 'Performance levels',
+                    title: 'Learners',
                     header: false,
                     footer: true,
                     exportOptions: {
@@ -68,7 +94,7 @@
                 {
                     extend: 'pdf',
                     className: 'btn-sm btn-primary',
-                    title: 'Performance levels',
+                    title: 'Learners',
                     pageSize: 'A2',
                     header: false,
                     footer: true,
@@ -79,7 +105,7 @@
                 {
                     extend: 'print',
                     className: 'btn-sm btn-default',
-                    title: 'Performance levels',
+                    title: 'Learners',
                     // orientation:'landscape',
                     pageSize: 'A2',
                     header: true,
@@ -136,22 +162,37 @@
                 });
             }
         });
+    }
 
-        var elemsingle = document.querySelector('.js-single');
-        var switchery = new Switchery(elemsingle, {
-            color: '#4099ff',
-            jackColor: '#fff'
-        });
-        $('#year').on('change', function () {
-            $.ajax({
-                url: '/get-terms/' + $(this).val(),
-                type: 'GET',
-                success: function (response) {
-                    $('#term_id').html(response).select2()
-                    $('#term_id').prop('disabled', false)
-                }
-            })
+    function checkAllCheckBoxes() {
+        let all_selected = false;
+        $('.learner-checkboxes').map((index, checkbox) => {
+            if ($(checkbox).is(':checked')) {
+                all_selected = true
+            }
         })
-    });
-    $('select').select2();
-})(jQuery);
+
+        if (all_selected) {
+            $('#submit-btn').prop('disabled', false);
+        } else {
+            $('#submit-btn').prop('disabled', true);
+        }
+    }
+
+    $(document).on('click', '.learner-checkboxes', function () {
+        checkAllCheckBoxes()
+    })
+
+    $('#all-learners').on('click', function () {
+        if ($(this).is(':checked')) {
+            $('.learner-checkboxes').map((index, checkbox) => {
+                $(checkbox).prop('checked', true)
+            });
+        } else {
+            $('.learner-checkboxes').map((index, checkbox) => {
+                $(checkbox).prop('checked', false)
+            });
+        }
+        checkAllCheckBoxes()
+    })
+})

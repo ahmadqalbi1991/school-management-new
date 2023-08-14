@@ -56,6 +56,10 @@ $(document).ready(function () {
                         }
                     })
 
+                    $('#learners_id').html(response['learners']).select2()
+                    $('#learners_id').prop('disabled', false)
+                    $("#generate-report-btn button").prop('disabled', false)
+
                     if (!exam_lock) {
                         $('.points').prop('disabled', false)
                         $('#save-btn').prop('disabled', false)
@@ -87,17 +91,17 @@ $(document).ready(function () {
         $('#show_table').show()
     })
 
-    $('#stream-id').on('change', function () {
-        $.ajax({
-            url: '/get-learners/' + $(this).val(),
-            type: 'GET',
-            success: function (response) {
-                $('#learners_id').html(response).select2()
-                $('#learners_id').prop('disabled', false)
-                $("#generate-report-btn button").prop('disabled', false)
-            }
-        })
-    })
+    // $('#stream-id').on('change', function () {
+    //     $.ajax({
+    //         url: '/get-learners/' + $(this).val(),
+    //         type: 'GET',
+    //         success: function (response) {
+    //             $('#learners_id').html(response).select2()
+    //             $('#learners_id').prop('disabled', false)
+    //             $("#generate-report-btn button").prop('disabled', false)
+    //         }
+    //     })
+    // })
 
     function getReports() {
         var searchable = [];
@@ -308,5 +312,16 @@ $(document).ready(function () {
             .append('<input type="hidden" name="subject_id" value="' + $('#subject_id').val() + '" />')
 
         $('#summative-form').submit();
+    })
+
+    $('#year').on('change', function () {
+        $.ajax({
+            url: '/get-terms/' + $(this).val(),
+            type: 'GET',
+            success: function (response) {
+                $('#term_id').html(response).select2()
+                $('#term_id').prop('disabled', false)
+            }
+        })
     })
 })

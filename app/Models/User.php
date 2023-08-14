@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Hash;
@@ -36,6 +37,7 @@ class User extends Authenticatable
         'upi_number',
         'admission_date',
         'school_id',
+        'profile_image'
     ];
 
     /**
@@ -100,5 +102,20 @@ class User extends Authenticatable
     public function stream(): BelongsTo
     {
         return $this->belongsTo(Stream::class, 'stream_id', 'id');
+    }
+
+    public function subjects(): HasMany
+    {
+        return $this->hasMany(AssignedSubject::class, 'teacher_id', 'id');
+    }
+
+    public function streams(): HasMany
+    {
+        return $this->hasMany(TeacherManagement::class, 'teacher_id', 'id');
+    }
+
+    public function activities(): HasMany
+    {
+        return $this->hasMany(Activity::class, 'user_id', 'id');
     }
 }

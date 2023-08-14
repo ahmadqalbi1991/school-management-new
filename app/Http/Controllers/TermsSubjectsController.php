@@ -22,15 +22,18 @@ class TermsSubjectsController extends Controller
     {
         try {
             $term = null;
+            $terms = [];
             $selected_ids = [];
+            $school_id = Auth::user()->school_id;
             if ($request->has('edit') && $request->get('pass_key')) {
                 $term = Term::where(['id' => $request->get('pass_key')])
                     ->with('subjects')
                     ->first();
                 $selected_ids = $term->subjects->pluck('subject_id');
+                $terms = Term::where(['school_id' => $school_id, 'year' => $term->year])
+                    ->latest()
+                    ->get();
             }
-            $school_id = Auth::user()->school_id;
-            $terms = Term::where('school_id', $school_id)->latest()->get();
             $classes = SchoolClass::where('school_id', $school_id)->get();
             $subjects = getSchoolSubjects();
 

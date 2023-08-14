@@ -57,16 +57,20 @@
                             </div>
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
-                                    <label>{{ __('Terms') }}</label>
-                                    <select name="term_id" required id="term_id" class="form-control select2">
-                                        <option value="" selected>{{ __('Select Term') }}</option>
-                                        @foreach($terms as $term)
-                                            <option value="{{ $term->id }}">
-                                                {{ $term->term }} - {{ $term->year }}
-                                                ({{ \Carbon\Carbon::parse($term->start_date)->format('d M, Y') }}
-                                                - {{ \Carbon\Carbon::parse($term->end_date)->format('d M, Y') }})
-                                            </option>
-                                        @endforeach
+                                    <label for="title">{{ __('Year')}}<span class="text-red">*</span></label>
+                                    <select required name="year" id="year" class="form-control select2">
+                                        <option value="">{{ __('Select Year') }}</option>
+                                        @for($i = \Carbon\Carbon::now()->format('Y'); $i >= \Carbon\Carbon::now()->format('Y') - 30; $i--)
+                                            <option value="{{ $i }}">{{ $i }}</option>
+                                        @endfor
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-4">
+                                <div class="form-group">
+                                    <label for="term_id">{{ __('Term')}}<span class="text-red">*</span></label>
+                                    <select required disabled name="term_id" id="term_id" class="form-control select2">
+                                        <option value="">{{ __('Select Term') }}</option>
                                     </select>
                                 </div>
                             </div>

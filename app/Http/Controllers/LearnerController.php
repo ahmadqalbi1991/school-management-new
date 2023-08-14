@@ -154,15 +154,16 @@ class LearnerController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param int $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
+    public function management()
     {
-        //
+        try {
+            $classes = SchoolClass::where('school_id', Auth::user()->school_id)->get();
+
+            return view('learners.management', compact('classes'));
+        } catch (\Exception $e) {
+            $bug = $e->getMessage();
+            return redirect()->back()->with('error', $bug);
+        }
     }
 
     /**
@@ -379,6 +380,24 @@ class LearnerController extends Controller
             Excel::import(new LearnerImport($input['stream_id']), $input['file']);
 
             return back()->with('success', 'Learners imported successfully');
+        } catch (\Exception $e) {
+            $bug = $e->getMessage();
+            return redirect()->back()->with('error', $bug);
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function moveLearners(Request $request) {
+        try {
+            $input = $request->except('_token');
+            foreach ($input['learners'] as $id) {
+                User::where('id', $id)->update(['stream_id' => $input['stream_id']]);
+            }
+
+            return redirect()->back()->with('success', 'Learners moved to next class');
         } catch (\Exception $e) {
             $bug = $e->getMessage();
             return redirect()->back()->with('error', $bug);

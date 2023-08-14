@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ClassesController;
+use App\Http\Controllers\ConsolidateReportController;
 use App\Http\Controllers\ExamsController;
 use App\Http\Controllers\FormativeAssessmentController;
 use App\Http\Controllers\LearnerController;
@@ -60,6 +61,8 @@ Route::group(['middleware' => 'auth'], function () {
 
     // dashboard route
     Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
+    Route::get('/profile', [HomeController::class, 'profile'])->name('profile');
+    Route::post('/update-profile/{id}', [HomeController::class, 'updateProfile'])->name('update-profile');
 
     //only those have manage_user permission will get access
     Route::group(['middleware' => 'can:manage_admins'], function () {
@@ -84,12 +87,14 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::group(['middleware' => 'can:manage_learners', 'as' => 'learners.', 'prefix' => 'learners'], function () {
         Route::get('/', [LearnerController::class, 'index'])->name('index');
+        Route::get('/learners-management', [LearnerController::class, 'management'])->name('learners-management');
         Route::get('/get-list', [LearnerController::class, 'getList'])->name('get-list');
         Route::post('/store', [LearnerController::class, 'store'])->name('store');
         Route::post('/update/{id}', [LearnerController::class, 'update'])->name('update');
         Route::get('/delete/{id}', [LearnerController::class, 'destroy'])->name('delete');
         Route::get('/change-status/{id}', [LearnerController::class, 'changeStatus'])->name('change-status');
         Route::post('/import', [LearnerController::class, 'import'])->name('import');
+        Route::post('/move-learners', [LearnerController::class, 'moveLearners'])->name('move-learners');
     });
 
     Route::group(['middleware' => 'can:manage_settings', 'as' => 'settings.', 'prefix' => 'settings'], function () {
@@ -135,6 +140,7 @@ Route::group(['middleware' => 'auth'], function () {
     });
 
     Route::post('/get-summative-assessments', [SummativeAssessmentController::class, 'getAssessments']);
+    Route::get('/get-summative-assessments', [SummativeAssessmentController::class, 'getAssessments']);
     Route::post('/get-assessments', [FormativeAssessmentController::class, 'getAssessments']);
 
     Route::group(['middleware' => 'can:manage_formative_assessments', 'as' => 'reports.', 'prefix' => 'reports'], function () {
@@ -144,6 +150,11 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/view-learner-result/{subject_id}/{learner_id}/{term_id}/{stream_id}', [FormativeAssessmentController::class, 'viewResult'])->name('view-result');
         Route::get('/download-pdf/{learner_id}/{stream_id}/{term_id}/{send_email?}', [FormativeAssessmentController::class, 'downloadPdf'])->name('download-pdf');
         Route::post('/bulk-download-pdf', [FormativeAssessmentController::class, 'bulkDownloadPdf'])->name('bulk-download-pdf');
+    });
+
+    Route::group(['middleware' => 'can:manage_consolidate_reports', 'as' => 'consolidate-reports.', 'prefix' => 'consolidate-reports'], function () {
+        Route::get('/', [ConsolidateReportController::class, 'index'])->name('index');
+        Route::post('/generate-reports', [ConsolidateReportController::class, 'generateReports'])->name('generate-reports');
     });
 
     Route::group(['middleware' => 'can:manage_summative_assessments', 'as' => 'summative-reports.', 'prefix' => 'summative-reports'], function () {
@@ -167,8 +178,10 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/get-streams/{id}', [ClassesController::class, 'getStreams']);
     Route::get('/get-sub-strands/{id}', [StrandController::class, 'getSubStrands']);
     Route::get('/get-learning-activities/{id}', [SubStrandController::class, 'getLearningActivities']);
-    Route::get('/get-learners/{id}', [StreamController::class, 'getLearners']);
+    Route::get('/get-learners/{id}/{move?}', [StreamController::class, 'getLearners']);
     Route::get('/get-term-exams/{id}', [TermsController::class, 'getExams']);
+    Route::get('/get-terms/{year}', [TermsController::class, 'getTerms']);
+    Route::post('/get-report-learners', [SummativeAssessmentController::class, 'getReportLearners']);
 
     Route::group(['middleware' => 'can:manage_classes', 'as' => 'classes.', 'prefix' => 'classes'], function () {
         Route::get('/', [ClassesController::class, 'index'])->name('index');
@@ -338,7 +351,7 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/navbar', function () {
         return view('pages.navbar');
     });
-    Route::get('/profile', function () {
+    Route::get('/profile-old', function () {
         return view('pages.profile');
     });
     Route::get('/project', function () {

@@ -162,4 +162,24 @@ class TermsController extends Controller
             return redirect()->back()->with('error', $bug);
         }
     }
+
+    /**
+     * @param $year
+     * @return \Illuminate\Http\RedirectResponse|string
+     */
+    public function getTerms($year) {
+        try {
+            $terms = Term::where(['year' => $year, 'school_id' => Auth::user()->school_id])->get();
+            $option = '<option>Select Term</option>';
+            foreach ($terms as $term) {
+                $option .= '<option value="' . $term->id . '">' . $term->term . '</option>';
+            }
+
+            return $option;
+
+        } catch (\Exception $e) {
+            $bug = $e->getMessage();
+            return redirect()->back()->with('error', $bug);
+        }
+    }
 }

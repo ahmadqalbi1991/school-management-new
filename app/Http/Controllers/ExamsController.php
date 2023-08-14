@@ -20,12 +20,17 @@ class ExamsController extends Controller
     {
         try {
             $exam = null;
-            $terms = Term::where('school_id', Auth::user()->school_id)->get();
+            $term = null;
+            $terms = [];
             if ($request->has('edit') && $request->get('pass_key')) {
                 $exam = Exam::where(['id' => $request->get('pass_key')])->first();
+                $term = Term::where('id', $exam->term_id)->first();
+                $terms = Term::where(['school_id' => Auth::user()->school_id, 'year' => $term->year])
+                    ->latest()
+                    ->get();
             }
 
-            return view('exams.index', compact('exam', 'terms'));
+            return view('exams.index', compact('exam','terms', 'term'));
         } catch (\Exception $e) {
             $bug = $e->getMessage();
             return redirect()->back()->with('error', $bug);

@@ -163,4 +163,15 @@
     })
 
     $('select').select2();
+
+    $('#year').on('change', function () {
+        $.ajax({
+            url: '/get-terms/' + $(this).val(),
+            type: 'GET',
+            success: function (response) {
+                $('#term_id').html(response).select2()
+                $('#term_id').prop('disabled', false)
+            }
+        })
+    })
 })(jQuery);
