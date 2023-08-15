@@ -195,7 +195,7 @@ class SummativeAssessmentController extends Controller
     {
         try {
             $input = $request->all();
-            $assessments = SummativeAssessment::>where([
+            $assessments = SummativeAssessment::where([
                     'stream_id' => $input['stream_id'],
                     'term_id' => $input['term_id'],
                     'subject_id' => $input['subject_id']
