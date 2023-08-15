@@ -195,42 +195,39 @@ class SummativeAssessmentController extends Controller
     {
         try {
             $input = $request->all();
-            $users = User::where([
-                'stream_id' => $input['stream_id'],
-                'role' => 'learner',
-                'status' => 'active'
-            ])
-                ->with('summative_assessments', function ($q) use ($input) {
-                    return $q->where([
-                        'stream_id' => $input['stream_id'],
-                        'term_id' => $input['term_id'],
-                        'subject_id' => $input['subject_id']
-                    ])
-                        ->with('level');
-                })
-                ->whereHas('summative_assessments')
-                ->get();
+            $assessments = SummativeAssessment::>where([
+                    'stream_id' => $input['stream_id'],
+                    'term_id' => $input['term_id'],
+                    'subject_id' => $input['subject_id']
+                ])
+                    ->with('level')
+                    ->with('learner')
+                    ->get();
 
             $data = [];
             $total = 0;
-            foreach ($users as $user) {
+            foreach ($assessments as $user) {
                 $level = $score = '';
-                if (!empty($user->summative_assessments[0]) && !empty($user->summative_assessments[0]->level)) {
-                    $level = $user->summative_assessments[0]->level->title;
-                    $score = $user->summative_assessments[0]->points;
+                if (!empty($user->level)) {
+                    $level = $user->level->title;
+                    $score = $user->points;
                 }
                 $total += $score;
                 $data[] = [
                     'remark' => $level,
                     'score' => $score,
-                    'name' => $user->name,
-                    'admission_number' => $user->admission_number,
-                    'id' => $user->id,
+                    'name' => $user->learner->name,
+                    'admission_number' => $user->learner->admission_number,
+                    'id' => $user->learner->id,
                     'checkbox' => true
                 ];
             }
 
-            $class_average = round($total / $users->count(), 2);
+            if ($assessments->count()) {
+                $class_average = round($total / $assessments->count(), 2);
+            } else {
+                $class_average = 0;
+            }
             $remark = checkSummetiveCriteria($class_average);
 
             $data[] = [
