@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title', 'Classes')
+@section('title', 'Grades')
 @section('content')
     <!-- push external head elements to head -->
     @push('head')
@@ -13,8 +13,8 @@
                 <div class="col-lg-8">
                     <div class="page-header-title">
                         <div class="d-inline">
-                            <h5>{{ __('Classes')}}</h5>
-                            <span>{{ __('Classes details')  }}</span>
+                            <h5>{{ __('Grades')}}</h5>
+                            <span>{{ __('Grades details')  }}</span>
                         </div>
                     </div>
                 </div>
@@ -25,7 +25,7 @@
                                 <a href="{{ route('dashboard') }}"><i class="ik ik-home"></i></a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="#">{{ __('Classes')}}</a>
+                                <a href="#">{{ __('Grades')}}</a>
                             </li>
                         </ol>
                     </nav>
@@ -38,7 +38,7 @@
             @can('manage_learners')
                 <div class="col-md-12">
                     <div class="card">
-                        <div class="card-header"><h3>{{ __('Add Class')}}</h3></div>
+                        <div class="card-header"><h3>{{ __('Add Grade')}}</h3></div>
                         <div class="card-body">
                             <form class="forms-sample" method="POST" data-parsley-validate
                                   action="{{ empty($class) ? route('classes.store') : route('classes.update', ['id' => $class->id])}}">
@@ -46,10 +46,10 @@
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="class">{{ __('Class')}}<span class="text-red">*</span></label>
+                                            <label for="class">{{ __('Grade')}}<span class="text-red">*</span></label>
                                             <input type="text" class="form-control" id="class"
                                                    value="{{ !empty($class) ? $class->class : '' }}" name="class"
-                                                   placeholder="Class Name" required>
+                                                   placeholder="Grade Name" required>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">
@@ -83,7 +83,7 @@
                         <table id="classes_table" class="table">
                             <thead>
                             <tr>
-                                <th>{{ __('Class')}}</th>
+                                <th>{{ __('Grade')}}</th>
                                 <th>{{ __('School')}}</th>
                                 <th>{{ __('Actions')}}</th>
                             </tr>

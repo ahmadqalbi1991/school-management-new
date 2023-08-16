@@ -220,9 +220,9 @@
                         <div class="row w-100">
                             <div class="col-md-6 col-sm-12">
                                 <div class="form-group">
-                                    <label for="class_id">{{ __('Class') }}</label>
+                                    <label for="class_id">{{ __('Grade') }}</label>
                                     <select name="class_id" id="class_id" class="select2 form-control" required>
-                                        <option value="">{{ __('Select Class') }}</option>
+                                        <option value="">{{ __('Select Grade') }}</option>
                                         @foreach($classes as $class)
                                             <option value="{{ $class->id }}">{{ $class->class }}</option>
                                         @endforeach

@@ -80,7 +80,7 @@
                                                     class="text-red">*</span></label>
                                             <select name="class_id" id="class_id"
                                                     class="select2 form-control" required>
-                                                <option value="">{{ __('Select Class') }}</option>
+                                                <option value="">{{ __('Select Grade') }}</option>
                                                 @foreach($classes as $class)
                                                     <option value="{{ $class->id }}">{{ $class->class }}</option>
                                                 @endforeach
@@ -152,7 +152,7 @@
                                                     class="text-red">*</span></label>
                                             <select name="class_id" id="class_id_subjects"
                                                     class="select2 form-control" required>
-                                                <option value="">{{ __('Select Class') }}</option>
+                                                <option value="">{{ __('Select Grade') }}</option>
                                                 @foreach($classes as $class)
                                                     <option value="{{ $class->id }}">{{ $class->class }}</option>
                                                 @endforeach
@@ -165,7 +165,7 @@
                                                     class="text-red">*</span></label>
                                             <select name="subject_ids[]" id="subject_id" multiple
                                                     class="select2 form-control" required disabled>
-                                                <option value="">{{ __('Select Subject') }}</option>
+                                                <option value="">{{ __('Select Learning Area') }}</option>
                                             </select>
                                         </div>
                                     </div>

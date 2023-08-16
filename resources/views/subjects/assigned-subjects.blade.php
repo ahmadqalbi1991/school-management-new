@@ -51,7 +51,7 @@
                                         <div class="form-group">
                                             <label for="subject_id">{{ __('Subjects')}}<span class="text-red">*</span></label>
                                             <select name="subject_id[]" id="subject_id" multiple class="form-control select2">
-                                                <option value="">{{ __('Select Subjects') }}</option>
+                                                <option value="">{{ __('Select Learning Area') }}</option>
                                                 @foreach($subjects as $subject)
                                                     <option value="{{ $subject->id }}">{{ $subject->title }}</option>
                                                 @endforeach
@@ -73,7 +73,7 @@
                                         <div class="form-group">
                                             <label for="class_id">{{ __('Classes')}}<span class="text-red">*</span></label>
                                             <select name="class_id" id="class_id" class="form-control select2">
-                                                <option value="">{{ __('Select Classes') }}</option>
+                                                <option value="">{{ __('Select Gradees') }}</option>
                                             </select>
                                         </div>
                                     </div>

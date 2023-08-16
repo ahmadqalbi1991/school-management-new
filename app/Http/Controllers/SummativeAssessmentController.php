@@ -198,27 +198,47 @@ class SummativeAssessmentController extends Controller
             $assessments = SummativeAssessment::where([
                     'stream_id' => $input['stream_id'],
                     'term_id' => $input['term_id'],
-                    'subject_id' => $input['subject_id']
+                    'subject_id' => $input['subject_id'],
+                    'exam_id' => $input['exam_id'],
                 ])
-                    ->with('level')
-                    ->with('learner')
                     ->get();
+
+            $learners = [];
+            if ($assessments->count()) {
+                $learners = array_unique($assessments->pluck('learner_id')->toArray());
+            }
+
+            $users = User::where([
+                'role' => 'learner',
+                'status' => 'active'
+            ])
+                ->whereIn('id', $learners)
+                ->with('summative_assessments', function ($q) use ($input) {
+                    return $q->where([
+                        'stream_id' => $input['stream_id'],
+                        'term_id' => $input['term_id'],
+                        'subject_id' => $input['subject_id']
+                    ])
+                        ->with('level');
+                })
+                ->whereHas('summative_assessments')
+                ->get();
 
             $data = [];
             $total = 0;
-            foreach ($assessments as $user) {
+            foreach ($users as $user) {
                 $level = $score = '';
-                if (!empty($user->level)) {
-                    $level = $user->level->title;
-                    $score = $user->points;
+                if (!empty($user->summative_assessments[0]->level)) {
+                    $level = $user->summative_assessments[0]->level->title;
+                    $score = $user->summative_assessments[0]->points;
                 }
                 $total += $score;
                 $data[] = [
                     'remark' => $level,
                     'score' => $score,
-                    'name' => $user->learner->name,
-                    'admission_number' => $user->learner->admission_number,
-                    'id' => $user->learner->id,
+                    'name' => $user->name,
+                    'admission_number' => $user->admission_number,
+                    'id' => $user->id,
                     'checkbox' => true
                 ];
             }
@@ -494,7 +514,24 @@ class SummativeAssessmentController extends Controller
     public function bulkDownloadPdf(Request $request) {
         try {
             $input = $request->except('_token');
-            $learners = $input['learners'];
+
+            if (!empty($input['all_students'])) {
+                $assessments = SummativeAssessment::where([
+                    'class_id' => $input['class_id'],
+                    'stream_id' => $input['stream_id'],
+                    'term_id' => $input['term_id'],
+                    'exam_id' => $input['exam_id'],
+                ])->get();
+
+                $learners = [];
+                if ($assessments->count()) {
+                    $learners = $assessments->pluck('learner_id')->toArray();
+                    $learners = array_unique($learners);
+                }
+            } else {
+                $learners = $input['learners'];
+            }
+
             $html = '';
             foreach ($learners as $learner) {
                 $data = self::generatePdf($learner, $input['stream_id'], $input['term_id'], $input['exam_id']);

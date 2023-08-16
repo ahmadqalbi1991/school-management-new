@@ -88,7 +88,7 @@
                     <div class="nav-item {{ ($segment1 == 'learners-subjects') ? 'active' : '' }}">
                         <a href="{{route('learners-subjects.index')}}">
                             <i class="ik ik-book"></i>
-                            <span>{{ __('Students Subjects')}}</span>
+                            <span>{{ __('Students Learning Areas')}}</span>
                         </a>
                     </div>
                 @endcan
@@ -125,14 +125,14 @@
 
                     <div
                         class="nav-item {{ ($segment1 == 'exams' || $segment1 == 'summative-performance-levels' || $segment1 == 'performance-levels' || $segment1 == 'subjects' || $segment1 == 'strands' || $segment1 == 'sub-strands' || $segment1 == 'learning-activities' || $segment1 == 'terms' || $segment1 == 'term-subjects') ? 'active open' : '' }} has-sub">
-                        <a href="#"><i class="ik ik-book-open"></i><span>{{ __('Subjects')}}</span></a>
+                        <a href="#"><i class="ik ik-book-open"></i><span>{{ __('Learning Areas')}}</span></a>
                         <div class="submenu-content">
                             <!-- only those have manage_user permission will get access -->
                             <a href="{{ route('subjects.index') }}"
-                               class="menu-item {{ ($segment1 == 'subjects' && empty($segment2)) ? 'active' : '' }}">{{ __('Subjects List')}}</a>
+                               class="menu-item {{ ($segment1 == 'subjects' && empty($segment2)) ? 'active' : '' }}">{{ __('Learning Areas List')}}</a>
                             @if(Auth::user()->role === 'super_admin')
                                 <a href="{{ route('subjects.assigned-subjects') }}"
-                                   class="menu-item {{ ($segment1 == 'subjects' && $segment2 === 'assigned-subjects') ? 'active' : '' }}">{{ __('Assigned Subjects')}}</a>
+                                   class="menu-item {{ ($segment1 == 'subjects' && $segment2 === 'assigned-subjects') ? 'active' : '' }}">{{ __('Assigned Learning Areas')}}</a>
                             @endif
                             <a href="{{ route('strands.index') }}"
                                class="menu-item {{ ($segment1 == 'strands') ? 'active' : '' }}">{{ __('Strands')}}</a>

@@ -46,7 +46,7 @@
                             <p>{{ __('Learner Name:') }} <strong>{{ $learner->name }}</strong></p>
                         </div>
                         <div class="col-md-3">
-                            <p>{{ __('Class:') }} <strong>{{ $stream->school_class->class }}</strong></p>
+                            <p>{{ __('Grade:') }} <strong>{{ $stream->school_class->class }}</strong></p>
                         </div>
                         <div class="col-md-3">
                             <p>{{ __('Stream:') }} <strong>{{ $stream->title }}</strong></p>
@@ -151,16 +151,6 @@
                                     @php
                                         $average_performance = $subject_total / $total_attempted;
                                     @endphp
-                                    <tr>
-                                        <td><strong>{{ __('Attempted Assessment') }}</strong></td>
-                                        <td colspan="{{ $levels->count() }}"></td>
-                                        <td><h5>{{ $total_attempted }}</h5></td>
-                                    </tr>
-                                    <tr>
-                                        <td><strong>{{ __('Subject Total') }}</strong></td>
-                                        <td colspan="{{ $levels->count() }}"></td>
-                                        <td><h5>{{ $subject_total }}</h5></td>
-                                    </tr>
                                     <tr>
                                         <td><strong>{{ __('Total Activities') }}</strong></td>
                                         <td colspan="{{ $levels->count() }}"></td>

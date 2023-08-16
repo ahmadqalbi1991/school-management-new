@@ -47,7 +47,7 @@
                                         <div class="form-group">
                                             <label for="class">{{ __('Class')}}<span class="text-red">*</span></label>
                                             <select name="class_id" id="class_id" class="form-control select2">
-                                                <option value="">{{ __('Select Class') }}</option>
+                                                <option value="">{{ __('Select Grade') }}</option>
                                                 @foreach($classes as $class)
                                                     <option value="{{ $class->id }}">{{ $class->class }}</option>
                                                 @endforeach
@@ -99,7 +99,7 @@
                                             <div class="form-check mx-2">
                                                 <label class="custom-control custom-checkbox">
                                                     <input type="checkbox" value="1" name="all_students" class="custom-control-input" id="all_learners" disabled>
-                                                    <span class="custom-control-label">&nbsp; {{ __('Assign selected subjects to all learners') }}</span>
+                                                    <span class="custom-control-label">&nbsp; {{ __('All Learners') }}</span>
                                                 </label>
                                             </div>
                                         </div>

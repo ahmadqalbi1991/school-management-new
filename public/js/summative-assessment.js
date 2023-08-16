@@ -58,6 +58,7 @@ $(document).ready(function () {
 
                     $('#learners_id').html(response['learners']).select2()
                     $('#learners_id').prop('disabled', false)
+                    $('#all_learners').prop('disabled', false)
                     $("#generate-report-btn button").prop('disabled', false)
 
                     if (!exam_lock) {
@@ -323,5 +324,13 @@ $(document).ready(function () {
                 $('#term_id').prop('disabled', false)
             }
         })
+    })
+
+    $('#all_learners').on('change', function () {
+        if ($(this).is(':checked')) {
+            $('#learners_id').prop('disabled', true).removeAttr('required').select();
+        } else {
+            $('#learners_id').prop('disabled', false).attr('required').select();
+        }
     })
 })

@@ -56,7 +56,7 @@
                                         <div class="form-group">
                                             <label for="subject_id">{{ __('Subject')}}<span class="text-red">*</span></label>
                                             <select name="subject_id" id="subject_id" required class="form-control select2">
-                                                <option value="">{{ __('Select Subject') }}</option>
+                                                <option value="">{{ __('Select Learning Area') }}</option>
                                                 @foreach($subjects as $subject)
                                                     <option @if((!empty($strand)) && ($subject->id === $strand->subject_id)) selected @endif value="{{ $subject->id }}">{{ $subject->title }}</option>
                                                 @endforeach

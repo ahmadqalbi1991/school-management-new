@@ -251,7 +251,7 @@ class SchoolController extends Controller
                 $id = $teacher->school_id;
             }
             $classes = SchoolClass::where('school_id', $id)->get();
-            $html = '<option value="">Select Class</option>';
+            $html = '<option value="">Select Grade</option>';
 
             foreach ($classes as $class) {
                 $html .= '<option value="' . $class->id . '">' . $class->class . '</option>';

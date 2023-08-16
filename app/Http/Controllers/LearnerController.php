@@ -262,13 +262,11 @@ class LearnerController extends Controller
 
             if (count($learner_ids)) {
                 foreach ($learner_ids as $learner_id) {
+                    LearnerSubject::where(['learner_id' => $learner_id])->delete();
                     foreach ($subject_ids as $id) {
                         $input['subject_id'] = $id;
                         $input['learner_id'] = $learner_id;
-                        $exists = LearnerSubject::where($input)->exists();
-                        if (!$exists) {
-                            LearnerSubject::create($input);
-                        }
+                        LearnerSubject::create($input);
                     }
                 }
             }
@@ -280,13 +278,11 @@ class LearnerController extends Controller
                 ])->get();
                 $learner_ids = $learners->pluck('id')->toArray();
                 foreach ($learner_ids as $learner_id) {
+                    LearnerSubject::where(['learner_id' => $learner_id])->delete();
                     foreach ($subject_ids as $id) {
                         $input['subject_id'] = $id;
                         $input['learner_id'] = $learner_id;
-                        $exists = LearnerSubject::where($input)->exists();
-                        if (!$exists) {
-                            LearnerSubject::create($input);
-                        }
+                        LearnerSubject::create($input);
                     }
                 }
             }
@@ -322,19 +318,11 @@ class LearnerController extends Controller
 
             if (count($learner_ids)) {
                 foreach ($learner_ids as $learner_id) {
+                    LearnerSubject::where(['learner_id' => $learner_id])->delete();
                     foreach ($subject_ids as $id) {
-                        $exists_subject = LearnerSubject::where([
-                            'subject_id' => $id,
-                            'learner_id' => $learner_id,
-                            'class_id' => $input['class_id'],
-                            'stream_id' => $input['stream_id']
-                        ])->first();
-
-                        if (!$exists_subject) {
-                            $input['subject_id'] = $id;
-                            $input['learner_id'] = $learner_id;
-                            LearnerSubject::create($input);
-                        }
+                        $input['subject_id'] = $id;
+                        $input['learner_id'] = $learner_id;
+                        LearnerSubject::create($input);
                     }
                 }
             }
@@ -346,19 +334,11 @@ class LearnerController extends Controller
                 ])->get();
                 $learner_ids = $learners->pluck('id')->toArray();
                 foreach ($learner_ids as $learner_id) {
+                    LearnerSubject::where(['learner_id' => $learner_id])->delete();
                     foreach ($subject_ids as $id) {
-                        $exists_subject = LearnerSubject::where([
-                            'subject_id' => $id,
-                            'learner_id' => $learner_id,
-                            'class_id' => $input['class_id'],
-                            'stream_id' => $input['stream_id']
-                        ])->first();
-
-                        if (!$exists_subject) {
-                            $input['subject_id'] = $id;
-                            $input['learner_id'] = $learner_id;
-                            LearnerSubject::create($input);
-                        }
+                        $input['subject_id'] = $id;
+                        $input['learner_id'] = $learner_id;
+                        LearnerSubject::create($input);
                     }
                 }
             }
@@ -374,7 +354,8 @@ class LearnerController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function import(Request $request) {
+    public function import(Request $request)
+    {
         try {
             $input = $request->except('_token');
             Excel::import(new LearnerImport($input['stream_id']), $input['file']);
@@ -390,7 +371,8 @@ class LearnerController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function moveLearners(Request $request) {
+    public function moveLearners(Request $request)
+    {
         try {
             $input = $request->except('_token');
             foreach ($input['learners'] as $id) {

@@ -54,9 +54,9 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="class_id">{{ __('Class')}}<span class="text-red">*</span></label>
+                                            <label for="class_id">{{ __('Grade')}}<span class="text-red">*</span></label>
                                             <select name="class_id" id="class_id" required class="form-control select2">
-                                                <option value="">{{ __('Select Class') }}</option>
+                                                <option value="">{{ __('Select Grade') }}</option>
                                                 @if(!empty($stream))
                                                     @foreach($classes as $class)
                                                         <option @if($class->id === $stream->class_id) selected @endif value="{{ $class->id }}">{{ $class->class }}</option>
@@ -99,7 +99,7 @@
                             <thead>
                             <tr>
                                 <th>{{ __('Stream Title')}}</th>
-                                <th>{{ __('Class')}}</th>
+                                <th>{{ __('Grade')}}</th>
                                 <th>{{ __('School')}}</th>
                                 <th>{{ __('Actions')}}</th>
                             </tr>

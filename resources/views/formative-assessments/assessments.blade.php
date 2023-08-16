@@ -42,7 +42,7 @@
                         <div class="row">
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
-                                    <label for="strand">{{ __('Class') }}</label>
+                                    <label for="strand">{{ __('Grade') }}</label>
                                     <select name="class_id" disabled class="form-control select2">
                                         @if(!empty($class))
                                             <option value="{{ $class->id }}" selected>{{ $class->class }}</option>

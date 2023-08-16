@@ -36,10 +36,10 @@
                     <div class="card-body bg-facebook p-4">
                         <div class="row">
                             <div class="col-8">
-                                <h5 class="text-light">Select a class</h5>
-                                <p class="text-light">Learners are organised into different classes. To assess a group of learners, you first need
-                                    to select the class in which they belong and we will load the assessment sheet with the
-                                    learners of that class.</p>
+                                <h5 class="text-light">Select a Grade</h5>
+                                <p class="text-light">Learners are organised into different grades. To assess a group of learners, you first need
+                                    to select the grade in which they belong and we will load the assessment sheet with the
+                                    learners of that grade.</p>
                             </div>
                         </div>
                     </div>

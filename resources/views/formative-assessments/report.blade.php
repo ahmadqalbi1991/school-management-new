@@ -46,7 +46,7 @@
                             <p>Learner Name: <strong>{{ $learner->name }}</strong></p>
                         </div>
                         <div class="col-md-3">
-                            <p>Class: <strong>{{ $stream->school_class->class }}</strong></p>
+                            <p>Grade: <strong>{{ $stream->school_class->class }}</strong></p>
                         </div>
                         <div class="col-md-3">
                             <p>Stream: <strong>{{ $stream->title }}</strong></p>
@@ -67,7 +67,7 @@
                             <table class="table" id="result-table">
                                 <thead>
                                 <tr>
-                                    <th>{{ __('Subject')}}</th>
+                                    <th>{{ __('Learning Area')}}</th>
                                     <th>{{ __('Total Activities')}}</th>
                                     <th>{{ __('Attempted Activities')}}</th>
                                     <th>{{ __('Earned Points')}}</th>

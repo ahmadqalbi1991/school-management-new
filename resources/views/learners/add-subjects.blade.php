@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title', 'Learners Subjects')
+@section('title', 'Learners Learning Areas')
 @section('content')
     <!-- push external head elements to head -->
     @push('head')
@@ -16,7 +16,7 @@
                     <div class="page-header-title">
                         <div class="d-inline">
                             <h5>{{ __('Learners')}}</h5>
-                            <span>{{ __('Add learners subjects')}}</span>
+                            <span>{{ __('Add learners learning area')}}</span>
                         </div>
                     </div>
                 </div>
@@ -27,7 +27,7 @@
                                 <a href="{{ route('dashboard') }}"><i class="ik ik-home"></i></a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="#">{{ __('Learners Subjects')}}</a>
+                                <a href="#">{{ __('Learners Learning Areas')}}</a>
                             </li>
                         </ol>
                     </nav>
@@ -42,7 +42,7 @@
             @can('manage_students_subjects')
                 <div class="col-md-12">
                     <div class="card">
-                        <div class="card-header"><h3>{{ __('Add Learner Subjects')}}</h3></div>
+                        <div class="card-header"><h3>{{ __('Add Learner Learning Areas')}}</h3></div>
                         <div class="card-body">
                             <form class="forms-sample" method="POST" data-parsley-validate
                                   action="{{ empty($learner) ? route('learners-subjects.save') : route('learners-subjects.update') }}">
@@ -53,7 +53,7 @@
                                             <label for="class_id">{{ __('Class')}}<span
                                                     class="text-red">*</span></label>
                                             <select name="class_id" id="class_id" class="select2 form-control">
-                                                <option value="">{{ __('Select Class') }}</option>
+                                                <option value="">{{ __('Select Grade') }}</option>
                                                 @foreach($classes as $class)
                                                     <option
                                                         @if(!empty($learner) && $class_id === $class->id) selected
@@ -86,7 +86,7 @@
                                     </div>
                                     <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
-                                            <label for="subject-id">{{ __('Subjects')}}<span
+                                            <label for="subject-id">{{ __('Learning Areas')}}<span
                                                     class="text-red">*</span></label>
                                             <select name="subject_ids[]" id="subject-id" required
                                                     @if(empty($learner))
@@ -123,7 +123,7 @@
                                             <div class="form-check mx-2">
                                                 <label class="custom-control custom-checkbox">
                                                     <input type="checkbox" value="1" name="all_students" class="custom-control-input" id="all_learners" disabled>
-                                                    <span class="custom-control-label">&nbsp; {{ __('Assign selected subjects to all learners') }}</span>
+                                                    <span class="custom-control-label">&nbsp; {{ __('Assign selected learning areas to all learners') }}</span>
                                                 </label>
                                             </div>
                                         </div>

@@ -38,9 +38,9 @@
                         <div class="row">
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
-                                    <label for="strand">{{ __('Class') }}</label>
+                                    <label for="strand">{{ __('Grade') }}</label>
                                     <select required name="class_id" id="class_id" class="form-control select2">
-                                        <option value="">{{ __('Select Class') }}</option>
+                                        <option value="">{{ __('Select Grade') }}</option>
                                         @foreach($classes as $class)
                                             <option value="{{ $class->id }}">{{ $class->class }}</option>
                                         @endforeach
@@ -89,6 +89,12 @@
                                             class="form-control select2">
                                         <option value="" selected>{{ __('Select Learners') }}</option>
                                     </select>
+                                    <div class="form-check mx-2">
+                                        <label class="custom-control custom-checkbox">
+                                            <input type="checkbox" value="1" name="all_students" class="custom-control-input" id="all_learners" disabled>
+                                            <span class="custom-control-label">&nbsp; {{ __('All Learners') }}</span>
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-12 text-right" id="generate-report-btn">

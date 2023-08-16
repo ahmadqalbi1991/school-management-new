@@ -38,9 +38,9 @@
                         <div class="row">
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
-                                    <label for="strand">{{ __('Class') }}</label>
+                                    <label for="strand">{{ __('Grade') }}</label>
                                     <select name="class_id" id="class_id" class="form-control select2">
-                                        <option value="">{{ __('Select Class') }}</option>
+                                        <option value="">{{ __('Select Grade') }}</option>
                                         @foreach($classes as $class)
                                             <option value="{{ $class->id }}">{{ $class->class }}</option>
                                         @endforeach
@@ -80,10 +80,10 @@
                             </div>
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
-                                    <label>{{ __('Subjects') }}</label>
+                                    <label>{{ __('Learning Areas') }}</label>
                                     <select name="subject_id" required id="subject_id" disabled
                                             class="form-control select2">
-                                        <option value="" selected>{{ __('Select Subject') }}</option>
+                                        <option value="" selected>{{ __('Select Learning Area') }}</option>
                                     </select>
                                 </div>
                             </div>
@@ -91,7 +91,7 @@
                                 <div class="form-group">
                                     <label for="">&nbsp;</label>
                                     <button class="btn btn-primary btn-rounded"
-                                            type="submit">{{ __('Generate Class Report Card') }}</button>
+                                            type="submit">{{ __('Generate Grade Report Card') }}</button>
                                 </div>
                             </div>
                         </div>

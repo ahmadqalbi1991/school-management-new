@@ -69,7 +69,7 @@
                         <div class="row align-items-center">
                             <div class="col-8">
                                 <h4 class="mb-0">{{ $subjects->count() }}</h4>
-                                <p class="mb-0">{{ __('Total Subjects')}}</p>
+                                <p class="mb-0">{{ __('Learning Areas')}}</p>
                             </div>
                             <div class="col-4 text-right">
                                 <i class="fas fa-book f-30"></i>

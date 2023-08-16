@@ -58,9 +58,9 @@
                                     </div>
                                     <div class="col-sm-12 col-md-6">
                                         <div class="form-group">
-                                            <label for="">{{ __('Class') }}</label>
+                                            <label for="">{{ __('Grade') }}</label>
                                             <select id="class_id_previous" class="form-control select2">
-                                                <option value="">{{ __('Select Class') }}</option>
+                                                <option value="">{{ __('Select Grade') }}</option>
                                                 @foreach($classes as $class)
                                                     <option value="{{ $class->id }}">{{ $class->class }}</option>
                                                 @endforeach
@@ -88,9 +88,9 @@
                                     </div>
                                     <div class="col-sm-12 col-md-6">
                                         <div class="form-group">
-                                            <label for="">{{ __('Class') }}</label>
+                                            <label for="">{{ __('Grade') }}</label>
                                             <select id="class_id_next" class="form-control select2">
-                                                <option value="">{{ __('Select Class') }}</option>
+                                                <option value="">{{ __('Select Grade') }}</option>
                                                 @foreach($classes as $class)
                                                     <option value="{{ $class->id }}">{{ $class->class }}</option>
                                                 @endforeach

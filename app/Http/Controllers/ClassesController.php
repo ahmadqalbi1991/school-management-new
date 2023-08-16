@@ -171,7 +171,7 @@ class ClassesController extends Controller
             $subjects = getSchoolSubjects();
 
             $stream_html = '<option value="">Select Stream</option>';
-            $subjects_html = '<option value="">Select Subjects</option>';
+            $subjects_html = '<option value="">Select Learning Area</option>';
             foreach ($streams as $stream) {
                 $stream_html .= '<option value="' . $stream->id . '">' . $stream->title . '</option>';
             }

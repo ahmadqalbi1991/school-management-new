@@ -142,7 +142,7 @@
     <div class="learners-details">
         <p><strong>{{ __('Learner') }}: </strong>{{ $learner->name }}</p>
         <p><strong>{{ __('Admission') }} #: </strong>{{ $learner->admission_number }}</p>
-        <p><strong>{{ __('Class') }}: </strong>{{ $stream->school_class->class }}</p>
+        <p><strong>{{ __('Grade') }}: </strong>{{ $stream->school_class->class }}</p>
         <p><strong>{{ __('Stream') }}: </strong>{{ $stream->title }}</p>
     </div>
     <div class="levels-details">
@@ -155,7 +155,7 @@
         <table>
             <thead>
             <tr>
-                <th>{{ __('Subjects') }}</th>
+                <th>{{ __('Learning Area') }}</th>
                 <th>{{ __('Performance') }}</th>
                 <th>{{ __('Remarks') }}</th>
             </tr>

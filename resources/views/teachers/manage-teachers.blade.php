@@ -63,7 +63,7 @@
                                             <label for="class_id">{{ __('Class')}}<span class="text-red">*</span></label>
                                             <select name="class_id" id="class_id"
                                                     class="select2 form-control" required disabled>
-                                                <option value="">{{ __('Select Class') }}</option>
+                                                <option value="">{{ __('Select Grade') }}</option>
                                             </select>
                                         </div>
                                     </div>
@@ -81,7 +81,7 @@
                                             <label for="subject_id">{{ __('Subjects')}}<span class="text-red">*</span></label>
                                             <select name="subject_ids[]" id="subject_id" multiple
                                                     class="select2 form-control" required disabled>
-                                                <option value="">{{ __('Select Subject') }}</option>
+                                                <option value="">{{ __('Select Learning Area') }}</option>
                                             </select>
                                         </div>
                                     </div>

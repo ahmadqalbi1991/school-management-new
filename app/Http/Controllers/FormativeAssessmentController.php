@@ -184,11 +184,21 @@ class FormativeAssessmentController extends Controller
     public function getLearners(Request $request)
     {
         try {
+            $assessments_data = StudentAssessment::where([
+                'stream_id' => $request->stream_id,
+                'term_id' => $request->term_id,
+            ])->get();
+            $learners = [];
+            if ($assessments_data->count()) {
+                $learners = $assessments_data->pluck('learner_id')->toArray();
+                $learners = array_unique($learners);
+            }
+
             $data = User::where([
                 'role' => 'learner',
                 'status' => 'active',
-                'stream_id' => $request->stream_id
             ])
+                ->whereIn('id', $learners)
                 ->with('assessments', function ($q) use ($request) {
                     return $q->where('term_id', $request->term_id);
                 })

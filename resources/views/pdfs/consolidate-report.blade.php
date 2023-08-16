@@ -142,7 +142,7 @@
     <div class="learners-details">
         <p><strong>{{ __('Learner') }}: </strong>{{ $learner->name }}</p>
         <p><strong>{{ __('Admission') }} #: </strong>{{ $learner->admission_number }}</p>
-        <p><strong>{{ __('Class') }}: </strong>{{ $stream->school_class->class }}</p>
+        <p><strong>{{ __('Grade') }}: </strong>{{ $stream->school_class->class }}</p>
         <p><strong>{{ __('Stream') }}: </strong>{{ $stream->title }}</p>
     </div>
     <div class="levels-details">
@@ -155,7 +155,7 @@
         <table>
             <thead>
             <tr>
-                <th>{{ __('Subjects') }}</th>
+                <th>{{ __('Learning Area') }}</th>
                 @foreach($exams as $exam)
                     <th>{{ $exam->title }}</th>
                 @endforeach
@@ -167,6 +167,7 @@
             <tbody>
             @php
                 $report_total = 0;
+                $report_average = 0;
             @endphp
             @foreach($reports as $report)
                 <tr>
@@ -183,6 +184,7 @@
                     @php
                         $average = round($subject_total / count($report['points']), 1);
                         $report_total += $subject_total;
+                        $report_average += $average;
                     @endphp
                     <td><strong>{{ $subject_total }}</strong></td>
                     <td><strong>{{ $average }}</strong></td>
@@ -196,10 +198,10 @@
                 <th colspan="{{ count($exams) }}"></th>
                 <th>{{ $report_total }}</th>
                 @php
-                    $report_average = $report_total / count($reports);
+                    $calculated_average = round(($report_average / count($reports)), 2);
                 @endphp
-                <th>{{ round($report_average, 2) }}</th>
-                <th>{{ checkSummetiveCriteria(round($report_average, 0)) }}</th>
+                <th>{{ $calculated_average }}</th>
+                <th>{{ checkSummetiveCriteria($calculated_average) }}</th>
             </tr>
             </tfoot>
         </table>

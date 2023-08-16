@@ -38,9 +38,9 @@
                         <div class="row">
                             <div class="col-sm-12 col-md-4">
                                 <div class="form-group">
-                                    <label for="strand">{{ __('Class') }}</label>
+                                    <label for="strand">{{ __('Grade') }}</label>
                                     <select name="class_id" id="class_id" class="form-control select2" required>
-                                        <option value="">{{ __('Select Class') }}</option>
+                                        <option value="">{{ __('Select Grade') }}</option>
                                         @foreach($classes as $class)
                                             <option value="{{ $class->id }}">{{ $class->class }}</option>
                                         @endforeach

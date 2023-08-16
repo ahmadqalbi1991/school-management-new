@@ -60,7 +60,7 @@
                                     <div class="col-sm-6">
                                         <div class="form-group">
                                             <label for="title">{{ __('Year')}}<span class="text-red">*</span></label>
-                                            <select required name="year" id="year" class="form-control select2">
+                                            <select required id="year" class="form-control select2">
                                                 <option value="">{{ __('Select Year') }}</option>
                                                 @for($i = \Carbon\Carbon::now()->format('Y'); $i >= \Carbon\Carbon::now()->format('Y') - 30; $i--)
                                                     <option @if(!empty($term) && $term->year == $i) selected @endif value="{{ $i }}">{{ $i }}</option>
