@@ -50,7 +50,10 @@ class SubjectsController extends Controller
         if (Auth::user()->role === 'super_admin') {
             $data = Subjects::with('school_class')->latest()->get();
         } else if (Auth::user()->role === 'admin') {
-            $data = getSchoolSubjects();
+//            $data = getSchoolSubjects();
+            $data = AssignedSubjectsClass::where('school_id', Auth::user()->school_id)
+                ->with(['subject', 'school_class'])
+                ->get();
         }
         $hasManagePermission = Auth::user()->can('manage_subjects');
 
@@ -62,6 +65,14 @@ class SubjectsController extends Controller
                 }
 
                 return $class;
+            })
+            ->addColumn('title', function ($data) {
+                $subject = '';
+                if (!empty($data->subject)) {
+                    $subject = $data->subject->title;
+                }
+
+                return $subject;
             })
             ->addColumn('action', function ($data) use ($hasManagePermission) {
                 $output = '';

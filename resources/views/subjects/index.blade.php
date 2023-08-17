@@ -1,5 +1,5 @@
 @extends('layouts.main')
-@section('title', 'Subjects')
+@section('title', 'Learning Areas')
 @section('content')
     <!-- push external head elements to head -->
     @push('head')
@@ -14,7 +14,7 @@
                 <div class="col-lg-8">
                     <div class="page-header-title">
                         <div class="d-inline">
-                            <h5>{{ __('Subjects')}}</h5>
+                            <h5>{{ __('Learning Areas')}}</h5>
                             <span>{{ empty($subject) ? __('Add subject details') : __('Edit subject details') }}</span>
                         </div>
                     </div>
@@ -26,7 +26,7 @@
                                 <a href="{{ route('dashboard') }}"><i class="ik ik-home"></i></a>
                             </li>
                             <li class="breadcrumb-item">
-                                <a href="#">{{ __('Subject')}}</a>
+                                <a href="#">{{ __('Learning Area')}}</a>
                             </li>
                         </ol>
                     </nav>
@@ -52,7 +52,7 @@
                                             <label for="title">{{ __('Name')}}<span class="text-red">*</span></label>
                                             <input type="text" class="form-control" id="title"
                                                    value="{{ !empty($subject) ? $subject->title : '' }}" name="title"
-                                                   placeholder="Subject Title" required>
+                                                   placeholder="Learning Area Title" required>
                                         </div>
                                     </div>
                                     <div class="col-sm-12 text-right">
@@ -76,7 +76,7 @@
                             <thead>
                             <tr>
                                 <th>{{ __('Name')}}</th>
-                                <th>{{ __('Class')}}</th>
+                                <th>{{ __('Grade')}}</th>
                                 <th>{{ __('Action')}}</th>
                             </tr>
                             </thead>

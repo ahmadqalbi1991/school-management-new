@@ -164,7 +164,7 @@
                                     @csrf
                                     <div class="form-group">
                                         <label for="example-name">{{ __('Full Name')}}</label>
-                                        <input type="text" class="form-control" value="{{ $user->name }}"
+                                        <input type="text" disabled class="form-control" value="{{ $user->name }}"
                                                name="name" id="example-name">
                                     </div>
                                     <div class="form-group">
@@ -174,12 +174,12 @@
                                     </div>
                                     <div class="form-group">
                                         <label for="example-phone">{{ __('Phone No')}}</label>
-                                        <input type="text" value="{{ $user->phone_number }}" id="example-phone"
+                                        <input type="text" disabled value="{{ $user->phone_number }}" id="example-phone"
                                                name="phone_number" class="form-control">
                                     </div>
                                     <div class="form-group">
                                         <label for="example-phone">{{ __('TSC Number')}}</label>
-                                        <input type="text" value="{{ $user->tsc_number }}" id="example-phone"
+                                        <input type="text" disabled value="{{ $user->tsc_number }}" id="example-phone"
                                                name="tsc_number" class="form-control">
                                     </div>
                                     <div class="form-group">

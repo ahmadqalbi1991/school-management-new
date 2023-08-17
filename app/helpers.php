@@ -70,8 +70,6 @@ function checkPointsCriteria($points, $total_check = false) {
 
 function getSchoolSubjects($all = true, $page = 1) {
     $data = [];
-    $limit = 1;
-    $offset = $page - 1;
     $assigned_subjects = AssignedSubjectsClass::where('school_id', Auth::user()->school_id)->get();
 
     if (!empty($assigned_subjects)) {
