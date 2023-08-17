@@ -137,7 +137,7 @@
             <div class="col-md-12">
                 <div class="card p-3">
                     <div class="card-header">
-                        <h5>{{ __('Assigned Subjects') }}</h5>
+                        <h5>{{ __('Assigned Learning Areas') }}</h5>
                     </div>
                     <div class="card-body">
                         <div class="p-2">
@@ -161,7 +161,7 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="subject_id">{{ __('Subjects')}}<span
+                                            <label for="subject_id">{{ __('Learning Area')}}<span
                                                     class="text-red">*</span></label>
                                             <select name="subject_ids[]" id="subject_id" multiple
                                                     class="select2 form-control" required disabled>
@@ -182,8 +182,8 @@
                             <table id="teacher_detail_table" class="table">
                                 <thead>
                                 <tr>
-                                    <th>{{ __('Subject')}}</th>
-                                    <th>{{ __('Class')}}</th>
+                                    <th>{{ __('Learning Area')}}</th>
+                                    <th>{{ __('Grade')}}</th>
                                     <th>{{ __('Action')}}</th>
                                 </tr>
                                 </thead>
@@ -191,7 +191,7 @@
                                 @foreach($subjects as $record)
                                     <tr>
                                         <td>{{ $record->subject->title }}</td>
-                                        <td>{{ !empty($record->subject->school_class) ? $record->subject->school_class->class : '' }}</td>
+                                        <td>{{ !empty($record->assigned_class->school_class) ? $record->assigned_class->school_class->class : '' }}</td>
                                         <td>
                                             <a href="{{ route('teachers.remove-subject', ['id' => $record->id]) }}"><i
                                                     class="ik ik-trash-2 f-16 text-red"></i></a>

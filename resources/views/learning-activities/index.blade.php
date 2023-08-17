@@ -83,10 +83,10 @@
                         <table id="strands_table" class="table">
                             <thead>
                             <tr>
-                                <th>{{ __('Title')}}</th>
-                                <th>{{ __('Sub Strand Title')}}</th>
+                                <th>{{ __('Learning Area')}}</th>
                                 <th>{{ __('Strand Title')}}</th>
-                                <th>{{ __('Subject')}}</th>
+                                <th>{{ __('Sub Strand Title')}}</th>
+                                <th>{{ __('Learning Activity Title')}}</th>
                                 <th>{{ __('Actions')}}</th>
                             </tr>
                             </thead>

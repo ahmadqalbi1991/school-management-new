@@ -176,6 +176,7 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/get-school-classes/{id}', [SchoolController::class, 'getClasses']);
     Route::get('/get-streams/{id}', [ClassesController::class, 'getStreams']);
+    Route::get('/get-subjects/{id}', [ClassesController::class, 'getSubjects']);
     Route::get('/get-sub-strands/{id}', [StrandController::class, 'getSubStrands']);
     Route::get('/get-learning-activities/{id}', [SubStrandController::class, 'getLearningActivities']);
     Route::get('/get-learners/{id}/{move?}', [StreamController::class, 'getLearners']);

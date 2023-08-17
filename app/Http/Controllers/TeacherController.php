@@ -227,7 +227,7 @@ class TeacherController extends Controller
             $records = TeacherManagement::where('teacher_id', $id)
                 ->with(['class', 'stream'])
                 ->get();
-            $subjects = AssignedSubject::with('subject')->where('teacher_id', $id)->get();
+            $subjects = AssignedSubject::with(['subject', 'assigned_class'])->where('teacher_id', $id)->get();
             $classes = SchoolClass::where('school_id', Auth::user()->school_id)->get();
 
             return view('teachers.detail', compact('teacher', 'records', 'subjects', 'teachers', 'classes'));

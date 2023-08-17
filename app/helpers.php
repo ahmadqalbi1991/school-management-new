@@ -68,9 +68,13 @@ function checkPointsCriteria($points, $total_check = false) {
     return $level->title;
 }
 
-function getSchoolSubjects($all = true, $page = 1) {
+function getSchoolSubjects($all = true, $page = 1, $id = null) {
     $data = [];
-    $assigned_subjects = AssignedSubjectsClass::where('school_id', Auth::user()->school_id)->get();
+    $assigned_subjects = AssignedSubjectsClass::where('school_id', Auth::user()->school_id)
+        ->when($id, function ($q) use ($id) {
+            return $q->where('class_id', $id);
+        })
+        ->get();
 
     if (!empty($assigned_subjects)) {
         $assigned_subjects = $assigned_subjects->pluck('subject_id')->toArray();

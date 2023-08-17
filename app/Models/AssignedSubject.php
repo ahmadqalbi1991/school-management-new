@@ -18,4 +18,9 @@ class AssignedSubject extends Model
     {
         return $this->belongsTo(Subjects::class, 'subject_id', 'id')->with('school_class');
     }
+
+    public function assigned_class(): BelongsTo
+    {
+        return $this->belongsTo(AssignedSubjectsClass::class, 'subject_id', 'subject_id')->with('school_class');
+    }
 }

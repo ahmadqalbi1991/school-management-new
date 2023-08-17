@@ -30,10 +30,10 @@
                 }
             },
             columns: [
-                {data:'title', name: 'title', orderable: false},
-                {data:'sub_strand', name: 'sub_strand', orderable: false},
-                {data:'strand', name: 'strand', orderable: false},
                 {data:'subject', name: 'subject', orderable: false},
+                {data:'strand', name: 'strand', orderable: false},
+                {data:'sub_strand', name: 'sub_strand', orderable: false},
+                {data:'title', name: 'title', orderable: false},
                 {data:'action', name: 'action'},
             ],
             buttons: [

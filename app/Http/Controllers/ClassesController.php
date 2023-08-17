@@ -186,4 +186,20 @@ class ClassesController extends Controller
             return redirect()->back()->with('error', $bug);
         }
     }
+
+    public function getSubjects($id) {
+        try {
+            $subjects = getSchoolSubjects(true, 1, $id);
+            $subjects_html = '<option value="">Select Learning Area</option>';
+
+            foreach ($subjects as $subject) {
+                $subjects_html .= '<option value="' . $subject->id . '">' . $subject->title . '</option>';
+            }
+
+            return $subjects_html;
+        } catch (\Exception $e) {
+            $bug = $e->getMessage();
+            return redirect()->back()->with('error', $bug);
+        }
+    }
 }

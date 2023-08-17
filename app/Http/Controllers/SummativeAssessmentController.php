@@ -56,6 +56,10 @@ class SummativeAssessmentController extends Controller
                     'slug' => $stream_slug
                 ])->first();
                 $subject = Subjects::where('slug', $subject_slug)->first();
+                $exist = AssignedSubject::where(['teacher_id' => Auth::id(), 'subject_id' => $subject->id])->first();
+                if (!$exist) {
+                    return redirect()->back()->with('error', 'You don`t have access to this page');
+                }
                 $assigned_learners = LearnerSubject::where([
                     'class_id' => $class->id,
                     'stream_id' => $stream->id,
@@ -196,12 +200,12 @@ class SummativeAssessmentController extends Controller
         try {
             $input = $request->all();
             $assessments = SummativeAssessment::where([
-                    'stream_id' => $input['stream_id'],
-                    'term_id' => $input['term_id'],
-                    'subject_id' => $input['subject_id'],
-                    'exam_id' => $input['exam_id'],
-                ])
-                    ->get();
+                'stream_id' => $input['stream_id'],
+                'term_id' => $input['term_id'],
+                'subject_id' => $input['subject_id'],
+                'exam_id' => $input['exam_id'],
+            ])
+                ->get();
 
             $learners = [];
             if ($assessments->count()) {
@@ -364,7 +368,8 @@ class SummativeAssessmentController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function generateClassPdf(Request $request) {
+    public function generateClassPdf(Request $request)
+    {
         try {
             $input = $request->except('_token');
             $teacher = TeacherManagement::where([
@@ -431,7 +436,7 @@ class SummativeAssessmentController extends Controller
             ];
 
             $pdf = PDF::loadView('pdfs.summative-class', $data);
-            return $pdf->stream('class_summative_report_' . $stream->school_class->class . '_' . $stream->title  . '_' .  $term->term . '.pdf');
+            return $pdf->stream('class_summative_report_' . $stream->school_class->class . '_' . $stream->title . '_' . $term->term . '.pdf');
         } catch (\Exception $e) {
             $bug = $e->getMessage();
             return redirect()->back()->with('error', $bug);
@@ -442,7 +447,8 @@ class SummativeAssessmentController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse|void
      */
-    public function saveLearnerAssessment(Request $request) {
+    public function saveLearnerAssessment(Request $request)
+    {
         try {
             $input = $request->all();
             $exam_lock = checkSummativeExamLock($input['exam_id']);
@@ -471,7 +477,8 @@ class SummativeAssessmentController extends Controller
      * @param $exam_id
      * @return array
      */
-    private static function generatePdf($learner_id, $stream_id, $term_id, $exam_id) {
+    private static function generatePdf($learner_id, $stream_id, $term_id, $exam_id)
+    {
         $school = getSchoolSettings();
         $stream = Stream::where('id', $stream_id)
             ->with('school_class')
@@ -511,7 +518,8 @@ class SummativeAssessmentController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function bulkDownloadPdf(Request $request) {
+    public function bulkDownloadPdf(Request $request)
+    {
         try {
             $input = $request->except('_token');
 
@@ -549,7 +557,8 @@ class SummativeAssessmentController extends Controller
         }
     }
 
-    public function getReportLearners(Request $request) {
+    public function getReportLearners(Request $request)
+    {
         try {
             $input = $request->all();
             $assessments = SummativeAssessment::where([

@@ -167,10 +167,10 @@
 
     $('#class_id_subjects').on('change', function () {
         $.ajax({
-            url: '/get-streams/' + $(this).val(),
+            url: '/get-subjects/' + $(this).val(),
             type: 'GET',
             success: function (response) {
-                $('#subject_id').html(response.subjects).select2()
+                $('#subject_id').html(response).select2()
                 $('#subject_id').prop('disabled', false)
             }
         })
