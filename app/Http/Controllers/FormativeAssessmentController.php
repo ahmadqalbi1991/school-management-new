@@ -57,7 +57,7 @@ class FormativeAssessmentController extends Controller
                     'class_id' => $classObj->id
                 ])->first();
 
-                dd($exist);
+                dd($exist, Auth::id(), $stream, $classObj);
 
                 if (!$exist) {
                     return redirect()->back()->with('error', 'You don`t have access to this page');
