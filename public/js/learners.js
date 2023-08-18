@@ -31,8 +31,9 @@
             },
             columns: [
                 {data:'name', name: 'name', orderable: false},
-                {data:'email', name: 'email'},
                 {data:'school', name: 'school'},
+                {data:'grade', name: 'grade'},
+                {data:'stream', name: 'stream'},
                 {data:'status', name: 'status'},
                 {data:'action', name: 'action'}
 

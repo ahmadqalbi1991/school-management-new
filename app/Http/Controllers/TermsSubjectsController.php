@@ -52,7 +52,7 @@ class TermsSubjectsController extends Controller
      */
     public function getList()
     {
-        $terms = Term::with('subjects')->has('subjects')->get();
+        $terms = Term::where('school_id', Auth::user()->school_id)->with('subjects')->has('subjects')->get();
         $hasManagePermission = Auth::user()->can('manage_terms');
 
         return Datatables::of($terms)

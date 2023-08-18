@@ -130,10 +130,10 @@
                             <!-- only those have manage_user permission will get access -->
                             <a href="{{ route('subjects.index') }}"
                                class="menu-item {{ ($segment1 == 'subjects' && empty($segment2)) ? 'active' : '' }}">{{ __('Learning Areas List')}}</a>
-                            @if(Auth::user()->role === 'super_admin')
+{{--                            @if(Auth::user()->role === 'super_admin')--}}
                                 <a href="{{ route('subjects.assigned-subjects') }}"
                                    class="menu-item {{ ($segment1 == 'subjects' && $segment2 === 'assigned-subjects') ? 'active' : '' }}">{{ __('Assigned Learning Areas')}}</a>
-                            @endif
+{{--                            @endif--}}
                             <a href="{{ route('strands.index') }}"
                                class="menu-item {{ ($segment1 == 'strands') ? 'active' : '' }}">{{ __('Strands')}}</a>
                             <a href="{{ route('sub-strands.index') }}"

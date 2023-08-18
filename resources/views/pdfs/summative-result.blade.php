@@ -52,8 +52,8 @@
         padding: 0 10px;
     }
 
-    .levels-details p {
-        display: initial;
+    .levels-details div {
+        display: inline-block;
         padding: 0 20px;
     }
 
@@ -147,7 +147,7 @@
     </div>
     <div class="levels-details">
         @foreach($levels as $level)
-            <p>&#x2022; {{ $level->title }} - <strong>{{ initials($level->title) }}</strong> ({{ $level->min_point }} - {{ $level->max_point }})%</p>
+            <div>&#x2022; {{ $level->title }} - <strong>{{ initials($level->title) }}</strong> ({{ $level->min_point }} - {{ $level->max_point }})%</div>
         @endforeach
     </div>
     <div class="date-generated">Date Generated: {{ \Carbon\Carbon::now()->format('d/m/Y') }}</div>

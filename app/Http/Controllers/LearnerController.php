@@ -54,6 +54,9 @@ class LearnerController extends Controller
     {
         $data = User::where(['role' => 'learner'])
             ->with('school')
+            ->with('stream', function ($q) {
+                return $q->with('school_class');
+            })
             ->when(Auth::user()->role === 'admin', function ($q) {
                 return $q->where('school_id', Auth::user()->school_id);
             })
@@ -66,6 +69,12 @@ class LearnerController extends Controller
             })
             ->addColumn('school', function ($data) {
                 return $data->school->school_name;
+            })
+            ->addColumn('stream', function ($data) {
+                return $data->stream->title;
+            })
+            ->addColumn('grade', function ($data) {
+                return $data->stream->school_class->class;
             })
             ->addColumn('status', function ($data) {
                 $status = '';

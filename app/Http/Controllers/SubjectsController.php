@@ -68,8 +68,14 @@ class SubjectsController extends Controller
             })
             ->addColumn('title', function ($data) {
                 $subject = '';
-                if (!empty($data->subject)) {
-                    $subject = $data->subject->title;
+                if (Auth::user()->role === 'admin') {
+                    if (!empty($data->subject)) {
+                        $subject = $data->subject->title;
+                    }
+                }
+
+                if (Auth::user()->role === 'super_admin') {
+                        $subject = $data->title;
                 }
 
                 return $subject;
@@ -161,12 +167,25 @@ class SubjectsController extends Controller
     /**
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
      */
-    public function assignedSubjects() {
+    public function assignedSubjects(Request $request) {
         try {
             $subjects = Subjects::all();
             $schools = School::where('active', 1)->get();
+            $classes = $assigned_subject_ids = [];
+            if ($request->has('school_id')) {
+                $assigned_subjects = AssignedSubjectsClass::where([
+                    'school_id' => $request->get('school_id'),
+                    'class_id' => $request->get('class_id'),
+                ])->get();
 
-            return view('subjects.assigned-subjects', compact('subjects', 'schools'));
+                if ($assigned_subjects->count()) {
+                    $assigned_subject_ids = array_unique($assigned_subjects->pluck('subject_id')->toArray());
+                }
+
+                $classes = SchoolClass::where('school_id', $request->get('school_id'))->get();
+            }
+
+            return view('subjects.assigned-subjects', compact('subjects', 'schools', 'classes', 'assigned_subject_ids'));
         } catch (\Exception $e) {
             $bug = $e->getMessage();
             return redirect()->back()->with('error', $bug);
@@ -192,6 +211,45 @@ class SubjectsController extends Controller
             }
 
             return back()->with('success', 'Subjects added to class');
+        } catch (\Exception $e) {
+            $bug = $e->getMessage();
+            return redirect()->back()->with('error', $bug);
+        }
+    }
+
+    public function getAssignedList(Request $request) {
+        try {
+            $data = SchoolClass::when(Auth::user()->role !== 'super_admin', function ($q) {
+                return $q->where('school_id', Auth::user()->school_id);
+            })
+                ->with(['school', 'assigned_subjects'])->get();
+            $hasManagePermission = Auth::user()->can('manage_subjects');
+
+            return Datatables::of($data)
+                ->addColumn('school', function ($data) {
+                    return $data->school->school_name;
+                })
+                ->addColumn('subjects', function ($data) {
+                    $output = '';
+                    $subjects = $data->assigned_subjects;
+                    foreach ($subjects as $subject) {
+                        $output .= '<span class="badge badge-dark m-1">' . $subject->subject->title . '</span>';
+                    }
+
+                    return $output;
+                })
+                ->addColumn('action', function ($data) use ($hasManagePermission) {
+                    $output = '';
+                    if ($hasManagePermission) {
+                        $output = '<div class="">
+                                    <a href="?class_id=' . $data->id . '&school_id=' . $data->school->id . '"><i class="ik ik-edit f-16 text-blue"></i></a>
+                                </div>';
+                    }
+
+                    return $output;
+                })
+                ->rawColumns(['subjects', 'action'])
+                ->make(true);
         } catch (\Exception $e) {
             $bug = $e->getMessage();
             return redirect()->back()->with('error', $bug);

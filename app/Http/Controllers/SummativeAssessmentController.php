@@ -425,9 +425,12 @@ class SummativeAssessmentController extends Controller
                 $level = $score = '';
                 if (!empty($user->summative_assessments[0]) && !empty($user->summative_assessments[0]->level)) {
                     $level = $user->summative_assessments[0]->level->title;
-                    $score = $user->summative_assessments[0]->points;
+                    $score = !empty($user->summative_assessments[0]->points) ? $user->summative_assessments[0]->points : 0;
                 }
-                $total += $score;
+                if ($score == '') {
+                    $score = 0;
+                }
+                $total += (float)$score;
                 $result[] = [
                     'remark' => $level,
                     'score' => $score,
@@ -562,6 +565,7 @@ class SummativeAssessmentController extends Controller
                 $data = self::generatePdf($learner, $input['stream_id'], $input['term_id'], $input['exam_id']);
                 $term = $data['term'];
                 $view = view('pdfs.summative-result')->with($data);
+//                return $view;
                 $html .= $view->render();
             }
 

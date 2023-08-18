@@ -23,4 +23,9 @@ class SchoolClass extends Model
     {
         return $this->belongsTo(School::class, 'school_id', 'id');
     }
+
+    public function assigned_subjects(): HasMany
+    {
+        return $this->hasMany(AssignedSubjectsClass::class, 'class_id', 'id')->with(['subject']);
+    }
 }

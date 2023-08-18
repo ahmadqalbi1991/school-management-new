@@ -122,6 +122,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/', [SubjectsController::class, 'index'])->name('index');
         Route::get('/assigned-subjects', [SubjectsController::class, 'assignedSubjects'])->name('assigned-subjects');
         Route::get('/get-list', [SubjectsController::class, 'getList'])->name('get-list');
+        Route::get('/get-assigned-list', [SubjectsController::class, 'getAssignedList'])->name('get-assigned-list');
         Route::post('/store', [SubjectsController::class, 'store'])->name('store');
         Route::post('/assign-subjects', [SubjectsController::class, 'assignSubjects'])->name('assign-subject');
         Route::post('/update/{id}', [SubjectsController::class, 'update'])->name('update');
@@ -263,7 +264,6 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/update/{id}', [TermsSubjectsController::class, 'update'])->name('update');
         Route::get('/delete/{id}', [TermsSubjectsController::class, 'destroy'])->name('delete');
     });
-
 
     Route::group(['middleware' => 'can:manage_terms', 'as' => 'exams.', 'prefix' => 'exams'], function () {
         Route::get('/', [ExamsController::class, 'index'])->name('index');

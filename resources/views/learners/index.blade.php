@@ -193,8 +193,9 @@
                             <thead>
                             <tr>
                                 <th>{{ __('Name')}}</th>
-                                <th>{{ __('Email')}}</th>
                                 <th>{{ __('School')}}</th>
+                                <th>{{ __('Grade')}}</th>
+                                <th>{{ __('Stream')}}</th>
                                 <th>{{ __('Status')}}</th>
                                 <th>{{ __('Action')}}</th>
                             </tr>
