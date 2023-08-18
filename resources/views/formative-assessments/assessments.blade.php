@@ -146,7 +146,7 @@
                                     <div class="card">
                                         <div class="card-body">
                                             <div class="text-center">
-                                                <h4>{{ __('No Learner Assigned to this Grade') }}</h4>
+                                                <h5>{{ __('No Learner Assigned to this Grade') }}</h5>
                                             </div>
                                         </div>
                                     </div>
