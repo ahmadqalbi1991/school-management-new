@@ -113,37 +113,43 @@
                 <div class="row w-100">
                     <div class="col-12">
                         <div class="row mx-3">
-                            @foreach($learners as $learner)
-                                <div class="col-md-4 col-sm-12">
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h5>{{ $learner->admission_number }} - {{ $learner->name }}</h5>
-                                        </div>
-                                        <div class="card-body">
-                                            <div class="form-radio">
-                                                @foreach($levels as $level)
-                                                    <div class="radio radiofill radio-primary radio-inline">
-                                                        <label>
-                                                            <input type="radio"
-                                                                   class="assessment-checkboxes"
-                                                                   disabled
-                                                                   name="assessments[{{ $learner->id }}]"
-                                                                   data-learner-id="{{ $learner->id }}"
-                                                                   value="{{ $level->id }}"
-                                                            >
-                                                            <i class="helper"></i> <h6>{{ $level->title }} ({{ initials($level->title) }})</h6>
-                                                        </label>
-                                                    </div>
-                                                @endforeach
+                            @if(count($learners))
+                                @foreach($learners as $learner)
+                                    <div class="col-md-4 col-sm-12">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5>{{ $learner->admission_number }} - {{ $learner->name }}</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="form-radio">
+                                                    @foreach($levels as $level)
+                                                        <div class="radio radiofill radio-primary radio-inline">
+                                                            <label>
+                                                                <input type="radio"
+                                                                       class="assessment-checkboxes"
+                                                                       disabled
+                                                                       name="assessments[{{ $learner->id }}]"
+                                                                       data-learner-id="{{ $learner->id }}"
+                                                                       value="{{ $level->id }}"
+                                                                >
+                                                                <i class="helper"></i> <h6>{{ $level->title }} ({{ initials($level->title) }})</h6>
+                                                            </label>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
+                                @endforeach
+                                @else
+                                <div class="col-12">
+                                    {{ __('No Learner Assigned to this Grade') }}
                                 </div>
-                            @endforeach
+                            @endif
                         </div>
                     </div>
                     <div class="col-12 text-right">
-                        <button id="save-btn" type="submit" @if(empty($assessments)) disabled @endif class="btn btn-rounded btn-success">{{ __('Save') }}</button>
+                        <button id="save-btn" type="submit" @if(empty($assessments) || empty($learners)) disabled @endif class="btn btn-rounded btn-success">{{ __('Save') }}</button>
                     </div>
                 </div>
             </div>
