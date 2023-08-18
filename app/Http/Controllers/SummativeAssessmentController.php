@@ -41,7 +41,24 @@ class SummativeAssessmentController extends Controller
             }
 
             if ($class_slug && $stream_slug && !$subject_slug) {
+                $classObj = SchoolClass::where(['slug' => $class_slug, 'school_id' => Auth::user()->school_id])->first();
                 $subjects = getSchoolSubjects(false);
+                $stream = Stream::where('school_id', Auth::user()->school_id)
+                    ->where([
+                        'slug' => $stream_slug,
+                        'class_id' => $classObj->id
+                    ])
+                    ->first();
+
+                $exist = TeacherManagement::where([
+                    'teacher_id' => Auth::id(),
+                    'stream_id' => $stream->id,
+                    'class_id' => $classObj->id
+                ])->first();
+
+                if (!$exist) {
+                    return redirect()->back()->with('error', 'You don`t have access to this page');
+                }
 
                 return view('summative-assessments.subjects', compact('subjects', 'class_slug', 'stream_slug'));
             }
