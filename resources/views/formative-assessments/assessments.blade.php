@@ -143,7 +143,13 @@
                                 @endforeach
                                 @else
                                 <div class="col-12">
-                                    {{ __('No Learner Assigned to this Grade') }}
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="text-center">
+                                                <h4>{{ __('No Learner Assigned to this Grade') }}</h4>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             @endif
                         </div>
