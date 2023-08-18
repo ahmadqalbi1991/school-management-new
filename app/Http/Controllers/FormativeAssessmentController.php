@@ -48,7 +48,10 @@ class FormativeAssessmentController extends Controller
                 $classObj = SchoolClass::where(['slug' => $class_slug, 'school_id' => Auth::user()->school_id])->first();
                 $subjects = getSchoolSubjects(false);
                 $stream = Stream::where('school_id', Auth::user()->school_id)
-                    ->where('slug', $stream_slug)
+                    ->where([
+                        'slug' => $stream_slug,
+                        'class_id' => $classObj->id
+                    ])
                     ->first();
 
                 $exist = TeacherManagement::where([
