@@ -145,7 +145,7 @@
 
     $('#class_id').on('change', function () {
         $.ajax({
-            url: '/get-streams/' + $(this).val(),
+            url: '/get-subjects/' + $(this).val(),
             type: 'GET',
             success: function (response) {
                 $('#stream-id').html(response.streams).select2()

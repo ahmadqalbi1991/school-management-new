@@ -122,8 +122,10 @@
                                             </select>
                                             <div class="form-check mx-2">
                                                 <label class="custom-control custom-checkbox">
-                                                    <input type="checkbox" value="1" name="all_students" class="custom-control-input" id="all_learners" disabled>
-                                                    <span class="custom-control-label">&nbsp; {{ __('Assign selected learning areas to all learners') }}</span>
+                                                    <input type="checkbox" value="1" name="all_students"
+                                                           class="custom-control-input" id="all_learners" disabled>
+                                                    <span
+                                                        class="custom-control-label">&nbsp; {{ __('Assign selected learning areas to all learners') }}</span>
                                                 </label>
                                             </div>
                                         </div>
@@ -150,7 +152,7 @@
                             <tr>
                                 <th>{{ __('Name')}}</th>
                                 <th>{{ __('School')}}</th>
-                                                                <th>{{ __('Grade')}}</th>
+                                <th>{{ __('Grade')}}</th>
                                 <th>{{ __('Stream')}}</th>
                                 <th>{{ __('Status')}}</th>
                                 <th>{{ __('Action')}}</th>
