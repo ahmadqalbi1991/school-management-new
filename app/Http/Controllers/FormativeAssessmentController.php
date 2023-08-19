@@ -446,6 +446,7 @@ class FormativeAssessmentController extends Controller
             ->get();
 
         $result = [];
+        dd($learner_subjects);
         foreach ($learner_subjects as $subject) {
             $strands = Strand::where('subject_id', $subject->subject_id)
                 ->with('sub_strands', function ($q) {
