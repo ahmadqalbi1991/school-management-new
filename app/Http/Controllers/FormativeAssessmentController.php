@@ -490,6 +490,8 @@ class FormativeAssessmentController extends Controller
             }
         }
 
+        dd($result);
+
         $learner = User::find($learner_id);
         $term = Term::find($term_id);
         $admins = getSchoolAdmins($school->id);
