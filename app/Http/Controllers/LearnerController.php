@@ -271,10 +271,13 @@ class LearnerController extends Controller
 
             if (count($learner_ids)) {
                 foreach ($learner_ids as $learner_id) {
-                    LearnerSubject::where(['learner_id' => $learner_id])->delete();
                     foreach ($subject_ids as $id) {
                         $input['subject_id'] = $id;
                         $input['learner_id'] = $learner_id;
+                        $exists = LearnerSubject::where($input)->exists();
+                        if (!$exists) {
+                            LearnerSubject::create($input);
+                        }
                         LearnerSubject::create($input);
                     }
                 }
@@ -287,10 +290,13 @@ class LearnerController extends Controller
                 ])->get();
                 $learner_ids = $learners->pluck('id')->toArray();
                 foreach ($learner_ids as $learner_id) {
-                    LearnerSubject::where(['learner_id' => $learner_id])->delete();
                     foreach ($subject_ids as $id) {
                         $input['subject_id'] = $id;
                         $input['learner_id'] = $learner_id;
+                        $exists = LearnerSubject::where($input)->exists();
+                        if (!$exists) {
+                            LearnerSubject::create($input);
+                        }
                         LearnerSubject::create($input);
                     }
                 }
@@ -327,10 +333,13 @@ class LearnerController extends Controller
 
             if (count($learner_ids)) {
                 foreach ($learner_ids as $learner_id) {
-                    LearnerSubject::where(['learner_id' => $learner_id])->delete();
                     foreach ($subject_ids as $id) {
                         $input['subject_id'] = $id;
                         $input['learner_id'] = $learner_id;
+                        $exists = LearnerSubject::where($input)->exists();
+                        if (!$exists) {
+                            LearnerSubject::create($input);
+                        }
                         LearnerSubject::create($input);
                     }
                 }
@@ -343,10 +352,13 @@ class LearnerController extends Controller
                 ])->get();
                 $learner_ids = $learners->pluck('id')->toArray();
                 foreach ($learner_ids as $learner_id) {
-                    LearnerSubject::where(['learner_id' => $learner_id])->delete();
                     foreach ($subject_ids as $id) {
                         $input['subject_id'] = $id;
                         $input['learner_id'] = $learner_id;
+                        $exists = LearnerSubject::where($input)->exists();
+                        if (!$exists) {
+                            LearnerSubject::create($input);
+                        }
                         LearnerSubject::create($input);
                     }
                 }

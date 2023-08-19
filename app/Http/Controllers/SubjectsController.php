@@ -223,7 +223,6 @@ class SubjectsController extends Controller
                 return $q->where('school_id', Auth::user()->school_id);
             })
                 ->with(['school', 'assigned_subjects'])->get();
-            $hasManagePermission = Auth::user()->can('manage_subjects');
 
             return Datatables::of($data)
                 ->addColumn('school', function ($data) {
@@ -238,15 +237,10 @@ class SubjectsController extends Controller
 
                     return $output;
                 })
-                ->addColumn('action', function ($data) use ($hasManagePermission) {
-                    $output = '';
-                    if ($hasManagePermission) {
-                        $output = '<div class="">
-                                    <a href="?class_id=' . $data->id . '&school_id=' . $data->school->id . '"><i class="ik ik-edit f-16 text-blue"></i></a>
-                                </div>';
-                    }
-
-                    return $output;
+                ->addColumn('action', function ($data) {
+                    return '<div class="">
+                                <a href="?class_id=' . $data->id . '&school_id=' . $data->school->id . '"><i class="ik ik-edit f-16 text-blue"></i></a>
+                            </div>';
                 })
                 ->rawColumns(['subjects', 'action'])
                 ->make(true);
