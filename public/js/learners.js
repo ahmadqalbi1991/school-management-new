@@ -168,17 +168,6 @@
         })
     })
 
-    $('#class_id').on('change', function () {
-        $.ajax({
-            url: '/get-streams/' + $(this).val(),
-            type: 'GET',
-            success: function (response) {
-                $('#stream-id').html(response.streams).select2()
-                $('#stream-id').prop('disabled', false)
-            }
-        })
-    })
-
     $('#all_learners').on('change', function () {
         if ($(this).is(':checked')) {
             $('#learner-id').prop('disabled', true).select();
