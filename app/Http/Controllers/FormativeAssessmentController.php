@@ -437,8 +437,6 @@ class FormativeAssessmentController extends Controller
             })
             ->first();
 
-        dd($stream);
-
         $learner_subjects = LearnerSubject::where([
             'class_id' => $stream->school_class->id,
             'stream_id' => $stream->id,
@@ -448,7 +446,7 @@ class FormativeAssessmentController extends Controller
             ->get();
 
         $result = [];
-        dd($learner_subjects);
+        dd($stream->school_class->id, $stream->id, $learner_id);
         foreach ($learner_subjects as $subject) {
             $strands = Strand::where('subject_id', $subject->subject_id)
                 ->with('sub_strands', function ($q) {
