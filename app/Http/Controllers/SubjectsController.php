@@ -75,7 +75,7 @@ class SubjectsController extends Controller
                 }
 
                 if (Auth::user()->role === 'super_admin') {
-                        $subject = $data->title;
+                    $subject = $data->title;
                 }
 
                 return $subject;
@@ -98,7 +98,7 @@ class SubjectsController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -118,8 +118,8 @@ class SubjectsController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -139,7 +139,7 @@ class SubjectsController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -167,7 +167,8 @@ class SubjectsController extends Controller
     /**
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
      */
-    public function assignedSubjects(Request $request) {
+    public function assignedSubjects(Request $request)
+    {
         try {
             $subjects = Subjects::all();
             $schools = School::where('active', 1)->get();
@@ -196,18 +197,17 @@ class SubjectsController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function assignSubjects (Request $request) {
+    public function assignSubjects(Request $request)
+    {
         try {
             $input = $request->except('_token');
             $subject_ids = $input['subject_id'];
             unset($input['subject_id']);
 
+            AssignedSubjectsClass::where(['class_id' => $input['class_id'], 'school_id' => $input['school_id']])->delete();
             foreach ($subject_ids as $id) {
                 $input['subject_id'] = $id;
-                $exist = AssignedSubjectsClass::where($input)->exists();
-                if (!$exist) {
-                    AssignedSubjectsClass::create($input);
-                }
+                AssignedSubjectsClass::create($input);
             }
 
             return back()->with('success', 'Subjects added to class');
@@ -217,7 +217,8 @@ class SubjectsController extends Controller
         }
     }
 
-    public function getAssignedList(Request $request) {
+    public function getAssignedList(Request $request)
+    {
         try {
             $data = SchoolClass::when(Auth::user()->role !== 'super_admin', function ($q) {
                 return $q->where('school_id', Auth::user()->school_id);

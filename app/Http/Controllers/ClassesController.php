@@ -168,7 +168,7 @@ class ClassesController extends Controller
     public function getStreams($id) {
         try {
             $streams = Stream::where('class_id', $id)->get();
-            $subjects = getSchoolSubjects(true, 1, $id);
+            $subjects = getSchoolSubjects(true, $id);
 
             $stream_html = '<option value="">Select Stream</option>';
             $subjects_html = '<option value="">Select Learning Area</option>';
@@ -189,7 +189,7 @@ class ClassesController extends Controller
 
     public function getSubjects($id) {
         try {
-            $subjects = getSchoolSubjects(true, 1, $id);
+            $subjects = getSchoolSubjects(true, $id);
             $subjects_html = '<option value="">Select Learning Area</option>';
 
             foreach ($subjects as $subject) {

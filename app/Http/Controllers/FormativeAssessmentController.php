@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Jobs\EmailJob;
 use App\Models\AssignedSubject;
-use App\Models\ClassSubject;
 use App\Models\LearnerSubject;
 use App\Models\PerformanceLevel;
 use App\Models\SchoolClass;
@@ -17,9 +16,7 @@ use App\Models\Term;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Auth;
-use PDF;
-use Response;
+use Auth, PDF, Response;
 use Yajra\DataTables\DataTables;
 
 class FormativeAssessmentController extends Controller
@@ -46,7 +43,7 @@ class FormativeAssessmentController extends Controller
 
             if ($class_slug && $stream_slug && !$subject_slug) {
                 $classObj = SchoolClass::where(['slug' => $class_slug, 'school_id' => Auth::user()->school_id])->first();
-                $subjects = getSchoolSubjects(false);
+                $subjects = getSchoolSubjects(false, $classObj->id);
                 $stream = Stream::where('school_id', Auth::user()->school_id)
                     ->where([
                         'slug' => $stream_slug,
@@ -417,7 +414,6 @@ class FormativeAssessmentController extends Controller
             }
 
         } catch (\Exception $e) {
-            dd($e);
             $bug = $e->getMessage();
             return redirect()->back()->with('error', $bug);
         }
