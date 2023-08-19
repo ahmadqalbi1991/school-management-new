@@ -38,71 +38,69 @@
             @include('include.message')
             <!-- end message area-->
             <!-- only those have manage_permission permission will get access -->
-            @can('manage_subjects')
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header"><h3>{{ empty($subject) ? __('Add subject') : __('Edit subject') }}</h3>
-                        </div>
-                        <div class="card-body">
-                            <form class="forms-sample" method="POST" data-parsley-validate
-                                  action="{{ route('subjects.assign-subject') }}">
-                                @csrf
-                                <div class="row">
-                                    <div class="col-md-6 col-sm-12">
-                                        <div class="form-group">
-                                            <label for="subject_id">{{ __('Subjects')}}<span
-                                                    class="text-red">*</span></label>
-                                            <select name="subject_id[]" id="subject_id" multiple
-                                                    class="form-control select2">
-                                                <option value="">{{ __('Select Learning Area') }}</option>
-                                                @foreach($subjects as $subject)
-                                                    <option @if(in_array($subject->id, $assigned_subject_ids)) selected
-                                                            @endif value="{{ $subject->id }}">{{ $subject->title }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 col-sm-12">
-                                        <div class="form-group">
-                                            <label for="school_id">{{ __('School')}}<span
-                                                    class="text-red">*</span></label>
-                                            <select name="school_id" id="school_id" class="form-control select2">
-                                                <option value="">{{ __('Select School') }}</option>
-                                                @foreach($schools as $school)
-                                                    <option
-                                                        value="{{ $school->id }}"
-                                                        @if(request()->has('school_id') && request()->get('school_id') == $school->id) selected @endif>{{ $school->school_name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label for="class_id">{{ __('Classes')}}<span
-                                                    class="text-red">*</span></label>
-                                            <select name="class_id" id="class_id" class="form-control select2">
-                                                <option value="">{{ __('Select Grades') }}</option>
-                                                @if(!empty($classes))
-                                                    @foreach($classes as $class)
-                                                        <option value="{{ $class->id }}"
-                                                                @if(request()->has('class_id') && request()->get('class_id') == $class->id) selected @endif>{{ $class->class }}</option>
-                                                    @endforeach
-                                                @endif
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12 text-right">
-                                        <div class="form-group">
-                                            <button type="submit"
-                                                    class="btn btn-success btn-rounded">{{ __('Save')}}</button>
-                                        </div>
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header"><h3>{{ empty($subject) ? __('Add subject') : __('Edit subject') }}</h3>
+                    </div>
+                    <div class="card-body">
+                        <form class="forms-sample" method="POST" data-parsley-validate
+                              action="{{ route('subjects.assign-subject') }}">
+                            @csrf
+                            <div class="row">
+                                <div class="col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        <label for="subject_id">{{ __('Subjects')}}<span
+                                                class="text-red">*</span></label>
+                                        <select name="subject_id[]" id="subject_id" multiple
+                                                class="form-control select2">
+                                            <option value="">{{ __('Select Learning Area') }}</option>
+                                            @foreach($subjects as $subject)
+                                                <option @if(in_array($subject->id, $assigned_subject_ids)) selected
+                                                        @endif value="{{ $subject->id }}">{{ $subject->title }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                 </div>
-                            </form>
-                        </div>
+                                <div class="col-md-6 col-sm-12">
+                                    <div class="form-group">
+                                        <label for="school_id">{{ __('School')}}<span
+                                                class="text-red">*</span></label>
+                                        <select name="school_id" id="school_id" class="form-control select2">
+                                            <option value="">{{ __('Select School') }}</option>
+                                            @foreach($schools as $school)
+                                                <option
+                                                    value="{{ $school->id }}"
+                                                    @if(request()->has('school_id') && request()->get('school_id') == $school->id) selected @endif>{{ $school->school_name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="class_id">{{ __('Classes')}}<span
+                                                class="text-red">*</span></label>
+                                        <select name="class_id" id="class_id" class="form-control select2">
+                                            <option value="">{{ __('Select Grades') }}</option>
+                                            @if(!empty($classes))
+                                                @foreach($classes as $class)
+                                                    <option value="{{ $class->id }}"
+                                                            @if(request()->has('class_id') && request()->get('class_id') == $class->id) selected @endif>{{ $class->class }}</option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 text-right">
+                                    <div class="form-group">
+                                        <button type="submit"
+                                                class="btn btn-success btn-rounded">{{ __('Save')}}</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
-            @endcan
+            </div>
             <div class="col-12">
                 <div class="card p-3">
                     <div class="card-header">
