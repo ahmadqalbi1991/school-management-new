@@ -437,6 +437,8 @@ class FormativeAssessmentController extends Controller
             })
             ->first();
 
+        dd($stream);
+
         $learner_subjects = LearnerSubject::where([
             'class_id' => $stream->school_class->id,
             'stream_id' => $stream->id,
