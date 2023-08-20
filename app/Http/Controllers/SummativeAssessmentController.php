@@ -444,6 +444,8 @@ class SummativeAssessmentController extends Controller
             $admins = getSchoolAdmins($school->id);
             $levels = SummativePerformnceLevel::whereIn('created_by', $admins)->latest()->get();
 
+            dd($result);
+
             $data = [
                 'school' => $school,
                 'stream' => $stream,
