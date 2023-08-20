@@ -526,6 +526,7 @@ class FormativeAssessmentController extends Controller
             return $pdf->stream('report_card_' . $term->term . '.pdf');
         } catch (\Exception $e) {
             $bug = $e->getMessage();
+            dd($e);
             return redirect()->back()->with('error', $bug);
         }
     }
