@@ -421,6 +421,7 @@ class SummativeAssessmentController extends Controller
 
             $result = [];
             $total = 0;
+            dd($users);
             foreach ($users as $user) {
                 $level = $score = '';
                 if (!empty($user->summative_assessments[0]) && !empty($user->summative_assessments[0]->level)) {
