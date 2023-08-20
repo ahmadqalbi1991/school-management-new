@@ -458,6 +458,7 @@ class SummativeAssessmentController extends Controller
             $pdf = PDF::loadView('pdfs.summative-class', $data);
             return $pdf->stream('class_summative_report_' . $stream->school_class->class . '_' . $stream->title . '_' . $term->term . '.pdf');
         } catch (\Exception $e) {
+            dd($e);
             $bug = $e->getMessage();
             return redirect()->back()->with('error', $bug);
         }
