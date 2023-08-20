@@ -177,8 +177,11 @@
             <tfoot>
             <tr>
                 @php
-                dd($results);
+                if (count($results)) {
                     $final_performance = $total_points / count($results);
+                } else {
+                    $final_performance = 0;
+                }
                 @endphp
                 <th colspan="2">{{ __('Class Average') }}</th>
                 <th style="text-align: right">{{ round($final_performance, 2) }}</th>

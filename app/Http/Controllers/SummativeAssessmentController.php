@@ -433,7 +433,6 @@ class SummativeAssessmentController extends Controller
 
             $result = [];
             $total = 0;
-            dd($users);
             foreach ($users as $user) {
                 $level = $score = '';
                 if (!empty($user->summative_assessments[0]) && !empty($user->summative_assessments[0]->level)) {
@@ -457,8 +456,6 @@ class SummativeAssessmentController extends Controller
             $admins = getSchoolAdmins($school->id);
             $levels = SummativePerformnceLevel::whereIn('created_by', $admins)->latest()->get();
 
-            dd($result);
-
             $data = [
                 'school' => $school,
                 'stream' => $stream,
@@ -473,7 +470,6 @@ class SummativeAssessmentController extends Controller
             $pdf = PDF::loadView('pdfs.summative-class', $data);
             return $pdf->stream('class_summative_report_' . $stream->school_class->class . '_' . $stream->title . '_' . $term->term . '.pdf');
         } catch (\Exception $e) {
-            dd($e);
             $bug = $e->getMessage();
             return redirect()->back()->with('error', $bug);
         }
