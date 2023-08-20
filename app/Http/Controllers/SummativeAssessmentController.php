@@ -565,7 +565,6 @@ class SummativeAssessmentController extends Controller
                 $data = self::generatePdf($learner, $input['stream_id'], $input['term_id'], $input['exam_id']);
                 $term = $data['term'];
                 $view = view('pdfs.summative-result')->with($data);
-//                return $view;
                 $html .= $view->render();
             }
 
@@ -574,6 +573,7 @@ class SummativeAssessmentController extends Controller
             return $pdf->stream('report_card_' . $term->term . '.pdf');
         } catch (\Exception $e) {
             $bug = $e->getMessage();
+            dd($e);
             return redirect()->back()->with('error', $bug);
         }
     }
