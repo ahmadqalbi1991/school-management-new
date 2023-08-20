@@ -403,10 +403,23 @@ class SummativeAssessmentController extends Controller
                     });
                 })
                 ->first();
-            $users = User::where([
+            $assessments = SummativeAssessment::where([
                 'stream_id' => $input['stream_id'],
-                'role' => 'learner',
+                'term_id' => $input['term_id'],
+                'subject_id' => $input['subject_id'],
+                'exam_id' => $input['exam_id'],
             ])
+                ->get();
+
+            $learners = [];
+            if ($assessments->count()) {
+                $learners = array_unique($assessments->pluck('learner_id')->toArray());
+            }
+            $users = User::where([
+                'role' => 'learner',
+                'status' => 'active'
+            ])
+                ->whereIn('id', $learners)
                 ->with('summative_assessments', function ($q) use ($input) {
                     return $q->where([
                         'stream_id' => $input['stream_id'],
