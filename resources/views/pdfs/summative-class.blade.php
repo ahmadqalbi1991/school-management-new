@@ -177,7 +177,7 @@
             <tfoot>
             <tr>
                 @php
-                dd($results)
+                dd($results);
                     $final_performance = $total_points / count($results);
                 @endphp
                 <th colspan="2">{{ __('Class Average') }}</th>
