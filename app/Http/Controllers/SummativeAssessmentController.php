@@ -406,7 +406,6 @@ class SummativeAssessmentController extends Controller
             $users = User::where([
                 'stream_id' => $input['stream_id'],
                 'role' => 'learner',
-                'status' => 'active'
             ])
                 ->with('summative_assessments', function ($q) use ($input) {
                     return $q->where([
