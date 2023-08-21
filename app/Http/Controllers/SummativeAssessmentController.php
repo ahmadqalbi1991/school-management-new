@@ -87,6 +87,7 @@ class SummativeAssessmentController extends Controller
                     'stream_id' => $stream->id
                 ])
                     ->whereIn('id', $assigned_learners->pluck('learner_id')->toArray())
+                    ->orderBy('admission_number', 'asc')
                     ->get();
                 $terms = Term::where('school_id', Auth::user()->school_id)->get();
                 $admins = getSchoolAdmins();

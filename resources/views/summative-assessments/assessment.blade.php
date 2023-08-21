@@ -96,6 +96,7 @@
                                class="table table-striped table-bordered nowrap">
                             <thead>
                             <tr>
+                                <th>{{ __('Admission Number') }}</th>
                                 <th>
                                     <strong>{{ __('Learners')}}</strong>
                                 </th>
@@ -107,6 +108,7 @@
                             <tbody>
                             @foreach($learners as $key => $learner)
                                 <tr>
+                                    <td>{{ $learner->admission_number }}</td>
                                     <td>
                                         <strong>
                                             {{ $learner->name }}
