@@ -96,7 +96,7 @@
                                class="table table-striped table-bordered nowrap">
                             <thead>
                             <tr>
-                                <th>{{ __('Admission Number') }}</th>
+                                <th>{{ __('Adm no') }}</th>
                                 <th>
                                     <strong>{{ __('Learners')}}</strong>
                                 </th>
