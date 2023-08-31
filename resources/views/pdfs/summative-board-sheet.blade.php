@@ -128,6 +128,7 @@
         <div class="school-img">
 {{--            <img src="<?php echo $_SERVER["DOCUMENT_ROOT"].'/public/' . $school->logo;?>"/>--}}
 {{--            <img src="{{ public_path($school->logo) }}" alt="">--}}
+            <img src="{{'data:image/png;base64,' . base64_encode(file_get_contents(@$school->logo))}}" alt="">
         </div>
         <div class="school-address">
             <h5>{{ $school->school_name }}</h5>
