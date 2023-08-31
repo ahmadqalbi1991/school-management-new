@@ -121,12 +121,10 @@ class SummativeSheetController extends Controller
             $data['totals'] = $learning_activity_total;
 
             $pdf = PDF::loadView('pdfs.summative-board-sheet', $data);
-            $pdf->setPaper('a4', 'landscape');
-            $content = $pdf->output();
-            \Storage::put('public/reports/summative_board_sheet' . $term->term . '.pdf', $content);
+//            $pdf->setPaper('a4', 'landscape');
 //            return view('pdfs.summative-board-sheet')->with($data);
 //            dd($pdf, $term);
-            return $pdf->stream(\Storage::disk('public')->path('reports/summative_board_sheet' . $term->term . '.pdf'));
+            return $pdf->stream('summative_board_sheet' . $term->term . '.pdf');
         } catch (\Exception $e) {
             $bug = $e->getMessage();
             return redirect()->back()->with('error', $bug);
