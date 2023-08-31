@@ -356,7 +356,6 @@ class SummativeAssessmentController extends Controller
             $learner = $data['learner'];
             $term = $data['term'];
 
-            return view('pdfs.summative-result')->with($data);
             $pdf = PDF::loadView('pdfs.summative-result', $data);
             if ($send_email) {
                 $content = $pdf->output();
