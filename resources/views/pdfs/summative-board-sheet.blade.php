@@ -127,7 +127,7 @@
     <div class="school-detail-wrapper">
         <div class="school-img">
 {{--            <img src="<?php echo $_SERVER["DOCUMENT_ROOT"].'/public/' . $school->logo;?>"/>--}}
-            <img src="/public/{{ $school->logo }}" alt="">
+            <img src="./public/{{ $school->logo }}" alt="">
         </div>
         <div class="school-address">
             <h5>{{ $school->school_name }}</h5>
