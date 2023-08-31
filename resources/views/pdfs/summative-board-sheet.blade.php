@@ -149,7 +149,7 @@
                 <th>{{ __('Learner') }}</th>
                 <th>{{ __('Stream') }}</th>
                 @foreach($subjects as $subject)
-                    <th>{{ $subject->subject->title }}</th>
+                    <th>{{ $subject->subject->shortcode }}</th>
                 @endforeach
                 <th>{{ __('Learner Total') }}</th>
                 <th>{{ __('Learner Average') }}</th>
@@ -245,18 +245,6 @@
             </tr>
             </tfoot>
         </table>
-    </div>
-    <div class="signatures">
-        <div class="teacher">
-            <p>{{ __('Signature') }}</p>
-            <div class="border"></div>
-            <p>Class Teacher</p>
-        </div>
-        <div class="principle">
-            <p>{{ __('Signature') }}</p>
-            <div class="border"></div>
-            <p>Principal</p>
-        </div>
     </div>
     <footer>
         <p>Powered by CRE.CO.KE</p>

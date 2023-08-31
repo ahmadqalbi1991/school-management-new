@@ -47,12 +47,20 @@
                                   action="{{ empty($subject) ? route('subjects.store') : route('subjects.update', ['id' => $subject->id])}}">
                                 @csrf
                                 <div class="row">
-                                    <div class="col-12">
+                                    <div class="col-md-6 col-sm-12">
                                         <div class="form-group">
                                             <label for="title">{{ __('Name')}}<span class="text-red">*</span></label>
                                             <input type="text" class="form-control" id="title"
                                                    value="{{ !empty($subject) ? $subject->title : '' }}" name="title"
                                                    placeholder="Learning Area Title" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12">
+                                        <div class="form-group">
+                                            <label for="title">{{ __('Short Code')}}<span class="text-red">*</span></label>
+                                            <input type="text" class="form-control" id="title"
+                                                   value="{{ !empty($subject) ? $subject->shortcode : '' }}" name="shortcode"
+                                                   placeholder="Learning Area Short Code" required>
                                         </div>
                                     </div>
                                     <div class="col-sm-12 text-right">

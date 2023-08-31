@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Subjects extends Model
 {
     use HasFactory;
-    protected $fillable = ['title', 'slug'];
+    protected $fillable = ['title', 'slug', 'shortcode'];
 
     public function strands(): HasMany
     {
