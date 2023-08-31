@@ -126,7 +126,7 @@
 <div class="pdf-wrapper">
     <div class="school-detail-wrapper">
         <div class="school-img">
-            <img src="{{ public_path($school->logo) }}" alt="">
+           <img src="{{ url('/') . '/' . $school->logo }}" alt="" width='100%' height="auto">
         </div>
         <div class="school-address">
             <h5>{{ $school->school_name }}</h5>
