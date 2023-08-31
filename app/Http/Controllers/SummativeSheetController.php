@@ -122,9 +122,8 @@ class SummativeSheetController extends Controller
 
             $pdf = PDF::loadView('pdfs.summative-board-sheet', $data);
             $pdf->setPaper('a4', 'landscape');
-            return $pdf->stream('summative_board_sheet' . $term->term . '.pdf');
+            return $pdf->download('summative_board_sheet' . $term->term . '.pdf');
         } catch (\Exception $e) {
-            dd($e);
             $bug = $e->getMessage();
             return redirect()->back()->with('error', $bug);
         }
