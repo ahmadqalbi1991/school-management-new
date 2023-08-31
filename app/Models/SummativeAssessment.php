@@ -39,4 +39,9 @@ class SummativeAssessment extends Model
     {
         return $this->belongsTo(Exam::class, 'exam_id', 'id');
     }
+
+    public function stream(): BelongsTo
+    {
+        return $this->belongsTo(Stream::class, 'stream_id', 'id');
+    }
 }

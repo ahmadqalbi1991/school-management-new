@@ -195,6 +195,16 @@
                         </div>
                     @endif
                 @endcan
+                @can('manage_summative_sheet')
+                    @if(in_array(Auth::user()->role, ['admin', 'teacher']))
+                        <div class="nav-item {{ ($segment1 == 'summative-board-sheet') ? 'active' : '' }}">
+                            <a href="{{route('summative-board-sheet.index')}}">
+                                <i class="ik ik-pie-chart"></i>
+                                <span>{{ __('Summative Board Sheet')}}</span>
+                            </a>
+                        </div>
+                    @endif
+                @endcan
             </nav>
         </div>
     </div>

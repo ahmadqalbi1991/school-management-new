@@ -14,6 +14,7 @@ use App\Http\Controllers\SubjectsController;
 use App\Http\Controllers\SubStrandController;
 use App\Http\Controllers\SummativeAssessmentController;
 use App\Http\Controllers\SummativePerformanceLevelsController;
+use App\Http\Controllers\SummativeSheetController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\TermsController;
 use App\Http\Controllers\TermsSubjectsController;
@@ -156,6 +157,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::group(['middleware' => 'can:manage_consolidate_reports', 'as' => 'consolidate-reports.', 'prefix' => 'consolidate-reports'], function () {
         Route::get('/', [ConsolidateReportController::class, 'index'])->name('index');
         Route::post('/generate-reports', [ConsolidateReportController::class, 'generateReports'])->name('generate-reports');
+    });
+
+    Route::group(['middleware' => 'can:manage_summative_sheet', 'as' => 'summative-board-sheet.', 'prefix' => 'summative-board-sheet'], function () {
+        Route::get('/', [SummativeSheetController::class, 'index'])->name('index');
+        Route::post('/generate-reports', [SummativeSheetController::class, 'generateReports'])->name('generate-reports');
     });
 
     Route::group(['middleware' => 'can:manage_summative_assessments', 'as' => 'summative-reports.', 'prefix' => 'summative-reports'], function () {
