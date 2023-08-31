@@ -124,6 +124,7 @@ class SummativeSheetController extends Controller
             $pdf->setPaper('a4', 'landscape');
             return $pdf->stream('summative_board_sheet' . $term->term . '.pdf');
         } catch (\Exception $e) {
+            dd($e);
             $bug = $e->getMessage();
             return redirect()->back()->with('error', $bug);
         }
