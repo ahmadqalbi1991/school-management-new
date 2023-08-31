@@ -110,12 +110,7 @@ class SummativeSheetController extends Controller
                 $learning_activity_total[$key]['average'] = round($average, 2);
             }
 
-            $school = getSchoolSettings();
-            $baseImage = public_path($school->logo);
-            $baseImage = base64_encode($baseImage);
-            $baseImage = 'data:image/png;base64,'.$baseImage;
-            $school->logo = $baseImage;
-            $data['school'] = $school;
+            $data['school'] = getSchoolSettings();
             $term = Term::find($input['term_id']);
             $data['term'] = $term;
             $exams = Exam::whereIn('id', $input['exam_ids'])->get();
