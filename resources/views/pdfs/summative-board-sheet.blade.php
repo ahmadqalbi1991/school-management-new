@@ -239,7 +239,11 @@
                     <td><strong>{{ $average }}</strong></td>
                 @endforeach
                 @php
+                if (count($results)) {
                     $total_average = $total_average / count($results);
+                } else {
+                    $total_average = 0;
+                }
                 @endphp
                 <td colspan="3"><strong>{{ round($total_average, 2) }}</strong></td>
             </tr>
