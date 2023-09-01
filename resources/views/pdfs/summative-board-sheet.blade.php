@@ -250,12 +250,13 @@
             </tfoot>
         </table>
     </div>
-    <div class="school-addres">
-        <p>
+    <div class="term-details">
+        <br><br>
+        <h4>
         @foreach($subjects as $subject)
-            {{ $subject->shortcode }} - {{ $subject->title }}
+            {{ $subject->subject->shortcode }} - {{ $subject->subject->title }},
         @endforeach
-        </p>
+        </h4>
     </div>
     <footer>
         <p>Powered by CRE.CO.KE</p>
