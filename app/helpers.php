@@ -65,7 +65,7 @@ function checkPointsCriteria($points, $total_check = false) {
             ->where('max_point', '>=', $points)->first();
     }
 
-    return $level->title;
+    return !empty($level) ? $level->title : '';
 }
 
 function getSchoolSubjects($all = true, $id = null) {
