@@ -143,7 +143,7 @@
         <p><strong>{{ __('Learner') }}: </strong>{{ $learner->name }}</p>
         <p><strong>{{ __('Admission') }} #: </strong>{{ $learner->admission_number }}</p>
         <p><strong>{{ __('Grade') }}: </strong>{{ $stream->school_class->class }}</p>
-        <p><strong>{{ __('Stream') }}: </strong>{{ $stream->title }}</p>
+{{--        <p><strong>{{ __('Stream') }}: </strong>{{ $stream->title }}</p>--}}
     </div>
 {{--    <div class="levels-details">--}}
 {{--        @foreach($levels as $level)--}}
