@@ -145,11 +145,11 @@
         <p><strong>{{ __('Grade') }}: </strong>{{ $stream->school_class->class }}</p>
         <p><strong>{{ __('Stream') }}: </strong>{{ $stream->title }}</p>
     </div>
-    <div class="levels-details">
-        @foreach($levels as $level)
-            <div>&#x2022; {{ $level->title }} - <strong>{{ initials($level->title) }}</strong> ({{ $level->min_point }} - {{ $level->max_point }} Points)</div>
-        @endforeach
-    </div>
+{{--    <div class="levels-details">--}}
+{{--        @foreach($levels as $level)--}}
+{{--            <div>&#x2022; {{ $level->title }} - <strong>{{ initials($level->title) }}</strong> ({{ $level->min_point }} - {{ $level->max_point }} Points)</div>--}}
+{{--        @endforeach--}}
+{{--    </div>--}}
     <div class="date-generated">Date Generated: {{ \Carbon\Carbon::now()->format('d/m/Y') }}</div>
     <div class="subjects-table">
         <table>
