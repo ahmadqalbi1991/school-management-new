@@ -35,7 +35,9 @@
                             <div class="logo-centered">
                                 <a href="http://radmin.rakibhstu.com"><img height="40" src="{{ asset('img/logo.png') }}" alt="RADMIN" ></a>
                             </div>
-                            <p>Welcome back! </p>
+                            @if(\Session::has('error'))
+                            <div class="alert alert-danger">{{ \Session::get('error') }}</div>
+                            @endif
                             <form method="POST" action="{{ route('login') }}">
                             @csrf
                                 <div class="form-group">
