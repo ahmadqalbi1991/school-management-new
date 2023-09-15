@@ -57,15 +57,21 @@ function checkPointsCriteria($points, $total_check = false) {
     $max = $levels->max('max_point');
 
     if ($points < $min) {
-        dd(1);
         $level = $levels->where('min_point', $min)->first();
+        if ($points == '3.44') {
+            dd(1, $level);
+        }
     } else if ($points > $max) {
-        dd(2);
         $level = $levels->where('max_point', $max)->first();
+        if ($points == '3.44') {
+            dd(2, $level);
+        }
     } else {
-        dd(3);
         $level = $levels->where('min_point', '<=', $points)
             ->where('max_point', '>=', $points)->first();
+        if ($points == '3.44') {
+            dd(3, $level);
+        }
     }
 
     if ($points == '3.44') {
