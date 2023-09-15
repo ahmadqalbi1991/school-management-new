@@ -52,6 +52,7 @@ function checkSummetiveCriteria($points) {
 
 function checkPointsCriteria($points, $total_check = false) {
     $levels = PerformanceLevel::get();
+    $points = round($points, 1);
 
     $min = $levels->min('min_point');
     $max = $levels->max('max_point');
