@@ -147,7 +147,7 @@
     </div>
     <div class="levels-details">
         @foreach($levels as $level)
-            <div>&#x2022; {{ $level->title }} - <strong>{{ initials($level->title) }}</strong> ({{ $level->min_point }} - {{ $level->max_point }} Points)</div>
+            <div>&#x2022; {{ $level->teacher_remark }}  {{ $level->title }} - <strong>{{ initials($level->title) }}</strong> ({{ $level->min_point }} - {{ $level->max_point }} Points)</div>
         @endforeach
     </div>
     <div class="date-generated">Date Generated: {{ \Carbon\Carbon::now()->format('d/m/Y') }}</div>
@@ -162,6 +162,7 @@
                 <th>{{ __('Total') }}</th>
                 <th>{{ __('Average') }}</th>
                 <th>{{ __('Summative Remarks of the Average') }}</th>
+                <th>{{ __('Teacher Comment') }}</th>
             </tr>
             </thead>
             <tbody>
@@ -189,6 +190,7 @@
                     <td><strong>{{ $subject_total }}</strong></td>
                     <td><strong>{{ $average }}</strong></td>
                     <td><strong>{{ checkSummetiveCriteria($average) }}</strong></td>
+                    <td><strong>{{ checkSummetiveCriteria($average, true) }}</strong></td>
                 </tr>
             @endforeach
             </tbody>
@@ -202,9 +204,20 @@
                 @endphp
                 <th>{{ $calculated_average }}</th>
                 <th>{{ checkSummetiveCriteria($calculated_average) }}</th>
+                <th>{{ checkSummetiveCriteria($calculated_average, true) }}</th>
             </tr>
             </tfoot>
         </table>
+    </div>
+    <div class="signatures">
+        <div class="teacher">
+            <h4 class="m-0">{{ __('Term Closing Date') }}</h4>
+            <p class="m-0">{{ \Carbon\Carbon::parse($term->end_date)->format('d M, Y') }}</p>
+        </div>
+        <div class="principle">
+            <h4 class="m-0">{{ __('Next Term Start Date') }}</h4>
+            <p class="m-0">{{ \Carbon\Carbon::parse($next_term->start_date)->format('d M, Y') }}</p>
+        </div>
     </div>
     <div class="signatures">
         <div class="teacher">

@@ -147,7 +147,7 @@
     </div>
     <div class="levels-details">
         @foreach($levels as $level)
-            <div>&#x2022; {{ $level->title }} - <strong>{{ initials($level->title) }}</strong> ({{ $level->min_point }} - {{ $level->max_point }} Points)</div>
+            <div>&#x2022; {{ $level->teacher_remark }}  {{ $level->title }} - <strong>{{ initials($level->title) }}</strong> ({{ $level->min_point }} - {{ $level->max_point }} Points)</div>
         @endforeach
     </div>
     <div class="date-generated">Date Generated: {{ \Carbon\Carbon::now()->format('d/m/Y') }}</div>
@@ -158,6 +158,7 @@
                 <th>{{ __('Learning Area') }}</th>
                 <th>{{ __('Performance') }}</th>
                 <th>{{ __('Remarks') }}</th>
+                <th>{{ __('Teacher Comment') }}</th>
             </tr>
             </thead>
             <tbody>
@@ -172,6 +173,7 @@
                     <td>{{ $result['name'] }}</td>
                     <td style="text-align: right">{{ $result['attempted_points'] }}</td>
                     <td>{{ checkPointsCriteria($result['attempted_points']) }}</td>
+                    <td>{{ checkPointsCriteria($result['attempted_points'], true) }}</td>
                 </tr>
             @endforeach
             </tbody>
@@ -182,13 +184,24 @@
                 @endphp
                 <th>{{ __('Final Performance') }}</th>
                 <th style="text-align: right">{{ round($final_performance, 2) }}</th>
+                <th>{{ checkPointsCriteria($final_performance) }}</th>
                 <th>{{ checkPointsCriteria($final_performance, true) }}</th>
             </tr>
             </tfoot>
         </table>
     </div>
     <div class="general-text">This term formative assessment {{ round($final_performance, 2) }}, {{ checkPointsCriteria(round($final_performance, 2), true) }}</div>
-    <p>Your rating was {{ checkPointsCriteria(round($final_performance, 2), true) }}</p>
+    <p>Your rating was {{ checkPointsCriteria(round($final_performance, 2)) }}</p>
+    <div class="signatures">
+        <div class="teacher">
+            <h4 class="m-0">{{ __('Term Closing Date') }}</h4>
+            <p class="m-0">{{ \Carbon\Carbon::parse($term->end_date)->format('d M, Y') }}</p>
+        </div>
+        <div class="principle">
+            <h4 class="m-0">{{ __('Next Term Start Date') }}</h4>
+            <p class="m-0">{{ \Carbon\Carbon::parse($next_term->start_date)->format('d M, Y') }}</p>
+        </div>
+    </div>
     <div class="signatures">
         <div class="teacher">
             <p>{{ __('Signature') }}</p>

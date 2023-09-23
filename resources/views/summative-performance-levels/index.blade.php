@@ -74,6 +74,14 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div class="form-group">
+                                                    <label for="">{{ __('Teacher Remark') }}</label>
+                                                    <input type="text" required value="{{ !empty($level) ? $level->teacher_remark : '' }}" name="teacher_remark" class="form-control">
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">

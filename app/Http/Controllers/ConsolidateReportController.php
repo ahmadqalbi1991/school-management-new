@@ -58,6 +58,9 @@ class ConsolidateReportController extends Controller
                 ->with('school_class')
                 ->first();
             $term = Term::find($input['term_id']);
+            $next_term = Term::where('school_id', $school->id)
+                ->whereDate('start_date', '>', $term->end_date)
+                ->first();
             $admins = getSchoolAdmins($school->id);
             $levels = SummativePerformnceLevel::whereIn('created_by', $admins)->get();
             $assigned_subjects = AssignedSubjectsClass::where([
@@ -95,7 +98,7 @@ class ConsolidateReportController extends Controller
                         unset($reports[$subject_key]);
                     }
                 }
-                $view = view('pdfs.consolidate-report', compact('exams', 'learner', 'levels', 'school', 'term', 'stream', 'reports'));
+                $view = view('pdfs.consolidate-report', compact('exams', 'learner', 'levels', 'school', 'term', 'stream', 'reports', 'next_term'));
                 $html .= $view;
             }
 

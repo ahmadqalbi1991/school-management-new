@@ -19,13 +19,16 @@ class verifySchool
     public function handle(Request $request, Closure $next)
     {
         if (Auth::check()) {
-            $school = School::findOrFail(Auth::user()->school_id);
-            if ($school->active) {
-                return $next($request);
-            } else {
-                Auth::logout();
-                return redirect()->route('login')->with('error', 'You don`t have access to use this system');
+            if (Auth::user()->role !== 'super_admin') {
+                $school = School::findOrFail(Auth::user()->school_id);
+                if ($school->active) {
+                    return $next($request);
+                } else {
+                    Auth::logout();
+                    return redirect()->route('login')->with('error', 'You don`t have access to use this system');
+                }
             }
+            return $next($request);
         }
     }
 }

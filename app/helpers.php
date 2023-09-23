@@ -38,7 +38,7 @@ function initials($str)
     return $ret;
 }
 
-function checkSummetiveCriteria($points) {
+function checkSummetiveCriteria($points, $remark = false) {
     $admins = getSchoolAdmins();
     $level = SummativePerformnceLevel::when(in_array(Auth::user()->role, ['admin', 'teacher']), function ($q) use ($admins) {
         return $q->whereIn('created_by', $admins);
@@ -47,10 +47,10 @@ function checkSummetiveCriteria($points) {
         ->where('max_point', '>=', $points)
         ->first();
 
-    return ! empty($level) ? $level->title : '';
+    return ! empty($level) ? (!$remark ? $level->title : $level->teacher_remark) : '';
 }
 
-function checkPointsCriteria($points, $total_check = false) {
+function checkPointsCriteria($points, $remark = false) {
     $levels = PerformanceLevel::get();
     $points = round($points, 1);
 
@@ -66,7 +66,7 @@ function checkPointsCriteria($points, $total_check = false) {
             ->where('max_point', '>=', $points)->first();
     }
 
-    return !empty($level) ? $level->title : '';
+    return !empty($level) ? (!$remark ? $level->title : $level->teacher_remark) : '';
 }
 
 function getSchoolSubjects($all = true, $id = null) {

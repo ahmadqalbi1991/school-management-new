@@ -454,6 +454,9 @@ class SummativeAssessmentController extends Controller
             }
 
             $term = Term::find($input['term_id']);
+            $next_term = Term::where('school_id', $school->id)
+                ->whereDate('start_date', '>', $term->end_date)
+                ->first();
             $admins = getSchoolAdmins($school->id);
             $levels = SummativePerformnceLevel::whereIn('created_by', $admins)->latest()->get();
 
@@ -462,6 +465,7 @@ class SummativeAssessmentController extends Controller
                 'stream' => $stream,
                 'results' => $result,
                 'term' => $term,
+                'next_term' => $next_term,
                 'levels' => $levels,
                 'exam' => $exam,
                 'subject' => $subject,
@@ -519,8 +523,11 @@ class SummativeAssessmentController extends Controller
 
         $learner = User::find($learner_id);
         $term = Term::find($term_id);
+        $next_term = Term::where('school_id', $school->id)
+            ->whereDate('start_date', '>', $term->end_date)
+            ->first();
         $admins = getSchoolAdmins($school->id);
-        $levels = SummativePerformnceLevel::whereIn('created_by', $admins)->get();
+        $levels = SummativePerformnceLevel::whereIn('created_by', $admins)->orderBy('min_point')->get();
         $assessments = LearnerSubject::where(['stream_id' => $stream_id, 'learner_id' => $learner_id])
             ->with('assessment', function ($q) use ($stream_id, $exam_id, $term_id, $learner_id) {
                 return $q->where([
@@ -534,17 +541,16 @@ class SummativeAssessmentController extends Controller
             ->whereHas('subject')
             ->get();
 
-        $data = [
+        return [
             'school' => $school,
             'stream' => $stream,
             'term' => $term,
+            'next_term' => $next_term,
             'learner' => $learner,
             'assessments' => $assessments,
             'levels' => $levels,
             'admins' => $admins
         ];
-
-        return $data;
     }
 
     /**

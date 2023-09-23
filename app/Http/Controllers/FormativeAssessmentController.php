@@ -490,19 +490,21 @@ class FormativeAssessmentController extends Controller
 
         $learner = User::find($learner_id);
         $term = Term::find($term_id);
+        $next_term = Term::where('school_id', $school->id)
+            ->whereDate('start_date', '>', $term->end_date)
+            ->first();
         $admins = getSchoolAdmins($school->id);
         $levels = PerformanceLevel::latest()->get();
-        $data = [
+        return [
             'school' => $school,
             'stream' => $stream,
             'term' => $term,
+            'next_term' => $next_term,
             'learner' => $learner,
             'results' => $result,
             'levels' => $levels,
             'admins' => $admins
         ];
-
-        return $data;
     }
 
     /**
