@@ -211,6 +211,7 @@
             <p class="m-0">{{ \Carbon\Carbon::parse($term->next_term_date)->format('d M, Y') }}</p>
         </div>
     </div>
+    <br>
     <div class="signatures">
         <div class="teacher">
             <p>{{ __('Signature') }}</p>
