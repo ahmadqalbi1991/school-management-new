@@ -122,6 +122,15 @@
         line-height: 50px;
         text-align: right;
     }
+
+    .term-dates {
+        width: 100%;
+    }
+
+    .term-dates div {
+        width: 50%;
+        float: left;
+    }
 </style>
 <div class="pdf-wrapper">
     <div class="school-detail-wrapper">
@@ -192,7 +201,7 @@
     </div>
     <div class="general-text">This term formative assessment {{ round($final_performance, 2) }}, {{ checkPointsCriteria(round($final_performance, 2), true) }}</div>
     <p>Your rating was {{ checkPointsCriteria(round($final_performance, 2)) }}</p>
-    <div class="signatures">
+    <div class="term-dates">
         <div class="teacher">
             <h4 class="m-0">{{ __('Term Closing Date') }}</h4>
             <p class="m-0">{{ \Carbon\Carbon::parse($term->end_date)->format('d M, Y') }}</p>
