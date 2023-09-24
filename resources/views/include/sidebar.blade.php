@@ -186,7 +186,7 @@
                     </div>
                 @endcan
                 @can('manage_consolidate_reports')
-                    @if(Auth::user()->role === 'admin')
+                    @if(in_array(Auth::user()->role, ['admin', 'teacher']))
                         <div class="nav-item {{ ($segment1 == 'consolidate-reports') ? 'active' : '' }}">
                             <a href="{{route('consolidate-reports.index')}}">
                                 <i class="ik ik-pie-chart"></i>
