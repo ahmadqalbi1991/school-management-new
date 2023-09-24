@@ -1,4 +1,9 @@
 <style>
+
+    .term-dates-table table, .term-dates-table table td {
+        border: none;
+    }
+    
     .school-detail-wrapper {
         display: block;
         width: 100%;
@@ -209,27 +214,31 @@
             </tfoot>
         </table>
     </div>
-    <div class="signatures">
-        <div class="teacher">
-            <h4 class="m-0">{{ __('Term Closing Date') }}</h4>
-            <p class="m-0">{{ \Carbon\Carbon::parse($term->end_date)->format('d M, Y') }}</p>
-        </div>
-        <div class="principle">
-            <h4 class="m-0">{{ __('Next Term Start Date') }}</h4>
-            <p class="m-0">{{ \Carbon\Carbon::parse($term->next_term_date)->format('d M, Y') }}</p>
-        </div>
-    </div>
-    <div class="signatures">
-        <div class="teacher">
-            <p>{{ __('Signature') }}</p>
-            <div class="border"></div>
-            <p>Class Teacher</p>
-        </div>
-        <div class="principle">
-            <p>{{ __('Signature') }}</p>
-            <div class="border"></div>
-            <p>Principal</p>
-        </div>
+    <div class="term-dates-table">
+        <table>
+            <tbody>
+            <tr>
+                <td>
+                    <p class="m-0"><strong>{{ __('Term Closing Date') }}: </strong>{{ \Carbon\Carbon::parse($term->end_date)->format('d M, Y') }}</p>
+                </td>
+                <td>
+                    <p class="m-0"><strong>{{ __('Next Term Start Date') }}: </strong>{{ \Carbon\Carbon::parse($term->next_term_date)->format('d M, Y') }}</p>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p>{{ __('Signature') }}</p>
+                    <div class="border"></div>
+                    <p>Class Teacher</p>
+                </td>
+                <td>
+                    <p>{{ __('Signature') }}</p>
+                    <div class="border"></div>
+                    <p>Principal</p>
+                </td>
+            </tr>
+            </tbody>
+        </table>
     </div>
     <footer>
         <p>Powered by CRE.CO.KE</p>

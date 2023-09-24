@@ -38,7 +38,8 @@ function initials($str)
     return $ret;
 }
 
-function checkSummetiveCriteria($points, $remark = false) {
+function checkSummetiveCriteria($points, $remark = false, $comment = 0)
+{
     $admins = getSchoolAdmins();
     $level = SummativePerformnceLevel::when(in_array(Auth::user()->role, ['admin', 'teacher']), function ($q) use ($admins) {
         return $q->whereIn('created_by', $admins);
@@ -47,10 +48,25 @@ function checkSummetiveCriteria($points, $remark = false) {
         ->where('max_point', '>=', $points)
         ->first();
 
-    return ! empty($level) ? (!$remark ? $level->title : $level->teacher_remark) : '';
+    if (!empty($level)) {
+        if (!$remark) {
+            if ($comment) {
+                return $level['comment_' . $comment];
+            }
+            return $level->title;
+        } else {
+            if (!$comment) {
+                return $level->teacher_remark;
+            }
+            return $level->comment_ . $comment;
+        }
+    }
+
+    return '';
 }
 
-function checkPointsCriteria($points, $remark = false) {
+function checkPointsCriteria($points, $remark = false, $comment = false)
+{
     $levels = PerformanceLevel::get();
     $points = round($points, 1);
 
@@ -66,10 +82,25 @@ function checkPointsCriteria($points, $remark = false) {
             ->where('max_point', '>=', $points)->first();
     }
 
-    return !empty($level) ? (!$remark ? $level->title : $level->teacher_remark) : '';
+    if (!empty($level)) {
+        if (!$remark) {
+            if ($comment) {
+                return $level['comment_' . $comment];
+            }
+            return $level->title;
+        } else {
+            if (!$comment) {
+                return $level->teacher_remark;
+            }
+            return $level->comment_ . $comment;
+        }
+    }
+
+    return '';
 }
 
-function getSchoolSubjects($all = true, $id = null) {
+function getSchoolSubjects($all = true, $id = null)
+{
     $data = [];
     $assigned_subjects = AssignedSubjectsClass::where('school_id', Auth::user()->school_id)
         ->when($id, function ($q) use ($id) {
@@ -95,7 +126,8 @@ function getSchoolSubjects($all = true, $id = null) {
     return $data;
 }
 
-function getSchools() {
+function getSchools()
+{
     if (Auth::user()->role === 'super_admin') {
         $schools = School::all();
     } else {
@@ -105,22 +137,26 @@ function getSchools() {
     return $schools;
 }
 
-function checkFormativeTermLock($id) {
+function checkFormativeTermLock($id)
+{
     $term = Term::where('id', $id)->first();
     return !empty($term) ? $term->lock_term : 0;
 }
 
 
-function checkSummativeExamLock($id) {
+function checkSummativeExamLock($id)
+{
     $exam = Exam::where('id', $id)->first();
     return !empty($exam) ? $exam->exam_lock : 0;
 }
 
-function saveActivity($activity) {
+function saveActivity($activity)
+{
     Activity::create(['user_id' => Auth::id(), 'activity' => $activity]);
 }
 
-function getImage($image) {
+function getImage($image)
+{
     if ($image) {
         return asset($image);
     } else {

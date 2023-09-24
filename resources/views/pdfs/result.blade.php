@@ -160,7 +160,7 @@
                 <th>{{ __('Learning Area') }}</th>
                 <th>{{ __('Performance') }}</th>
                 <th>{{ __('Remarks') }}</th>
-                <th>{{ __('Teacher Comment') }}</th>
+                <th>{{ __('Teacher Remark') }}</th>
             </tr>
             </thead>
             <tbody>
@@ -193,18 +193,17 @@
         </table>
     </div>
     <div class="general-text">This term formative assessment {{ round($final_performance, 2) }}, {{ checkPointsCriteria(round($final_performance, 2), true) }}</div>
-    <p>Your rating was {{ checkPointsCriteria(round($final_performance, 2)) }}</p>
+    <p>{{ __('Teacher Comment:') }} {{ checkPointsCriteria(round($final_performance, 2), false, rand(1, 10)) }}</p>
+    <p>{{ __('Your rating was') }} {{ checkPointsCriteria(round($final_performance, 2)) }}</p>
     <div class="term-dates-table">
         <table>
             <tbody>
             <tr>
                 <td>
-                    <h4 class="m-0">{{ __('Term Closing Date') }}</h4>
-                    <p class="m-0">{{ \Carbon\Carbon::parse($term->end_date)->format('d M, Y') }}</p>
+                    <p class="m-0"><strong>{{ __('Term Closing Date') }}: </strong>{{ \Carbon\Carbon::parse($term->end_date)->format('d M, Y') }}</p>
                 </td>
                 <td>
-                    <h4 class="m-0">{{ __('Next Term Start Date') }}</h4>
-                    <p class="m-0">{{ \Carbon\Carbon::parse($term->next_term_date)->format('d M, Y') }}</p>
+                    <p class="m-0"><strong>{{ __('Next Term Start Date') }}: </strong>{{ \Carbon\Carbon::parse($term->next_term_date)->format('d M, Y') }}</p>
                 </td>
             </tr>
             <tr>

@@ -193,12 +193,10 @@
             <tbody>
             <tr>
                 <td>
-                    <h4 class="m-0">{{ __('Term Closing Date') }}</h4>
-                    <p class="m-0">{{ \Carbon\Carbon::parse($term->end_date)->format('d M, Y') }}</p>
+                    <p class="m-0"><strong>{{ __('Term Closing Date') }}: </strong>{{ \Carbon\Carbon::parse($term->end_date)->format('d M, Y') }}</p>
                 </td>
                 <td>
-                    <h4 class="m-0">{{ __('Next Term Start Date') }}</h4>
-                    <p class="m-0">{{ \Carbon\Carbon::parse($term->next_term_date)->format('d M, Y') }}</p>
+                    <p class="m-0"><strong>{{ __('Next Term Start Date') }}: </strong>{{ \Carbon\Carbon::parse($term->next_term_date)->format('d M, Y') }}</p>
                 </td>
             </tr>
             <tr>

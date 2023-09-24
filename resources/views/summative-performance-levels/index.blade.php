@@ -60,8 +60,8 @@
                                             <div class="col-6">
                                                 <div class="form-group">
                                                     <label for="min_points">{{ __('Minimum Points')}}<span class="text-red">*</span></label>
-                                                    <input type="number" name="min_point" data-parsley-min="{{ $min }}" data-parsley-max="100"
-                                                           value="{{ !empty($level) ? $level->min_point : $min }}" min="{{ $min }}" max="100"
+                                                    <input type="number" name="min_point" data-parsley-max="100"
+                                                           value="{{ !empty($level) ? $level->min_point : $min }}" max="100"
                                                            class="form-control" required>
                                                 </div>
                                             </div>
@@ -77,7 +77,7 @@
                                         <div class="row">
                                             <div class="col-12">
                                                 <div class="form-group">
-                                                    <label for="">{{ __('Teacher Remark') }}</label>
+                                                    <label for="">{{ __('Teacher Remark') }} <span class="text-red">*</span></label>
                                                     <input type="text" required value="{{ !empty($level) ? $level->teacher_remark : '' }}" name="teacher_remark" class="form-control">
                                                 </div>
                                             </div>
@@ -91,6 +91,108 @@
                                                       data-parsley-maxlength="250" placeholder="Details"
                                                       class="form-control"
                                                       required>{{ !empty($level) ? $level->detail : '' }}</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="detail">{{ __('Comment 1')}}<span
+                                                    class="text-red">*</span></label>
+                                            <textarea name="comment_1" id="detail" rows="3" data-parsley-minlength="20"
+                                                      data-parsley-maxlength="250"
+                                                      class="form-control"
+                                                      required>{{ !empty($level) ? $level->comment_1 : '' }}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="detail">{{ __('Comment 2')}}<span
+                                                    class="text-red">*</span></label>
+                                            <textarea name="comment_2" id="detail" rows="3" data-parsley-minlength="20"
+                                                      data-parsley-maxlength="250"
+                                                      class="form-control"
+                                                      required>{{ !empty($level) ? $level->comment_2 : '' }}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="detail">{{ __('Comment 3')}}<span
+                                                    class="text-red">*</span></label>
+                                            <textarea name="comment_3" id="detail" rows="3" data-parsley-minlength="20"
+                                                      data-parsley-maxlength="250"
+                                                      class="form-control"
+                                                      required>{{ !empty($level) ? $level->comment_3 : '' }}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="detail">{{ __('Comment 4')}}<span
+                                                    class="text-red">*</span></label>
+                                            <textarea name="comment_4" id="detail" rows="3" data-parsley-minlength="20"
+                                                      data-parsley-maxlength="250"
+                                                      class="form-control"
+                                                      required>{{ !empty($level) ? $level->comment_4 : '' }}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="detail">{{ __('Comment 5')}}<span
+                                                    class="text-red">*</span></label>
+                                            <textarea name="comment_5" id="detail" rows="3" data-parsley-minlength="20"
+                                                      data-parsley-maxlength="250"
+                                                      class="form-control"
+                                                      required>{{ !empty($level) ? $level->comment_5 : '' }}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="detail">{{ __('Comment 6')}}<span
+                                                    class="text-red">*</span></label>
+                                            <textarea name="comment_6" id="detail" rows="3" data-parsley-minlength="20"
+                                                      data-parsley-maxlength="250"
+                                                      class="form-control"
+                                                      required>{{ !empty($level) ? $level->comment_6 : '' }}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="detail">{{ __('Comment 7')}}<span
+                                                    class="text-red">*</span></label>
+                                            <textarea name="comment_7" id="detail" rows="3" data-parsley-minlength="20"
+                                                      data-parsley-maxlength="250"
+                                                      class="form-control"
+                                                      required>{{ !empty($level) ? $level->comment_7 : '' }}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="detail">{{ __('Comment 8')}}<span
+                                                    class="text-red">*</span></label>
+                                            <textarea name="comment_8" id="detail" rows="3" data-parsley-minlength="20"
+                                                      data-parsley-maxlength="250"
+                                                      class="form-control"
+                                                      required>{{ !empty($level) ? $level->comment_8 : '' }}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="detail">{{ __('Comment 9')}}<span
+                                                    class="text-red">*</span></label>
+                                            <textarea name="comment_9" id="detail" rows="3" data-parsley-minlength="20"
+                                                      data-parsley-maxlength="250"
+                                                      class="form-control"
+                                                      required>{{ !empty($level) ? $level->comment_9 : '' }}</textarea>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="detail">{{ __('Comment 10')}}<span
+                                                    class="text-red">*</span></label>
+                                            <textarea name="comment_10" id="detail" rows="3" data-parsley-minlength="20"
+                                                      data-parsley-maxlength="250"
+                                                      class="form-control"
+                                                      required>{{ !empty($level) ? $level->comment_10 : '' }}</textarea>
                                         </div>
                                     </div>
                                     <div class="col-sm-12 text-right">
