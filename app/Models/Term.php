@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Term extends Model
 {
     use HasFactory;
-    protected $fillable = ['year', 'term', 'start_date', 'end_date', 'school_id', 'lock_term'];
+    protected $fillable = ['year', 'term', 'start_date', 'end_date', 'school_id', 'lock_term', 'next_term_date'];
 
     public function subjects(): HasMany
     {

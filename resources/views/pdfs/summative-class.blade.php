@@ -202,7 +202,7 @@
         </div>
         <div class="principle">
             <h4 class="m-0">{{ __('Next Term Start Date') }}</h4>
-            <p class="m-0">{{ \Carbon\Carbon::parse($next_term->start_date)->format('d M, Y') }}</p>
+            <p class="m-0">{{ \Carbon\Carbon::parse($term->next_term_date)->format('d M, Y') }}</p>
         </div>
     </div>
     <div class="signatures">

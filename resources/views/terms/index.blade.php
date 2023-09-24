@@ -89,6 +89,16 @@
                                 </div>
                                 <div class="col-sm-6">
                                     <div class="form-group">
+                                        <label for="end_date">{{ __('Next Term Date')}}<span
+                                                class="text-red">*</span></label>
+                                        <input type="date"
+                                               value="{{ !empty($term) ? $term->next_term_date : \Carbon\Carbon::now()->format('Y-m-d') }}"
+                                               required class="form-control" id="next_term_date"
+                                               name="next_term_date">
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
                                         <h4 class="sub-title">{{ __('Lock Term')}}</h4>
                                         <input value="1" name="lock_term" type="checkbox" class="js-single" @if(empty($term)) disabled @elseif($term->lock_term) checked @endif/>
                                     </div>
