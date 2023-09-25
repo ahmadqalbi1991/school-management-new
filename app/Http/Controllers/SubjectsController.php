@@ -171,7 +171,11 @@ class SubjectsController extends Controller
     {
         try {
             $subjects = Subjects::all();
-            $schools = School::where('active', 1)->get();
+            $schools = School::where('active', 1)
+                ->when(Auth::user()->role !== 'super_admin', function ($q) {
+                    return $q->where('id', Auth::user()->school_id);
+                })
+                ->get();
             $classes = $assigned_subject_ids = [];
             if ($request->has('school_id')) {
                 $assigned_subjects = AssignedSubjectsClass::where([
