@@ -137,7 +137,7 @@
                                                 <div class="p-status bg-yellow"></div>
                                             @endif
                                         </td>
-                                        <td>{{ !empty($teacher) ? $teacher->school->school_name : '' }}</td>
+                                        <td>{{ !empty($teacher->school) ? $teacher->school->school_name : '' }}</td>
                                     </tr>
                                 @endforeach
                                 </tbody>
