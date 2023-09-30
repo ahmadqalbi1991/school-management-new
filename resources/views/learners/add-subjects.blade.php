@@ -75,7 +75,7 @@
                                                 @if(!empty($learner))
                                                     @foreach($streams as $stream)
                                                         <option
-                                                            @if($learner->stream_id === $stream->id)
+                                                            @if($learner->stream_id == $stream->id)
                                                                 selected
                                                             @endif
                                                             value="{{ $stream->id }}">{{ $stream->title }}</option>

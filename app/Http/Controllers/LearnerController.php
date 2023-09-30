@@ -271,13 +271,11 @@ class LearnerController extends Controller
 
             if (count($learner_ids)) {
                 foreach ($learner_ids as $learner_id) {
-                    foreach ($learner_ids as $learner_id) {
-                        LearnerSubject::where(['class_id' => $input['class_id'], 'stream_id' => $input['stream_id'], 'learner_id' => $learner_id])->delete();
-                        foreach ($subject_ids as $id) {
-                            $input['subject_id'] = $id;
-                            $input['learner_id'] = $learner_id;
-                            LearnerSubject::create($input);
-                        }
+                    LearnerSubject::where(['class_id' => $input['class_id'], 'stream_id' => $input['stream_id'], 'learner_id' => $learner_id])->delete();
+                    foreach ($subject_ids as $id) {
+                        $input['subject_id'] = $id;
+                        $input['learner_id'] = $learner_id;
+                        LearnerSubject::create($input);
                     }
                 }
             }
