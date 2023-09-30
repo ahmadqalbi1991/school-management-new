@@ -49,24 +49,13 @@ class SettingController extends Controller
             $input = $request->except('_token');
             $input['active'] = $input['status'] === 'active' ? 1 : 0;
             $input['slug'] = Str::slug($input['school_name']);
-            $ids = $input['admin_ids'];
-            unset($input['admin_ids']);
+
             if ($request->has('logo')) {
                 $imageName = $input['slug'] . '_' . time().'.'.$request->logo->extension();
                 $request->logo->move(public_path('images/schools/' . $input['slug'] . '/logo'), $imageName);
                 $input['logo'] = 'images/schools/' . $input['slug'] . '/logo/' . $imageName;
             }
-            $school = School::create($input);
-            if ($school) {
-                $idObj = [];
-                foreach ($ids as $id) {
-                    $idObj[] = [
-                        'school_id' => $school->id,
-                        'admin_id' => $id
-                    ];
-                }
-                SchoolAdmins::insert($idObj);
-            }
+            School::create($input);
 
             return redirect()->route('settings.index')->with('success', 'School created successfully');
         }  catch (\Exception $e) {

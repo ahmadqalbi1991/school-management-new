@@ -35,46 +35,48 @@
         <div class="row clearfix">
             <!-- start message area-->
             @include('include.message')
-            @can('manage_learners')
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header"><h3>{{ __('Add Strands')}}</h3></div>
-                        <div class="card-body">
-                            <form class="forms-sample" method="POST" data-parsley-validate
-                                  action="{{ empty($strand) ? route('strands.store') : route('strands.update', ['id' => $strand->id])}}">
-                                @csrf
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label for="title">{{ __('Strand Title')}}<span class="text-red">*</span></label>
-                                            <input type="text" class="form-control" id="class"
-                                                   value="{{ !empty($strand) ? $strand->title : '' }}" name="title"
-                                                   placeholder="Strand Title" required>
+            @if(Auth::user()->role === 'super_admin')
+                @can('manage_learners')
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header"><h3>{{ __('Add Strands')}}</h3></div>
+                            <div class="card-body">
+                                <form class="forms-sample" method="POST" data-parsley-validate
+                                      action="{{ empty($strand) ? route('strands.store') : route('strands.update', ['id' => $strand->id])}}">
+                                    @csrf
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="title">{{ __('Strand Title')}}<span class="text-red">*</span></label>
+                                                <input type="text" class="form-control" id="class"
+                                                       value="{{ !empty($strand) ? $strand->title : '' }}" name="title"
+                                                       placeholder="Strand Title" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="subject_id">{{ __('Subject')}}<span class="text-red">*</span></label>
+                                                <select name="subject_id" id="subject_id" required class="form-control select2">
+                                                    <option value="">{{ __('Select Learning Area') }}</option>
+                                                    @foreach($subjects as $subject)
+                                                        <option @if((!empty($strand)) && ($subject->id === $strand->subject_id)) selected @endif value="{{ $subject->id }}">{{ $subject->title }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 text-right">
+                                            <div class="form-group">
+                                                <button type="submit"
+                                                        class="btn btn-success btn-rounded">{{ __('Save')}}</button>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label for="subject_id">{{ __('Subject')}}<span class="text-red">*</span></label>
-                                            <select name="subject_id" id="subject_id" required class="form-control select2">
-                                                <option value="">{{ __('Select Learning Area') }}</option>
-                                                @foreach($subjects as $subject)
-                                                    <option @if((!empty($strand)) && ($subject->id === $strand->subject_id)) selected @endif value="{{ $subject->id }}">{{ $subject->title }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12 text-right">
-                                        <div class="form-group">
-                                            <button type="submit"
-                                                    class="btn btn-success btn-rounded">{{ __('Save')}}</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
+                                </form>
+                            </div>
                         </div>
                     </div>
-                </div>
-            @endcan
+                @endcan
+            @endif
         </div>
         <div class="row">
             <div class="col-md-12">

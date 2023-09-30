@@ -107,17 +107,6 @@
                                     </div>
                                     <div class="col-sm-6">
                                         <div class="form-group">
-                                            <label for="admin_ids">{{ __('Admin')}}</label>
-                                            <select name="admin_ids[]" id="admin_ids" multiple
-                                                    class="form-control select2">
-                                                @foreach($admins as $admin)
-                                                    <option value="{{ $admin->id }}">{{ $admin->name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
                                             <label for="logo">Logo</label>
                                             <input accept="image/*" type="file" class="form-control" name="logo" required>
                                         </div>

@@ -234,7 +234,7 @@ class LearnerController extends Controller
                 $subjects = AssignedSubjectsClass::with('subject')
                     ->where('class_id', $class_id)->get();
 
-                $learner_data = LearnerSubject::where('learner_id', $request->get('pass_key'))
+                $learner_data = LearnerSubject::where(['class_id' => $class_id, 'stream_id' => $learner->stream_id, 'learner_id' => $request->get('pass_key')])
                     ->with(['subject'])->get();
 
                 $subjects_ids = $learner_data->pluck('subject_id')->toArray();

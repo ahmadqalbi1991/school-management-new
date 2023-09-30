@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserRequest;
 use App\Jobs\EmailJob;
 use App\Models\School;
+use App\Models\SchoolAdmins;
 use App\Models\User;
 use Auth;
 use DataTables;
@@ -120,6 +121,11 @@ class UserController extends Controller
                     'show_btns' => 1,
                     'link' => route('login')
                 ];
+
+                SchoolAdmins::create([
+                    'school_id' => $request->school_id,
+                    'admin_id' => $user->id
+                ]);
 
                 dispatch(new EmailJob($details));
                 // assign new role to the user
