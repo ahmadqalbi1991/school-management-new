@@ -309,7 +309,11 @@
     })
 
     $('#pdf-btn').on('click', function () {
-        window.open('/learners/class-list-pdf?class_id=' + $('#class_id').val() + '&stream_id=' + $('#stream-id').val(), '_blank');
+        window.open('/learners/class-list-pdf?class_id=' + $('#class_id').val() + '&stream_id=' + $('#stream-id').val() + '&pdf=1', '_blank');
+    })
+
+    $('#excel-btn').on('click', function () {
+        window.open('/learners/class-list-pdf?class_id=' + $('#class_id').val() + '&stream_id=' + $('#stream-id').val() + '&excel=1', '_blank');
     })
 
     $('#stream-id').on('change', function () {

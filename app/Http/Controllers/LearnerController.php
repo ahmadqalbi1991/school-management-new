@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ClassExport;
 use App\Imports\LearnerImport;
 use App\Jobs\EmailJob;
 use App\Models\AssignedSubjectsClass;
@@ -489,24 +490,30 @@ class LearnerController extends Controller
                 }
             }
 
-            $classes = SchoolClass::with('school')
-                ->when(!empty($request->class_id), function ($q) use ($request) {
-                    return $q->where('id', $request->class_id);
-                })
-                ->get();
-            $html = '';
-            foreach ($classes as $class) {
-                $learners = $class->school->learners;
-                if (!empty($streams)) {
-                    $learners = $learners->whereIn('stream_id', $streams);
+            if ($request->has('pdf')) {
+                $classes = SchoolClass::with('school')
+                    ->when(!empty($request->class_id), function ($q) use ($request) {
+                        return $q->where('id', $request->class_id);
+                    })
+                    ->get();
+                $html = '';
+                foreach ($classes as $class) {
+                    $learners = $class->school->learners;
+                    if (!empty($streams)) {
+                        $learners = $learners->whereIn('stream_id', $streams);
+                    }
+                    $view = view('pdfs.class-list')->with(['school' => $class->school, 'class' => $class, 'learners' => $learners]);
+                    $html .= $view->render();
                 }
-                $view = view('pdfs.class-list')->with(['school' => $class->school, 'class' => $class, 'learners' => $learners]);
-                $html .= $view->render();
+
+                $pdf = PDF::loadHtml($html);
+                $pdf->setPaper('a4', 'portrait');
+                return $pdf->stream('class_lists.pdf');
             }
 
-            $pdf = PDF::loadHtml($html);
-            $pdf->setPaper('a4', 'portrait');
-            return $pdf->stream('class_lists.pdf');
+            if ($request->has('excel')) {
+                return Excel::download(new ClassExport($request, $streams), 'class-list.xlsx');
+            }
         } catch (\Exception $e) {
             $bug = $e->getMessage();
             return redirect()->back()->with('error', $bug);

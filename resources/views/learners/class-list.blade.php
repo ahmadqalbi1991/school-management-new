@@ -62,6 +62,8 @@
                             </div>
                         </div>
                         <div class="col-12 text-right">
+                            <button class="btn btn-success btn-rounded btn-sm" id="excel-btn"><i
+                                    class="fas fa-file-excel"></i> {{ __('Excel') }}</button>
                             <button class="btn btn-danger btn-rounded btn-sm" id="pdf-btn"><i
                                     class="fas fa-file-pdf"></i> {{ __('PDF') }}</button>
                             <button class="btn btn-primary btn-rounded btn-sm" id="search-btn"><i
