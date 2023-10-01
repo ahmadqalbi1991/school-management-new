@@ -21,11 +21,16 @@ class SchoolClass extends Model
 
     public function school(): BelongsTo
     {
-        return $this->belongsTo(School::class, 'school_id', 'id');
+        return $this->belongsTo(School::class, 'school_id', 'id')->with('learners');
     }
 
     public function assigned_subjects(): HasMany
     {
         return $this->hasMany(AssignedSubjectsClass::class, 'class_id', 'id')->with(['subject']);
+    }
+
+    public function streams(): HasMany
+    {
+        return $this->hasMany(Stream::class, 'class_id');
     }
 }

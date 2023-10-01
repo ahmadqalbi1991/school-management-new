@@ -13,8 +13,7 @@ use App\Models\Stream;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Auth, DataTables, Excel;
-use Illuminate\Support\Facades\Validator;
+use Auth, DataTables, Excel, PDF;
 
 class LearnerController extends Controller
 {
@@ -389,6 +388,125 @@ class LearnerController extends Controller
             }
 
             return redirect()->back()->with('success', 'Learners moved to next class');
+        } catch (\Exception $e) {
+            $bug = $e->getMessage();
+            return redirect()->back()->with('error', $bug);
+        }
+    }
+
+    /**
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
+     */
+    public function classList()
+    {
+        try {
+            $classes = SchoolClass::when(Auth::user()->role !== 'super_admin', function ($q) {
+                return $q->where('school_id', Auth::user()->school_id);
+            })
+                ->with('school')
+                ->get();
+
+            return view('learners.class-list', compact('classes'));
+        } catch (\Exception $e) {
+            $bug = $e->getMessage();
+            return redirect()->back()->with('error', $bug);
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function getClassList(Request $request)
+    {
+        try {
+            $streams = [];
+            if (!empty($request->class_id)) {
+                $class = SchoolClass::where('id', $request->class_id)->first();
+                if (empty($request->stream_id)) {
+                    $streams = Stream::where('class_id', $class->id)->get();
+                    if (!empty($streams)) {
+                        $streams = $streams->pluck('id')->toArray();
+                    }
+                } else {
+                    $streams = explode(',', $request->stream_id);
+                }
+            }
+
+            $schools = School::when(Auth::user()->role !== 'super_admin', function ($q) {
+                return $q->where('id', Auth::user()->school_id);
+            })
+            ->with('learners', function ($q) use ($streams) {
+                return $q->when(!empty($streams), function ($q) use ($streams) {
+                    return $q->where('stream_id', $streams);
+                });
+            })->get();
+
+            $data = [];
+            $i = 0;
+            foreach ($schools as $school) {
+                foreach ($school->learners as $learner) {
+                    $data[$i]['school'] = $school->school_name;
+                    $data[$i]['grade'] = !empty($learner->stream) ? (!empty($learner->stream->school_class) ? $learner->stream->school_class->class : '') : '';
+                    $data[$i]['stream'] = !empty($learner->stream) ? $learner->stream->title : '';
+                    $data[$i]['learner'] = $learner->name;
+                    $i++;
+                }
+            }
+
+            $data = collect($data);
+            $data = $data->sortBy('school')->values();
+
+            $table = Datatables::of($data);
+            if (Auth::user()->role === 'super_admin') {
+                $table->addColumn('school', function ($data) {
+                    return $data['school'];
+                });
+            }
+            return $table->make(true);
+        } catch (\Exception $e) {
+            $bug = $e->getMessage();
+            return redirect()->back()->with('error', $bug);
+        }
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function classListPdf (Request $request) {
+        try {
+            $streams = [];
+            if (!empty($request->class_id)) {
+                $class = SchoolClass::where('id', $request->class_id)->first();
+                if (empty($request->stream_id)) {
+                    $streams = Stream::where('class_id', $class->id)->get();
+                    if (!empty($streams)) {
+                        $streams = $streams->pluck('id')->toArray();
+                    }
+                } else {
+                    $streams = explode(',', $request->stream_id);
+                }
+            }
+
+            $classes = SchoolClass::with('school')
+                ->when(!empty($request->class_id), function ($q) use ($request) {
+                    return $q->where('id', $request->class_id);
+                })
+                ->get();
+            $html = '';
+            foreach ($classes as $class) {
+                $learners = $class->school->learners;
+                if (!empty($streams)) {
+                    $learners = $learners->whereIn('stream_id', $streams);
+                }
+                $view = view('pdfs.class-list')->with(['school' => $class->school, 'class' => $class, 'learners' => $learners]);
+                $html .= $view->render();
+            }
+
+            $pdf = PDF::loadHtml($html);
+            $pdf->setPaper('a4', 'portrait');
+            return $pdf->stream('class_lists.pdf');
         } catch (\Exception $e) {
             $bug = $e->getMessage();
             return redirect()->back()->with('error', $bug);

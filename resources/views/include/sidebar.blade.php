@@ -205,6 +205,12 @@
                         </div>
                     @endif
                 @endcan
+                <div class="nav-item {{ ($segment1 == 'learners' && $segment2 == 'class-list') ? 'active' : '' }}">
+                    <a href="{{route('learners.class-list')}}">
+                        <i class="ik ik-list"></i>
+                        <span>{{ __('Class List')}}</span>
+                    </a>
+                </div>
             </nav>
         </div>
     </div>

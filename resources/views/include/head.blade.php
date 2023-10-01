@@ -4,8 +4,11 @@
 <meta name="keywords" content="">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="csrf-token" content="{{ csrf_token() }}">
+@if(Auth::check())
+    <meta name="role" content="{{ Auth::user()->role }}">
+@endif
 
-<link rel="icon" href="{{ asset('favicon.png')}}" />
+<link rel="icon" href="{{ asset('favicon.png')}}"/>
 
 <!-- font awesome library -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -21,7 +24,6 @@
 <link rel="stylesheet" href="{{ asset('plugins/icon-kit/dist/css/iconkit.min.css') }}">
 <link rel="stylesheet" href="{{ asset('plugins/ionicons/dist/css/ionicons.min.css') }}">
 <link rel="stylesheet" href="{{ asset('dist/css/parsley.css') }}">
-
 
 
 <!-- Stack array for including inline css or head elements -->

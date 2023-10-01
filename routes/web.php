@@ -95,6 +95,9 @@ Route::group(['middleware' => ['auth', 'verify_school']], function () {
         Route::get('/change-status/{id}', [LearnerController::class, 'changeStatus'])->name('change-status');
         Route::post('/import', [LearnerController::class, 'import'])->name('import');
         Route::post('/move-learners', [LearnerController::class, 'moveLearners'])->name('move-learners');
+        Route::get('/class-list', [LearnerController::class, 'classList'])->name('class-list');
+        Route::get('/get-class-list', [LearnerController::class, 'getClassList'])->name('get-class-list');
+        Route::get('/class-list-pdf', [LearnerController::class, 'classListPdf']);
     });
 
     Route::group(['middleware' => 'can:manage_settings', 'as' => 'settings.', 'prefix' => 'settings'], function () {
