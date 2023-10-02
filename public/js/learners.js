@@ -293,6 +293,16 @@
     });
     // datatable inline cell edit callback function
 
+    function activeActionButtons() {
+        if ($('#class_id').val() != "" && $('#stream-id').val() != "") {
+            $('#pdf-btn').prop('disabled', false);
+            $('#excel-btn').prop('disabled', false);
+        } else {
+            $('#pdf-btn').prop('disabled', true);
+            $('#excel-btn').prop('disabled', true);
+        }
+    }
+
     $('#class_id').on('change', function () {
         $.ajax({
             url: '/get-streams/' + $(this).val(),
@@ -304,6 +314,8 @@
                 $('#subject-id').prop('disabled', false)
             }
         })
+
+        activeActionButtons();
     })
 
     $('#search-btn').on('click', function () {
@@ -328,6 +340,8 @@
                 $('#all_learners').prop('disabled', false)
             }
         })
+
+        activeActionButtons();
     })
 
     $('#all_learners').on('change', function () {
