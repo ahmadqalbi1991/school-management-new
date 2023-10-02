@@ -80,12 +80,13 @@
                         <table id="class_list_table" class="table">
                             <thead>
                             <tr>
-                                @if(Auth::user()->role === 'super_admin')
+                                <th>{{ __('Admission Number')}}</th>
+                                <th>{{ __('Learner')}}</th>
+                            @if(Auth::user()->role === 'super_admin')
                                     <th>{{ __('School')}}</th>
                                 @endif
                                 <th>{{ __('Grade')}}</th>
                                 <th>{{ __('Stream')}}</th>
-                                <th>{{ __('Learner')}}</th>
                             </tr>
                             </thead>
                             <tbody>

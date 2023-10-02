@@ -10,16 +10,18 @@
 
         var role = $('meta[name="role"]').attr('content');
         let columns = [
+            {data:'admission_number', name: 'admission_number'},
+            {data:'learner', name: 'learner'},
             {data:'grade', name: 'grade'},
             {data:'stream', name: 'stream'},
-            {data:'learner', name: 'learner'},
         ];
         if (role === 'super_admin') {
             columns = [
+                {data:'admission_number', name: 'admission_number'},
+                {data:'learner', name: 'learner'},
                 {data:'school', name: 'school'},
                 {data:'grade', name: 'grade'},
                 {data:'stream', name: 'stream'},
-                {data:'learner', name: 'learner'},
             ]
         }
 

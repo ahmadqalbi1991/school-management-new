@@ -36,8 +36,8 @@
     }
 
     .term-details h4, .term-details p {
-        margin-top: 0!important;
-        margin-bottom: 0!important;
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
     }
 
     .learners-details, .levels-details {
@@ -128,11 +128,12 @@
 <div class="pdf-wrapper">
     <div class="school-detail-wrapper">
         <div class="school-img">
-            <img src="{{ url('/') . '/' . $school->logo }}" alt="" width='100%' height="auto">
+            {{--            <img src="{{ url('/') . '/' . $school->logo }}" alt="" width='100%' height="auto">--}}
         </div>
         <div class="school-address">
             <h5>{{ $school->school_name }}</h5>
-            <p><strong>{{ __('School Address') }}: </strong>{{ $school->address }} <strong>{{ __('Telephone') }}: </strong>{{ $school->phone_number }}</p>
+            <p><strong>{{ __('School Address') }}: </strong>{{ $school->address }} <strong>{{ __('Telephone') }}
+                    : </strong>{{ $school->phone_number }}</p>
             <p><strong>{{ __('Email') }}: </strong>{{ $school->email }}</p>
             <p><strong>{{ __('Website') }}: </strong><a href="">{{ $school->school_website }}</a></p>
             <p><strong>{{ __('Grade') }}: </strong>{{ $class->class }}</p>
@@ -143,16 +144,26 @@
         <table>
             <thead>
             <tr>
+                <th>#</th>
+                <th>{{ __('Admission Number') }}</th>
                 <th>{{ __('Name') }}</th>
                 <th>{{ __('Stream') }}</th>
             </tr>
             </thead>
             <tbody>
-            @foreach($learners as $learner)
+            @php
+                $i = 1;
+            @endphp
+            @foreach($learners as $key => $learner)
                 <tr>
+                    <td>{{ $i }}</td>
+                    <td>{{ $learner->admission_number }}</td>
                     <td>{{ $learner->name }}</td>
                     <td>{{ $learner->stream->title }}</td>
                 </tr>
+                @php
+                    $i++;
+                @endphp
             @endforeach
             </tbody>
         </table>

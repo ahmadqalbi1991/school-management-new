@@ -447,16 +447,18 @@ class LearnerController extends Controller
             $i = 0;
             foreach ($schools as $school) {
                 foreach ($school->learners as $learner) {
+                    $data[$i]['admission_number'] = $learner->admission_number;
+                    $data[$i]['learner'] = $learner->name;
                     $data[$i]['school'] = $school->school_name;
                     $data[$i]['grade'] = !empty($learner->stream) ? (!empty($learner->stream->school_class) ? $learner->stream->school_class->class : '') : '';
                     $data[$i]['stream'] = !empty($learner->stream) ? $learner->stream->title : '';
-                    $data[$i]['learner'] = $learner->name;
                     $i++;
                 }
             }
 
             $data = collect($data);
             $data = $data->sortBy('school')->values();
+            $data = $data->sortBy('admission_number')->values();
 
             $table = Datatables::of($data);
             if (Auth::user()->role === 'super_admin') {
@@ -499,6 +501,7 @@ class LearnerController extends Controller
                 $html = '';
                 foreach ($classes as $class) {
                     $learners = $class->school->learners;
+                    $learners = $learners->sortBy('admission_number')->values();
                     if (!empty($streams)) {
                         $learners = $learners->whereIn('stream_id', $streams);
                     }

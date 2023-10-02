@@ -21,8 +21,8 @@ class ClassExport implements FromCollection, WithHeadings
     }
 
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * @return \Illuminate\Support\Collection
+     */
     public function collection(): \Illuminate\Support\Collection
     {
         $schools = School::when(Auth::user()->role !== 'super_admin', function ($q) {
@@ -39,22 +39,24 @@ class ClassExport implements FromCollection, WithHeadings
 
         foreach ($schools as $school) {
             foreach ($school->learners as $learner) {
+                $data[$i]['admission_number'] = $learner->admission_number;
+                $data[$i]['learner'] = $learner->name;
                 $data[$i]['school'] = $school->school_name;
                 $data[$i]['grade'] = !empty($learner->stream) ? (!empty($learner->stream->school_class) ? $learner->stream->school_class->class : '') : '';
                 $data[$i]['stream'] = !empty($learner->stream) ? $learner->stream->title : '';
-                $data[$i]['learner'] = $learner->name;
                 $i++;
             }
         }
 
         $data = collect($data);
-        return $data->sortBy('school')->values();
+        $data = $data->sortBy('school')->values();
+        return $data->sortBy('admission_number')->values();
     }
 
     public function headings(): array
     {
         return [
-            'School', 'Grade', 'Stream', 'Learner Name'
+            'Admission Number', 'Learner Name', 'School', 'Grade', 'Stream'
         ];
     }
 }
