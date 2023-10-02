@@ -497,6 +497,9 @@ class LearnerController extends Controller
                     ->when(!empty($request->class_id), function ($q) use ($request) {
                         return $q->where('id', $request->class_id);
                     })
+                    ->when(Auth::user()->role !== 'super_admin', function ($q) {
+                        return $q->where('school_id', Auth::user()->school_id);
+                    })
                     ->get();
                 $html = '';
                 foreach ($classes as $class) {
