@@ -50,7 +50,7 @@ $(document).ready(function () {
                     }
                     response['assessments'].map((data, index) => {
                         $('#score_' + data.learner_id).val(data.points)
-                        $('#level_title_' + data.learner_id).text(data.level.title)
+                        $('#level_title_' + data.learner_id).text(data?.level?.title)
                         if (!exam_lock) {
                             $('#learner_save_btn_' + data.learner_id).prop('disabled', false)
                         }
