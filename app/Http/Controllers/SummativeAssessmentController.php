@@ -128,7 +128,6 @@ class SummativeAssessmentController extends Controller
                 $level = SummativePerformnceLevel::where('min_point', '<=', $point)
                     ->where('max_point', '>=', $point)->first();
                 $input['performance_level_id'] = $level->id;
-                dd($input);
 
                 SummativeAssessment::create($input);
             }
