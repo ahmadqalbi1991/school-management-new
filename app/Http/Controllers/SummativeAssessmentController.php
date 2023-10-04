@@ -240,14 +240,13 @@ class SummativeAssessmentController extends Controller
                     return $q->where([
                         'stream_id' => $input['stream_id'],
                         'term_id' => $input['term_id'],
-                        'subject_id' => $input['subject_id']
+                        'subject_id' => $input['subject_id'],
+                        'exam_id' => $input['exam_id']
                     ])
                         ->with('level');
                 })
                 ->whereHas('summative_assessments')
                 ->get();
-
-            dd($users);
 
             $data = [];
             $total = 0;
