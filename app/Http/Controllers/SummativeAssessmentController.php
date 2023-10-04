@@ -247,6 +247,8 @@ class SummativeAssessmentController extends Controller
                 ->whereHas('summative_assessments')
                 ->get();
 
+            dd($users);
+
             $data = [];
             $total = 0;
             foreach ($users as $user) {
