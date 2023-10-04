@@ -250,7 +250,8 @@ class SummativeAssessmentController extends Controller
             $data = [];
             $total = 0;
             foreach ($users as $user) {
-                $level = $score = '';
+                $level = '';
+                $score = 0;
                 if (!empty($user->summative_assessments[0]->level)) {
                     $level = $user->summative_assessments[0]->level->title;
                     $score = $user->summative_assessments[0]->points;
