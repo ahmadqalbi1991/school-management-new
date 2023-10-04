@@ -108,8 +108,8 @@ $(document).ready(function () {
         var searchable = [];
         var selectable = [];
         var token = $('#token').val();
-
-        var dTable = $('#learners_table').DataTable({
+        $('#learners_table').DataTable().destroy();
+        $('#learners_table').DataTable({
 
             order: [],
             lengthMenu: [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]],
