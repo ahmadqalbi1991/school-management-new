@@ -22,7 +22,7 @@ class SummativeAssessment extends Model
 
     public function level(): BelongsTo
     {
-        return $this->belongsTo(SummativePerformnceLevel::class, 'performance_level_id', 'id');
+        return $this->belongsTo(SummativePerformnceLevel::class, 'id', 'performance_level_id');
     }
 
     public function subject(): BelongsTo
