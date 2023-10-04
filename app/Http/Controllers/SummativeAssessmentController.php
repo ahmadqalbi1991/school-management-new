@@ -123,12 +123,12 @@ class SummativeAssessmentController extends Controller
                 unset($input['points'], $input['performance_level_id']);
                 $point = (float)$points[$key];
                 $input['learner_id'] = $learner;
-                dd($input);
                 SummativeAssessment::where($input)->delete();
                 $input['points'] = $point;
                 $level = SummativePerformnceLevel::where('min_point', '<=', $point)
                     ->where('max_point', '>=', $point)->first();
                 $input['performance_level_id'] = $level->id;
+                dd($input);
 
                 SummativeAssessment::create($input);
             }
