@@ -52,9 +52,9 @@
                             <a href="#"><i class="ik ik-user"></i><span>{{ __('Summative Reports')}}</span></a>
                             <div class="submenu-content">
                                 <a href="{{route('summative-reports.index')}}"
-                                   class="menu-item {{ ($segment1 == 'summative-reports' && $segment2 == '') ? 'active' : '' }}">{{ __('Class Summative Reports') }}</a>
+                                   class="menu-item {{ ($segment1 == 'summative-reports' && $segment2 == '') ? 'active' : '' }}">{{ __('Learning Areas Reports') }}</a>
                                 <a href="{{route('summative-reports.learners-reports')}}"
-                                   class="menu-item {{ ($segment2 == 'learners-reports') ? 'active' : '' }}">{{ __('Learners Summative Reports') }}</a>
+                                   class="menu-item {{ ($segment2 == 'learners-reports') ? 'active' : '' }}">{{ __('Learners Reports') }}</a>
                             </div>
                         </div>
                     @endcan
@@ -173,7 +173,7 @@
                     <div class="nav-item {{ ($segment1 == 'classes') ? 'active' : '' }}">
                         <a href="{{route('classes.index')}}">
                             <i class="ik ik-home"></i>
-                            <span>{{ __('Classes')}}</span>
+                            <span>{{ __('Grades')}}</span>
                         </a>
                     </div>
                 @endcan
@@ -200,7 +200,7 @@
                         <div class="nav-item {{ ($segment1 == 'summative-board-sheet') ? 'active' : '' }}">
                             <a href="{{route('summative-board-sheet.index')}}">
                                 <i class="ik ik-pie-chart"></i>
-                                <span>{{ __('Summative Board Sheet')}}</span>
+                                <span>{{ __('Summative Broad Sheet')}}</span>
                             </a>
                         </div>
                     @endif

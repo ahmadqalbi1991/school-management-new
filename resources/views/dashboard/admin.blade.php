@@ -151,6 +151,7 @@
             <!-- product and new customar end -->
         </div>
     </div>
+    <script>!function(){var e,t,n,a;window.MyAliceWebChat||((t=document.createElement("div")).id="myAliceWebChat",(n=document.createElement("script")).type="text/javascript",n.async=!0,n.src="https://widget.myalice.ai/index.js",(a=(e=document.body.getElementsByTagName("script"))[e.length-1]).parentNode.insertBefore(n,a),a.parentNode.insertBefore(t,a),n.addEventListener("load",(function(){MyAliceWebChat.init({selector:"myAliceWebChat",number:"254100385345",message:"",color:"#d63939",channel:"wa",boxShadow:"none",text:"Chat With Us",theme:"light",position:"right",mb:"20px",mx:"20px",radius:"20px"})})))}();</script>
     <!-- push external js -->
     @push('script')
         <script src="{{ asset('plugins/owl.carousel/dist/owl.carousel.min.js') }}"></script>

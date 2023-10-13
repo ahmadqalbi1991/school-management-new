@@ -151,9 +151,11 @@
                 @foreach($subjects as $subject)
                     <th>{{ $subject->subject->shortcode }}</th>
                 @endforeach
-                <th>{{ __('Learner Total') }}</th>
-                <th>{{ __('Learner Average') }}</th>
-                <th>{{ __('Rank') }}</th>
+                <th>{{ __('Total') }}</th>
+                <th>{{ __('AVG') }}</th>
+                <!--<th>{{ __('Rank') }}</th>-->
+                <th></th>
+                
             </tr>
             </thead>
             <tbody>
@@ -199,13 +201,14 @@
                             $rank++;
                         }
                     @endphp
-                    <td>{{ $rank }}</td>
+                    <!--<td>{{ $rank }}</td>-->
+                    <td></td>
                 </tr>
             @endforeach
             </tbody>
             <tfoot>
             <tr>
-                <td colspan="3">{{ __('Learning Activity Total') }}</td>
+                <td colspan="3">{{ __('Learning Area Total') }}</td>
                 @php
                     $total_points = 0;
                     $points = '';
@@ -224,7 +227,7 @@
                 <td colspan="3"><strong>{{ $total_points }}</strong></td>
             </tr>
             <tr>
-                <td colspan="3">{{ __('Learning Activity Average') }}</td>
+                <td colspan="3">{{ __('Learning Area Average') }}</td>
                 @php
                     $average = '';
                 @endphp
@@ -259,7 +262,7 @@
         </h4>
     </div>
     <footer>
-        <p>Powered by CRE.CO.KE</p>
+        <p>Powered by ZAMILI.CO.KE</p>
     </footer>
 </div>
 <p style="page-break-before: always;"></p>

@@ -14,12 +14,12 @@
 {{--                        <span class="input-group-addon search-btn"><i class="ik ik-search"></i></span>--}}
 {{--                    </div>--}}
                 </div>
-                <button class="nav-link" title="clear cache">
+                <!--<button class="nav-link" title="clear cache">
                     <a  href="{{url('clear-cache')}}">
                     <i class="ik ik-battery-charging"></i>
                 </a>
                 </button> &nbsp;&nbsp;
-                <button type="button" id="navbar-fullscreen" class="nav-link"><i class="ik ik-maximize"></i></button>
+                <button type="button" id="navbar-fullscreen" class="nav-link"><i class="ik ik-maximize"></i></button>-->
             </div>
             <div class="top-menu d-flex align-items-center">
 {{--                <div class="dropdown">--}}
