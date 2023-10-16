@@ -7,6 +7,11 @@
 
     <div class="container-fluid">
         <div class="page-header">
+            <div class="row">
+                <div class="col-12 text-right">
+                    <a href="?pdf=1" class="btn btn-rounded btn-danger"><i class="fas fa-file-pdf"></i> {{ __('Print Pdf') }}</a>
+                </div>
+            </div>
             <div class="row align-items-end">
                 <div class="col-lg-8">
                     <div class="page-header-title">
@@ -75,8 +80,8 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="dt-responsive">
-                                <table id="scr-vtr-dynamic"
-                                       class="table table-striped table-bordered nowrap">
+                                <table id=""
+                                       class="table table-striped table-bordered">
                                     <thead>
                                     <tr>
                                         <th>
@@ -88,6 +93,7 @@
                                                 </div>
                                             </th>
                                         @endforeach
+                                        <th></th>
 {{--                                        <th>{{ __('Points') }}</th>--}}
                                     </tr>
                                     </thead>
@@ -133,7 +139,7 @@
                                                                 @endphp
                                                                 <h5>
                                                                    <strong>
-                                                                       <i class="text-green ik ik-check"></i>
+                                                                       <i class="text-danger ik ik-check"></i>
                                                                    </strong>
                                                                </h5>
                                                             @endif

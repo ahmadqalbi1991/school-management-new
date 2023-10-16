@@ -318,7 +318,7 @@ class FormativeAssessmentController extends Controller
      * @param $stream_id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
      */
-    public function viewResult($subject_id, $learner_id, $term_id, $stream_id)
+    public function viewResult($subject_id, $learner_id, $term_id, $stream_id, Request $request)
     {
         try {
             $learner = User::find($learner_id);
@@ -332,7 +332,7 @@ class FormativeAssessmentController extends Controller
 
             $activities_defination = [];
             $strands = $subject->strands;
-            $levels = PerformanceLevel::get();
+            $levels = PerformanceLevel::orderBy('points')->get();
             foreach ($strands as $strand_key => $strand) {
                 $activities_defination[$strand_key]['title'] = $strand->title;
                 $activities_defination[$strand_key]['id'] = $strand->id;
@@ -370,6 +370,14 @@ class FormativeAssessmentController extends Controller
 
             $term = Term::find($term_id);
             $stream = Stream::find($stream_id);
+
+            if ($request->has('pdf') && $request->pdf) {
+                $view = view('pdfs.formative-assessment', compact('learner', 'subject', 'term', 'stream', 'levels', 'activities_defination'));
+                $view = $view->render();
+                $pdf = PDF::loadHtml($view);
+                $pdf->setPaper('a4', 'portrait');
+                return $pdf->stream('formative-assessments-' . Carbon::now());
+            }
 
             return view('formative-assessments.assessment-result', compact('learner', 'subject', 'term', 'stream', 'levels', 'activities_defination'));
         } catch (\Exception $e) {
