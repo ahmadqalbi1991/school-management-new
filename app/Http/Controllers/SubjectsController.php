@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\AssignedSubject;
 use App\Models\AssignedSubjectsClass;
 use App\Models\ClassSubject;
+use App\Models\LearnerSubject;
 use App\Models\School;
 use App\Models\SchoolClass;
+use App\Models\Stream;
 use App\Models\Subjects;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Auth;
+use Auth, PDF;
 use Illuminate\Support\Str;
 use Yajra\DataTables\DataTables;
 
@@ -249,6 +251,57 @@ class SubjectsController extends Controller
                 })
                 ->rawColumns(['subjects', 'action'])
                 ->make(true);
+        } catch (\Exception $e) {
+            $bug = $e->getMessage();
+            return redirect()->back()->with('error', $bug);
+        }
+    }
+
+    /**
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
+     */
+    public function subjectsList() {
+        try {
+            $classes = SchoolClass::where('school_id', Auth::user()->school_id)->get();
+
+            return view('subjects.subjects-list', compact('classes'));
+        } catch (\Exception $e) {
+            $bug = $e->getMessage();
+            return redirect()->back()->with('error', $bug);
+        }
+    }
+
+    public function generateSubjectsList(Request $request) {
+        try {
+            $input = $request->except('_token');
+            $stream = null;
+            $records = LearnerSubject::where([
+                'class_id' => $input['class_id'],
+                'subject_id' => $input['subject_id']
+            ])
+                ->when(!empty($input['stream_id']), function ($q) use ($input) {
+                    return $q->where('stream_id', $input['stream_id']);
+                })
+                ->with(['class', 'stream', 'learner'])
+                ->whereHas('learner')
+                ->get();
+            $records = $records->pluck('learner')->sortBy('admission_number')->values();
+
+            if (!empty($input['stream_id'])) {
+                $stream = Stream::findOrFail($input['stream_id']);
+            }
+
+            $data['records'] = $records;
+            $data['school'] = getSchoolSettings();
+            $data['subject'] = Subjects::findOrFail($input['subject_id']);
+            $data['stream'] = $stream;
+            $data['class'] = SchoolClass::findOrFail($input['class_id']);
+
+            $view = view('pdfs.subjects-list')->with($data);
+            $view = $view->render();
+            $pdf = PDF::loadHtml($view);
+            $pdf->setPaper('a4', 'portrait');
+            return $pdf->stream('subjects_list.pdf');
         } catch (\Exception $e) {
             $bug = $e->getMessage();
             return redirect()->back()->with('error', $bug);

@@ -94,11 +94,13 @@ class LearnerController extends Controller
             ->addColumn('action', function ($data) use ($hasManagePermission) {
                 $output = '';
                 if ($hasManagePermission) {
-                    $output = '<div class="">
-                                    <a href="' . route('learners.index', ['edit' => 1, 'pass_key' => $data->id]) . '"><i class="ik ik-edit f-16 text-blue"></i></a>
-                                    <a href="' . route('learners-subjects.index', ['edit' => 1, 'pass_key' => $data->id]) . '"><i class="ik ik-book-open f-16 text-green"></i></a>
-                                    <a href="' . route('learners.delete', ['id' => $data->id]) . '"><i class="ik ik-trash-2 f-16 text-red"></i></a>
-                                </div>';
+                    $output .= '<div class="">';
+                    if (Auth::user()->role !== 'teacher') {
+                        $output .= '<a href="' . route('learners.index', ['edit' => 1, 'pass_key' => $data->id]) . '"><i class="ik ik-edit f-16 text-blue"></i></a>';
+                        $output .= '<a href="' . route('learners.delete', ['id' => $data->id]) . '"><i class="ik ik-trash-2 f-16 text-red"></i></a>';
+                    }
+                    $output .= '<a href="' . route('learners-subjects.index', ['edit' => 1, 'pass_key' => $data->id]) . '"><i class="ik ik-book-open f-16 text-green"></i></a>';
+                    $output .= '</div>';
                 }
 
                 return $output;
@@ -385,6 +387,7 @@ class LearnerController extends Controller
         try {
             $input = $request->except('_token');
             foreach ($input['learners'] as $id) {
+                LearnerSubject::where(['learner_id' => $id])->delete();
                 User::where('id', $id)->update(['stream_id' => $input['stream_id']]);
             }
 

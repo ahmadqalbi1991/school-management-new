@@ -227,7 +227,7 @@ class TeacherController extends Controller
             $records = TeacherManagement::where('teacher_id', $id)
                 ->with(['class', 'stream'])
                 ->get();
-            $subjects = AssignedSubject::with(['subject', 'assigned_class'])->where('teacher_id', $id)->get();
+            $subjects = AssignedSubject::with(['subject', 'assigned_class', 'stream'])->where('teacher_id', $id)->get();
             $classes = SchoolClass::where('school_id', Auth::user()->school_id)->get();
 
             return view('teachers.detail', compact('teacher', 'records', 'subjects', 'teachers', 'classes'));
@@ -271,13 +271,13 @@ class TeacherController extends Controller
             unset($input['subject_ids']);
             $exist = TeacherManagement::where($input)->first();
             if (!$exist) {
-                return back()->with('error', 'Teacher is not assigned to class');
+                TeacherManagement::create($input);
             }
 
             foreach ($subject_ids as $id) {
                 $assigned = AssignedSubject::where(['teacher_id' => $input['teacher_id'], 'subject_id' => $id])->first();
                 if (!$assigned) {
-                    AssignedSubject::create(['teacher_id' => $input['teacher_id'], 'subject_id' => $id]);
+                    AssignedSubject::create(['teacher_id' => $input['teacher_id'], 'subject_id' => $id, 'stream_id' => $input['stream_id']]);
                 }
             }
 

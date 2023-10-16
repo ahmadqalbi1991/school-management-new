@@ -153,8 +153,12 @@
     })
 
     $('#class_id').on('change', function () {
+        getStreams($(this).val())
+    })
+
+    function getStreams(id) {
         $.ajax({
-            url: '/get-streams/' + $(this).val(),
+            url: '/get-streams/' + id,
             type: 'GET',
             success: function (response) {
                 $('#stream_id').html(response.streams).select2()
@@ -163,14 +167,27 @@
                 $('#subject_id').prop('disabled', false)
             }
         })
-    })
+    }
 
-    $('#class_id_subjects').on('change', function () {
+    function getSubjects(id) {
         $.ajax({
-            url: '/get-subjects/' + $(this).val(),
+            url: '/get-subjects/' + id,
             type: 'GET',
             success: function (response) {
                 $('#subject_id').html(response).select2()
+                $('#subject_id').prop('disabled', false)
+            }
+        })
+    }
+
+    $('#class_id_subjects').on('change', function () {
+        $.ajax({
+            url: '/get-streams/' + $(this).val(),
+            type: 'GET',
+            success: function (response) {
+                $('#stream_id_subjects').html(response.streams).select2()
+                $('#stream_id_subjects').prop('disabled', false)
+                $('#subject_id').html(response.subjects).select2()
                 $('#subject_id').prop('disabled', false)
             }
         })

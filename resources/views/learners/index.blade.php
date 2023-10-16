@@ -40,149 +40,151 @@
             <!-- end message area-->
             <!-- only those have manage_permission permission will get access -->
             @can('manage_learners')
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="row w-100">
-                                <div class="col-md-6 col-sm-12">
-                                    <h3>{{ __('Add Learner')}}</h3>
-                                </div>
-                                <div class="col-md-6 col-sm-12 text-right">
-                                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#learner-modal">
-                                        {{ __('Import Learners') }}</button>
+                @if(Auth::user()->role !== 'teacher')
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="row w-100">
+                                    <div class="col-md-6 col-sm-12">
+                                        <h3>{{ __('Add Learner')}}</h3>
+                                    </div>
+                                    <div class="col-md-6 col-sm-12 text-right">
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#learner-modal">
+                                            {{ __('Import Learners') }}</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="card-body">
-                            <form class="forms-sample" method="POST" data-parsley-validate
-                                  action="{{ empty($learner) ? route('learners.store') : route('learners.update', ['id' => $learner->id])}}">
-                                @csrf
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label for="name">{{ __('Name')}}<span class="text-red">*</span></label>
-                                            <input type="text" class="form-control" id="name"
-                                                   value="{{ !empty($learner) ? $learner->name : '' }}" name="name"
-                                                   placeholder="Learner Name" required>
+                            <div class="card-body">
+                                <form class="forms-sample" method="POST" data-parsley-validate
+                                      action="{{ empty($learner) ? route('learners.store') : route('learners.update', ['id' => $learner->id])}}">
+                                    @csrf
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="name">{{ __('Name')}}<span class="text-red">*</span></label>
+                                                <input type="text" class="form-control" id="name"
+                                                       value="{{ !empty($learner) ? $learner->name : '' }}" name="name"
+                                                       placeholder="Learner Name" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="admission_number">{{ __('Admission Number')}}<span
+                                                        class="text-red">*</span></label>
+                                                <input type="text" class="form-control" id="admission_number"
+                                                       value="{{ !empty($learner) ? $learner->admission_number : '' }}"
+                                                       name="admission_number"
+                                                       placeholder="Learner Admission Number" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="email">{{ __('Email')}}</label>
+                                                <input type="text" class="form-control @error('email') is-invalid @enderror" id="email"
+                                                       @if(!empty($learner)) disabled @endif
+                                                       value="{{ !empty($learner) ? $learner->email : '' }}" name="email"
+                                                       placeholder="Learner Email">
+                                                @error('email')
+                                                <p class="text-danger">This email is already taken</p>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="admission_date">{{ __('Admission Date')}}<span class="text-red">*</span></label>
+                                                <input type="date"
+                                                       value="{{ !empty($learner) ? $learner->admission_date : \Carbon\Carbon::now()->format('Y-m-d') }}"
+                                                       required class="form-control" id="admission_date"
+                                                       name="admission_date">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="upi_number">{{ __('UPI Number')}}</label>
+                                                <input type="text" class="form-control" id="upi_number"
+                                                       value="{{ !empty($learner) ? $learner->upi_number : '' }}"
+                                                       name="upi_number"
+                                                       placeholder="UPI Number">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="parent_name">{{ __('Parent Name')}}<span
+                                                        class="text-red">*</span></label>
+                                                <input type="text" class="form-control" id="parent_name"
+                                                       value="{{ !empty($learner) ? $learner->parent_name : '' }}"
+                                                       name="parent_name" placeholder="Name">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="parent_phone_number">{{ __('Parent Phone Number')}}<span
+                                                        class="text-red">*</span></label>
+                                                <input type="text" class="form-control" id="parent_phone_number"
+                                                       value="{{ !empty($learner) ? $learner->parent_phone_number : '' }}"
+                                                       name="parent_phone_number" placeholder="Phone Number">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="parent_email">{{ __('Parent Email')}}<span
+                                                        class="text-red">*</span></label>
+                                                <input type="text" class="form-control" id="parent_email"
+                                                       value="{{ !empty($learner) ? $learner->parent_email : '' }}"
+                                                       name="parent_email"
+                                                       placeholder="Email">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="status">{{ __('Status')}}</label>
+                                                <select name="status" id="status" class="form-control select2" required>
+                                                    <option value="">{{ __('Select Status') }}</option>
+                                                    <option value="active"
+                                                            @if(!empty($learner) && $learner->status === 'active') selected @endif>{{ __('Active') }}</option>
+                                                    <option value="disable"
+                                                            @if(!empty($learner) && $learner->status === 'disable') selected @endif>{{ __('Disable') }}</option>
+                                                    <option value="blocked"
+                                                            @if(!empty($learner) && $learner->status === 'blocked') selected @endif>{{ __('Blocked') }}</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="stream_id">{{ __('Stream')}}</label>
+                                                <select name="stream_id" id="stream_id" class="form-control select2" required>
+                                                    <option value="">{{ __('Select Stream') }}</option>
+                                                    @foreach($streams as $stream)
+                                                        <option @if(!empty($learner) && $stream->id === $learner->stream_id) selected @endif value="{{ $stream->id }}">{{ $stream->school_class->class }} - {{ $stream->title }} ({{ $stream->school->school_name }})</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="school_id">{{ __('School')}}</label>
+                                                <select name="school_id" id="school_id" class="form-control select2">
+                                                    <option value="">{{ __('Select School') }}</option>
+                                                    @foreach($schools as $school)
+                                                        <option
+                                                            @if((!empty($learner) && $learner->school_id === $school->id) || (!empty(Auth::user()->school_id)) && Auth::user()->school_id === $school->id) selected
+                                                            @endif value="{{ $school->id }}">{{ $school->school_name }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 text-right">
+                                            <div class="form-group">
+                                                <button type="submit"
+                                                        class="btn btn-success btn-rounded">{{ __('Save')}}</button>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label for="admission_number">{{ __('Admission Number')}}<span
-                                                    class="text-red">*</span></label>
-                                            <input type="text" class="form-control" id="admission_number"
-                                                   value="{{ !empty($learner) ? $learner->admission_number : '' }}"
-                                                   name="admission_number"
-                                                   placeholder="Learner Admission Number" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label for="email">{{ __('Email')}}</label>
-                                            <input type="text" class="form-control @error('email') is-invalid @enderror" id="email"
-                                                   @if(!empty($learner)) disabled @endif
-                                                   value="{{ !empty($learner) ? $learner->email : '' }}" name="email"
-                                                   placeholder="Learner Email">
-                                            @error('email')
-                                            <p class="text-danger">This email is already taken</p>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label for="admission_date">{{ __('Admission Date')}}<span class="text-red">*</span></label>
-                                            <input type="date"
-                                                   value="{{ !empty($learner) ? $learner->admission_date : \Carbon\Carbon::now()->format('Y-m-d') }}"
-                                                   required class="form-control" id="admission_date"
-                                                   name="admission_date">
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label for="upi_number">{{ __('UPI Number')}}</label>
-                                            <input type="text" class="form-control" id="upi_number"
-                                                   value="{{ !empty($learner) ? $learner->upi_number : '' }}"
-                                                   name="upi_number"
-                                                   placeholder="UPI Number">
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label for="parent_name">{{ __('Parent Name')}}<span
-                                                    class="text-red">*</span></label>
-                                            <input type="text" class="form-control" id="parent_name"
-                                                   value="{{ !empty($learner) ? $learner->parent_name : '' }}"
-                                                   name="parent_name" placeholder="Name">
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label for="parent_phone_number">{{ __('Parent Phone Number')}}<span
-                                                    class="text-red">*</span></label>
-                                            <input type="text" class="form-control" id="parent_phone_number"
-                                                   value="{{ !empty($learner) ? $learner->parent_phone_number : '' }}"
-                                                   name="parent_phone_number" placeholder="Phone Number">
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label for="parent_email">{{ __('Parent Email')}}<span
-                                                    class="text-red">*</span></label>
-                                            <input type="text" class="form-control" id="parent_email"
-                                                   value="{{ !empty($learner) ? $learner->parent_email : '' }}"
-                                                   name="parent_email"
-                                                   placeholder="Email">
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label for="status">{{ __('Status')}}</label>
-                                            <select name="status" id="status" class="form-control select2" required>
-                                                <option value="">{{ __('Select Status') }}</option>
-                                                <option value="active"
-                                                        @if(!empty($learner) && $learner->status === 'active') selected @endif>{{ __('Active') }}</option>
-                                                <option value="disable"
-                                                        @if(!empty($learner) && $learner->status === 'disable') selected @endif>{{ __('Disable') }}</option>
-                                                <option value="blocked"
-                                                        @if(!empty($learner) && $learner->status === 'blocked') selected @endif>{{ __('Blocked') }}</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label for="stream_id">{{ __('Stream')}}</label>
-                                            <select name="stream_id" id="stream_id" class="form-control select2" required>
-                                                <option value="">{{ __('Select Stream') }}</option>
-                                                @foreach($streams as $stream)
-                                                    <option @if(!empty($learner) && $stream->id === $learner->stream_id) selected @endif value="{{ $stream->id }}">{{ $stream->school_class->class }} - {{ $stream->title }} ({{ $stream->school->school_name }})</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label for="school_id">{{ __('School')}}</label>
-                                            <select name="school_id" id="school_id" class="form-control select2">
-                                                <option value="">{{ __('Select School') }}</option>
-                                                @foreach($schools as $school)
-                                                    <option
-                                                        @if((!empty($learner) && $learner->school_id === $school->id) || (!empty(Auth::user()->school_id)) && Auth::user()->school_id === $school->id) selected
-                                                        @endif value="{{ $school->id }}">{{ $school->school_name }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12 text-right">
-                                        <div class="form-group">
-                                            <button type="submit"
-                                                    class="btn btn-success btn-rounded">{{ __('Save')}}</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
+                                </form>
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endif
             @endcan
         </div>
         <div class="row">

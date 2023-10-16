@@ -192,6 +192,8 @@ Route::group(['middleware' => ['auth', 'verify_school']], function () {
     Route::get('/get-term-exams/{id}', [TermsController::class, 'getExams']);
     Route::get('/get-terms/{year}', [TermsController::class, 'getTerms']);
     Route::post('/get-report-learners', [SummativeAssessmentController::class, 'getReportLearners']);
+    Route::post('/generate-subjects-list', [SubjectsController::class, 'generateSubjectsList'])->name('generate-subjects-list');
+    Route::get('/subjects-list', [SubjectsController::class, 'subjectsList'])->name('subjects-list');
 
     Route::group(['middleware' => 'can:manage_classes', 'as' => 'classes.', 'prefix' => 'classes'], function () {
         Route::get('/', [ClassesController::class, 'index'])->name('index');

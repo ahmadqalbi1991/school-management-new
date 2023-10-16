@@ -73,7 +73,11 @@ class SummativeAssessmentController extends Controller
                     'slug' => $stream_slug
                 ])->first();
                 $subject = Subjects::where('slug', $subject_slug)->first();
-                $exist = AssignedSubject::where(['teacher_id' => Auth::id(), 'subject_id' => $subject->id])->first();
+                $exist = AssignedSubject::where([
+                    'teacher_id' => Auth::id(),
+                    'subject_id' => $subject->id,
+                    'stream_id' => $stream->id
+                ])->first();
                 if (!$exist) {
                     return redirect()->back()->with('error', 'You don`t have access to this page');
                 }

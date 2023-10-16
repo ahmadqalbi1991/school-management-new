@@ -65,79 +65,7 @@
             <div class="col-md-12">
                 <div class="card p-3">
                     <div class="card-header">
-                        <h5>{{ __('Assigned Classes') }}</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="p-2">
-                            <form class="forms-sample" method="POST" data-parsley-validate
-                                  action="{{ route('teachers.save-manage-assigned-teachers') }}">
-                                @csrf
-                                <div class="row">
-                                    <input type="hidden" name="teacher_id" value="{{ $teacher->id }}">
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label for="class_id">{{ __('Class')}}<span
-                                                    class="text-red">*</span></label>
-                                            <select name="class_id" id="class_id"
-                                                    class="select2 form-control" required>
-                                                <option value="">{{ __('Select Grade') }}</option>
-                                                @foreach($classes as $class)
-                                                    <option value="{{ $class->id }}">{{ $class->class }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label for="stream_id">{{ __('Stream')}}<span
-                                                    class="text-red">*</span></label>
-                                            <select name="stream_id" id="stream_id"
-                                                    class="select2 form-control" required disabled>
-                                                <option value="">{{ __('Select Stream') }}</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-12 text-right">
-                                        <div class="form-group">
-                                            <button type="submit"
-                                                    class="btn btn-success btn-rounded">{{ __('Save')}}</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                        <div class="p-2">
-                            <table id="teacher_detail_table" class="table">
-                                <thead>
-                                <tr>
-                                    <th>{{ __('Class')}}</th>
-                                    <th>{{ __('Stream')}}</th>
-                                    <th>{{ __('Action')}}</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @foreach($records as $record)
-                                    <tr>
-                                        <td>{{ $record->class->class }}</td>
-                                        <td>{{ $record->stream->title }}</td>
-                                        <td>
-                                            <a href="{{ route('teachers.remove-class', ['id' => $record->id]) }}"><i
-                                                    class="ik ik-trash-2 f-16 text-red"></i></a>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card p-3">
-                    <div class="card-header">
-                        <h5>{{ __('Assigned Learning Areas') }}</h5>
+                        <h5>{{ __('Assigned Grades') }}</h5>
                     </div>
                     <div class="card-body">
                         <div class="p-2">
@@ -156,6 +84,16 @@
                                                 @foreach($classes as $class)
                                                     <option value="{{ $class->id }}">{{ $class->class }}</option>
                                                 @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label for="class_id">{{ __('Stream')}}<span
+                                                    class="text-red">*</span></label>
+                                            <select name="stream_id" id="stream_id_subjects"
+                                                    class="select2 form-control" required>
+                                                <option value="">{{ __('Select Stream') }}</option>
                                             </select>
                                         </div>
                                     </div>
@@ -182,16 +120,18 @@
                             <table id="teacher_detail_table" class="table">
                                 <thead>
                                 <tr>
-                                    <th>{{ __('Learning Area')}}</th>
                                     <th>{{ __('Grade')}}</th>
+                                    <th>{{ __('Stream')}}</th>
+                                    <th>{{ __('Learning Area')}}</th>
                                     <th>{{ __('Action')}}</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 @foreach($subjects as $record)
                                     <tr>
-                                        <td>{{ $record->subject->title }}</td>
                                         <td>{{ !empty($record->assigned_class->school_class) ? $record->assigned_class->school_class->class : '' }}</td>
+                                        <td>{{ !empty($record->stream) ? $record->stream->title : '' }}</td>
+                                        <td>{{ $record->subject->title }}</td>
                                         <td>
                                             <a href="{{ route('teachers.remove-subject', ['id' => $record->id]) }}"><i
                                                     class="ik ik-trash-2 f-16 text-red"></i></a>

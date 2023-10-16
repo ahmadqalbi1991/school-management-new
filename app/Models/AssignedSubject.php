@@ -12,7 +12,7 @@ class AssignedSubject extends Model
     use HasFactory;
     protected $table = 'assigned_subjects';
     public $timestamps = false;
-    protected $fillable = ['teacher_id', 'subject_id'];
+    protected $fillable = ['teacher_id', 'subject_id', 'stream_id'];
 
     public function subject(): BelongsTo
     {
@@ -22,5 +22,10 @@ class AssignedSubject extends Model
     public function assigned_class(): BelongsTo
     {
         return $this->belongsTo(AssignedSubjectsClass::class, 'subject_id', 'subject_id')->with('school_class');
+    }
+
+    public function stream(): BelongsTo
+    {
+        return $this->belongsTo(Stream::class, 'stream_id', 'id');
     }
 }

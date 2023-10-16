@@ -118,4 +118,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Activity::class, 'user_id', 'id');
     }
+
+    public function assigned_subjects(): HasMany
+    {
+        return $this->hasMany(LearnerSubject::class, 'learner_id', 'id');
+    }
 }

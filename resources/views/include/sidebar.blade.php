@@ -84,15 +84,16 @@
                         </div>
                     </div>
                 @endcan
-                @can('manage_teachers')
+{{--                @can('manage_teachers')--}}
                     <div class="nav-item {{ ($segment1 == 'learners-subjects') ? 'active' : '' }}">
                         <a href="{{route('learners-subjects.index')}}">
                             <i class="ik ik-book"></i>
                             <span>{{ __('Students Learning Areas')}}</span>
                         </a>
                     </div>
-                @endcan
+{{--                @endcan--}}
                 @can('manage_teachers')
+                    @if(Auth::user()->role !== 'teacher')
                     <div
                         class="nav-item {{ ($segment1 == 'teachers') ? 'active open' : '' }} has-sub">
                         <a href="#"><i class="ik ik-user"></i><span>{{ __('Teachers')}}</span></a>
@@ -104,14 +105,17 @@
                             @endcan
                         </div>
                     </div>
+                    @endif
                 @endcan
                 @can('manage_learners')
+                    @if(Auth::user()->role !== 'teacher')
                     <div class="nav-item {{ ($segment1 == 'learners' && !$segment2) ? 'active' : '' }}">
                         <a href="{{route('learners.index')}}">
                             <i class="ik ik-user"></i>
                             <span>{{ __('Learners')}}</span>
                         </a>
                     </div>
+                    @endif
                     @if(Auth::user()->role === 'admin')
                         <div class="nav-item {{ ($segment2 == 'learners-management') ? 'active' : '' }}">
                             <a href="{{route('learners.learners-management')}}">
@@ -122,7 +126,6 @@
                     @endif
                 @endcan
                 @if(Auth::user()->role !== 'teacher')
-
                     <div
                         class="nav-item {{ ($segment1 == 'exams' || $segment1 == 'summative-performance-levels' || $segment1 == 'performance-levels' || $segment1 == 'subjects' || $segment1 == 'strands' || $segment1 == 'sub-strands' || $segment1 == 'learning-activities' || $segment1 == 'terms' || $segment1 == 'term-subjects') ? 'active open' : '' }} has-sub">
                         <a href="#"><i class="ik ik-book-open"></i><span>{{ __('Learning Areas')}}</span></a>
@@ -211,6 +214,14 @@
                         <span>{{ __('Class List')}}</span>
                     </a>
                 </div>
+                @if(in_array(Auth::user()->role, ['admin', 'teacher']))
+                    <div class="nav-item {{ ($segment1 == 'subjects-list') ? 'active' : '' }}">
+                        <a href="{{route('subjects-list')}}">
+                            <i class="ik ik-list"></i>
+                            <span>{{ __('Subjects List')}}</span>
+                        </a>
+                    </div>
+                @endif
             </nav>
         </div>
     </div>

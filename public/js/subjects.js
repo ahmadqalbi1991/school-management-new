@@ -278,5 +278,32 @@
         })
     });
 
+    $('#class_id').on('change', function () {
+        $.ajax({
+            url: '/get-streams/' + $(this).val(),
+            type: 'GET',
+            success: function (response) {
+                $('#stream-id').html(response.streams).select2()
+                $('#subject-id').html(response.subjects).select2()
+                $('#stream-id').prop('disabled', false)
+                $('#subject-id').prop('disabled', false)
+            }
+        })
+
+        activeActionButtons();
+    })
+
+    function activeActionButtons() {
+        if ($('#class_id').val() != "" && $('#subject-id').val() != "") {
+            $('#pdf-btn').prop('disabled', false);
+        } else {
+            $('#pdf-btn').prop('disabled', true);
+        }
+    }
+
+    $('#subject-id').on('change', function () {
+        activeActionButtons()
+    })
+
     $('select').select2();
 })(jQuery);
