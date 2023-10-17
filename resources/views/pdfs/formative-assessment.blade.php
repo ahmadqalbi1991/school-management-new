@@ -91,7 +91,7 @@
 
     .tick img {
         display: inline-block;
-        width: 20px;
+        width: 40px;
     }
 
 </style>

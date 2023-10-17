@@ -11,10 +11,13 @@ use App\Models\LearnerSubject;
 use App\Models\School;
 use App\Models\SchoolClass;
 use App\Models\Stream;
+use App\Models\TeacherManagement;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Auth, DataTables, Excel, PDF;
+use Illuminate\Support\Str;
+use function Symfony\Component\String\s;
 
 class LearnerController extends Controller
 {
@@ -52,13 +55,24 @@ class LearnerController extends Controller
      */
     public function getList()
     {
+        $streams = [];
+        if (Auth::user()->role === 'teacher') {
+            $assigned_classes = TeacherManagement::where('teacher_id', Auth::id())->get();
+            $assigned_classes = $assigned_classes->pluck('class_id')->toArray();
+            $streams = Stream::whereIn('class_id', $assigned_classes)->get();
+            $streams = $streams->pluck('id')->toArray();
+        }
+
         $data = User::where(['role' => 'learner'])
             ->with('school')
             ->with('stream', function ($q) {
                 return $q->with('school_class');
             })
-            ->when(Auth::user()->role === 'admin', function ($q) {
+            ->when(in_array(Auth::user()->role, ['admin', 'teacher']), function ($q) {
                 return $q->where('school_id', Auth::user()->school_id);
+            })
+            ->when(Auth::user()->role === 'teacher', function ($q) use ($streams) {
+                return $q->whereIn('stream_id', $streams);
             })
             ->get();
         $hasManagePermission = Auth::user()->can('manage_learners');
@@ -93,15 +107,15 @@ class LearnerController extends Controller
             })
             ->addColumn('action', function ($data) use ($hasManagePermission) {
                 $output = '';
+                $output .= '<div class="">';
                 if ($hasManagePermission) {
-                    $output .= '<div class="">';
                     if (Auth::user()->role !== 'teacher') {
                         $output .= '<a href="' . route('learners.index', ['edit' => 1, 'pass_key' => $data->id]) . '"><i class="ik ik-edit f-16 text-blue"></i></a>';
                         $output .= '<a href="' . route('learners.delete', ['id' => $data->id]) . '"><i class="ik ik-trash-2 f-16 text-red"></i></a>';
                     }
-                    $output .= '<a href="' . route('learners-subjects.index', ['edit' => 1, 'pass_key' => $data->id]) . '"><i class="ik ik-book-open f-16 text-green"></i></a>';
-                    $output .= '</div>';
                 }
+                $output .= '<a href="' . route('learners-subjects.index', ['edit' => 1, 'pass_key' => $data->id]) . '"><i class="ik ik-book-open f-16 text-green"></i></a>';
+                $output .= '</div>';
 
                 return $output;
             })
@@ -221,9 +235,17 @@ class LearnerController extends Controller
     public function addLearnerSubjects(Request $request)
     {
         try {
-            $classes = SchoolClass::when(Auth::user()->role === 'admin', function ($q) {
+            $assigned_classes = [];
+            if (Auth::user()->role === 'teacher') {
+                $assigned_classes = TeacherManagement::where('teacher_id', Auth::id())->get();
+                $assigned_classes = $assigned_classes->pluck('class_id')->toArray();
+            }
+            $classes = SchoolClass::when(in_array(Auth::user()->role, ['admin', 'teacher']), function ($q) {
                 return $q->where('school_id', Auth::user()->school_id);
-            })->get();
+            })->when(Auth::user()->role === 'teacher', function ($q) use ($assigned_classes) {
+                return $q->whereIn('id', $assigned_classes);
+            })
+                ->get();
             $learner = $class_id = $learner_data = $streams = $subjects = $subjects_ids = null;
             if ($request->has('pass_key') && $request->has('edit')) {
                 $learner = User::where('id', $request->get('pass_key'))

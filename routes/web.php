@@ -88,7 +88,7 @@ Route::group(['middleware' => ['auth', 'verify_school']], function () {
     Route::group(['middleware' => 'can:manage_learners', 'as' => 'learners.', 'prefix' => 'learners'], function () {
         Route::get('/', [LearnerController::class, 'index'])->name('index');
         Route::get('/learners-management', [LearnerController::class, 'management'])->name('learners-management');
-        Route::get('/get-list', [LearnerController::class, 'getList'])->name('get-list');
+        Route::get('/get-list', [LearnerController::class, 'getList'])->name('get-list')->withoutMiddleware('can:manage_learners');
         Route::post('/store', [LearnerController::class, 'store'])->name('store');
         Route::post('/update/{id}', [LearnerController::class, 'update'])->name('update');
         Route::get('/delete/{id}', [LearnerController::class, 'destroy'])->name('delete');
