@@ -88,7 +88,11 @@
                             <i class="fas fa-user dropdown-icon"></i>
                             {{ __('Profile')}}
                         </a>
-                        <a class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#resetPasswordModal">
+{{--                        <a class="dropdown-item" href="javascript:void(0)" data-toggle="modal" data-target="#resetPasswordModal">--}}
+{{--                            <i class="fas fa-envelope dropdown-icon"></i>--}}
+{{--                            {{ __('Reset Password')}}--}}
+{{--                        </a>--}}
+                        <a class="dropdown-item" href="{{ route('reset-password') }}">
                             <i class="fas fa-envelope dropdown-icon"></i>
                             {{ __('Reset Password')}}
                         </a>

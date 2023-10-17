@@ -132,7 +132,8 @@
                                                 <a href="javascript:void(0)">
                                                     <div class="class-wrapper">
                                                         <h3><i class="fas fa-book-open"></i></h3>
-                                                        <p>{{ $subject->subject->title }}</p>
+                                                        <p class="m-0">{{ $subject->subject->title }}</p>
+                                                        <span>{{ $subject->stream->school_class->class }} ({{ $subject->stream->title }})</span>
                                                     </div>
                                                 </a>
                                             </div>

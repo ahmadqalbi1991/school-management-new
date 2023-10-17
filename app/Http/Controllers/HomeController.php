@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use App\Models\Subjects;
 use App\Models\SummativeAssessment;
 use App\Models\User;
-use Auth;
+use Auth, Hash;
 
 class HomeController extends Controller
 {
@@ -87,6 +87,33 @@ class HomeController extends Controller
             $user->save();
 
             return redirect()->back()->with('success', 'Profile successfully updated');
+        } catch (\Exception $e) {
+            $bug = $e->getMessage();
+            return redirect()->back()->with('error', $bug);
+        }
+    }
+
+    /**
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
+     */
+    public function resetPassword() {
+        try {
+            return view('reset-password');
+        } catch (\Exception $e) {
+            $bug = $e->getMessage();
+            return redirect()->back()->with('error', $bug);
+        }
+    }
+
+    public function changePassword(Request $request) {
+        try {
+            $input = $request->except('_token');
+            if (!Hash::check($input['old_password'], Auth::user()->password)) {
+                return redirect()->back()->with('error', 'Please check your password');
+            }
+
+            User::where('id', Auth::id())->update(['password' => bcrypt($input['new_password'])]);
+            return redirect()->back()->with('success', 'Password changed successfully');
         } catch (\Exception $e) {
             $bug = $e->getMessage();
             return redirect()->back()->with('error', $bug);

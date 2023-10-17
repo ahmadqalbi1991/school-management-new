@@ -53,6 +53,8 @@ Route::get('password/forget', function () {
 Route::post('password/email', [ForgotPasswordController::class, 'sendResetLinkEmail'])->name('password.email');
 Route::get('password/reset/{token}', [ResetPasswordController::class, 'showResetForm'])->name('password.reset');
 Route::post('password/reset', [ResetPasswordController::class, 'reset'])->name('password.update');
+Route::get('/reset-password', [HomeController::class, 'resetPassword'])->name('reset-password');
+Route::post('/change-password', [HomeController::class, 'changePassword'])->name('change-password');
 
 Route::group(['middleware' => ['auth', 'verify_school']], function () {
     // logout route
