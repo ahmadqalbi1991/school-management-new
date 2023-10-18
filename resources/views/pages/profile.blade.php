@@ -133,7 +133,9 @@
                                                     <div class="class-wrapper">
                                                         <h3><i class="fas fa-book-open"></i></h3>
                                                         <p class="m-0">{{ $subject->subject->title }}</p>
-                                                        <span>{{ $subject->stream->school_class->class }} ({{ $subject->stream->title }})</span>
+                                                        @if(!empty($subject->stream->school_class))
+                                                            <span>{{ $subject->stream->school_class->class }} ({{ $subject->stream->title }})</span>
+                                                        @endif
                                                     </div>
                                                 </a>
                                             </div>
