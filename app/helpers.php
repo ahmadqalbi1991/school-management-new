@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Activity;
+use App\Models\AssignedSubject;
 use App\Models\AssignedSubjectsClass;
 use App\Models\Exam;
 use App\Models\PerformanceLevel;
@@ -102,9 +103,19 @@ function checkPointsCriteria($points, $remark = false, $comment = false)
 function getSchoolSubjects($all = true, $id = null)
 {
     $data = [];
+    $teacher_assigned_subjects = [];
+    if (Auth::user()->role === 'teacher') {
+        $teacher_assigned_subjects = AssignedSubject::where('teacher_id', Auth::id())->get();
+        if (count($teacher_assigned_subjects)) {
+            $teacher_assigned_subjects = $teacher_assigned_subjects->pluck('subject_id')->toArray();
+        }
+    }
     $assigned_subjects = AssignedSubjectsClass::where('school_id', Auth::user()->school_id)
         ->when($id, function ($q) use ($id) {
             return $q->where('class_id', $id);
+        })
+        ->when(Auth::user()->role === 'teacher', function ($q) use ($teacher_assigned_subjects) {
+            return $q->whereIn('subject_id', $teacher_assigned_subjects);
         })
         ->get();
 

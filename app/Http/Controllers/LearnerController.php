@@ -252,11 +252,21 @@ class LearnerController extends Controller
                     ->with('stream', function ($q) {
                         return $q->with('school_class');
                     })->first();
-
+                $teacher_assigned_subjects = [];
+                if (Auth::user()->role === 'teacher') {
+                    $teacher_assigned_subjects = AssignedSubject::where('teacher_id', Auth::id())->get();
+                    if (count($teacher_assigned_subjects)) {
+                        $teacher_assigned_subjects = $teacher_assigned_subjects->pluck('subject_id')->toArray();
+                    }
+                }
                 $class_id = $learner->stream->school_class->id;
                 $streams = Stream::where('class_id', $class_id)->get();
                 $subjects = AssignedSubjectsClass::with('subject')
-                    ->where('class_id', $class_id)->get();
+                    ->where('class_id', $class_id)
+                    ->when(Auth::user()->role === 'teacher', function ($q) use ($teacher_assigned_subjects) {
+                        return $q->whereIn('subject_id', $teacher_assigned_subjects);
+                    })
+                    ->get();
 
                 $learner_data = LearnerSubject::where(['class_id' => $class_id, 'stream_id' => $learner->stream_id, 'learner_id' => $request->get('pass_key')])
                     ->with(['subject'])->get();

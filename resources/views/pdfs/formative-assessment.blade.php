@@ -48,8 +48,8 @@
     }
 
     .term-details h4, .term-details p {
-        margin-top: 0!important;
-        margin-bottom: 0!important;
+        margin-top: 0 !important;
+        margin-bottom: 0 !important;
     }
 
     table, td, th {
@@ -81,7 +81,7 @@
     }
 
     .m-0 {
-         margin: 0 !important;
+        margin: 0 !important;
     }
 
     .tick {
@@ -114,7 +114,8 @@
         @endforeach
     </div>
     <div class="term-details">
-        <p>{{ $term->term }}, {{ $term->year }} ({{ \Carbon\Carbon::parse($term->start_date)->format('d M, Y') }} - {{ \Carbon\Carbon::parse($term->end_date)->format('d M, Y') }})</p>
+        <p>{{ $term->term }}, {{ $term->year }} ({{ \Carbon\Carbon::parse($term->start_date)->format('d M, Y') }}
+            - {{ \Carbon\Carbon::parse($term->end_date)->format('d M, Y') }})</p>
         <h4>{{ __('Formative Assessment Summary Report') }}</h4>
     </div>
     <div class="subjects-table">
@@ -173,8 +174,6 @@
                                                 $total_attempted += 1;
                                                 $subject_total += $point;
                                             @endphp
-                                        <img src="{{ url('/') . '/images/tick.png' }}" alt="">
-                                        @else
                                             <img src="{{ url('/') . '/images/tick.png' }}" alt="">
                                         @endif
                                     </div>
