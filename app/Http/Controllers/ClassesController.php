@@ -45,7 +45,9 @@ class ClassesController extends Controller
     {
         $data = SchoolClass::when(Auth::user()->role === 'admin', function ($q) {
             return $q->where('school_id', Auth::user()->school_id);
-        })->latest()->get();
+        })
+            ->with(['assigned_subjects', 'streams'])
+            ->latest()->get();
         $hasManagePermission = Auth::user()->can('manage_classes');
 
         return Datatables::of($data)
@@ -59,10 +61,12 @@ class ClassesController extends Controller
             ->addColumn('action', function ($data) use ($hasManagePermission) {
                 $output = '';
                 if ($hasManagePermission) {
-                    $output = '<div class="">
-                                    <a href="' . route('classes.index', ['edit' => 1, 'pass_key' => $data->id]) . '"><i class="ik ik-edit f-16 text-blue"></i></a>
-                                    <a href="' . route('classes.delete', ['id' => $data->id]) . '"><i class="ik ik-trash-2 f-16 text-red"></i></a>
-                                </div>';
+                    $output .= '<div class="">';
+                    $output .= '<a href="' . route('classes.index', ['edit' => 1, 'pass_key' => $data->id]) . '"><i class="ik ik-edit f-16 text-blue"></i></a>';
+                    if ($data->assigned_subjects->count() === 0 && $data->streams->count() === 0) {
+                        $output .= '<a href="' . route('classes.delete', ['id' => $data->id]) . '"><i class="ik ik-trash-2 f-16 text-red"></i></a>';
+                    }
+                    $output .= '</div>';
                 }
 
                 return $output;
@@ -83,7 +87,7 @@ class ClassesController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -104,7 +108,7 @@ class ClassesController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -115,7 +119,7 @@ class ClassesController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -126,8 +130,8 @@ class ClassesController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -147,7 +151,7 @@ class ClassesController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -165,7 +169,8 @@ class ClassesController extends Controller
      * @param $id
      * @return \Illuminate\Http\RedirectResponse|string
      */
-    public function getStreams($id) {
+    public function getStreams($id)
+    {
         try {
             $streams = Stream::where('class_id', $id)->get();
             $subjects = getSchoolSubjects(true, $id);
@@ -187,7 +192,8 @@ class ClassesController extends Controller
         }
     }
 
-    public function getSubjects($id) {
+    public function getSubjects($id)
+    {
         try {
             $subjects = getSchoolSubjects(true, $id);
             $subjects_html = '<option value="">Select Learning Area</option>';

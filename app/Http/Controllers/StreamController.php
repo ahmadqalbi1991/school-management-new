@@ -50,6 +50,14 @@ class StreamController extends Controller
             ->when(Auth::user()->role === 'admin', function ($q) {
                 return $q->where('school_id', Auth::user()->school_id);
             })
+            ->with([
+                'assigned_subjects',
+                'learner_subjects',
+                'student_assessments',
+                'summative_assessments',
+                'teachers_management',
+                'learners'
+            ])
             ->latest()
             ->get();
         $hasManagePermission = Auth::user()->can('manage_streams');
@@ -68,10 +76,12 @@ class StreamController extends Controller
             ->addColumn('action', function ($data) use ($hasManagePermission) {
                 $output = '';
                 if ($hasManagePermission) {
-                    $output = '<div class="">
-                                    <a href="' . route('streams.index', ['edit' => 1, 'pass_key' => $data->id]) . '"><i class="ik ik-edit f-16 text-blue"></i></a>
-                                    <a href="' . route('streams.delete', ['id' => $data->id]) . '"><i class="ik ik-trash-2 f-16 text-red"></i></a>
-                                </div>';
+                    $output .= '<div class="">';
+                    $output .= '<a href="' . route('streams.index', ['edit' => 1, 'pass_key' => $data->id]) . '"><i class="ik ik-edit f-16 text-blue"></i></a>';
+                    if ($data->assigned_subjects->count() === 0 && $data->learner_subjects->count() === 0 && $data->student_assessments->count() === 0 && $data->summative_assessments->count() === 0 && $data->learners->count() === 0 && $data->teachers_management->count() === 0) {
+                        $output .= '<a href="' . route('streams.delete', ['id' => $data->id]) . '"><i class="ik ik-trash-2 f-16 text-red"></i></a>';
+                    }
+                    $output .= '</div>';
                 }
 
                 return $output;
@@ -92,7 +102,7 @@ class StreamController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
@@ -112,7 +122,7 @@ class StreamController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -123,7 +133,7 @@ class StreamController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -134,8 +144,8 @@ class StreamController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -155,7 +165,7 @@ class StreamController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
@@ -174,7 +184,8 @@ class StreamController extends Controller
      * @param $move
      * @return \Illuminate\Http\RedirectResponse|string
      */
-    public function getLearners($id, $move = false) {
+    public function getLearners($id, $move = false)
+    {
         try {
             $learners = User::where([
                 'stream_id' => $id,
