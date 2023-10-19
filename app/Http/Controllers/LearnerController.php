@@ -6,6 +6,7 @@ use App\Exports\ClassExport;
 use App\Imports\LearnerImport;
 use App\Jobs\EmailJob;
 use App\Models\AssignedSubjectsClass;
+use App\Models\AssignedSubject;
 use App\Models\ClassSubject;
 use App\Models\LearnerSubject;
 use App\Models\School;
