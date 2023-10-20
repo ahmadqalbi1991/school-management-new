@@ -64,7 +64,16 @@ class HomeController extends Controller
                 })
                 ->first();
 
-            return view('pages.profile', compact('user'));
+                $assigend_subjects = $user->subjects;
+                $subjects = [];
+                foreach ($assigend_subjects as $key => $subject) {
+                    $subjects[$subject->subject_id]['title'] = $subject->subject->title;
+                    if (!empty($subject->stream->school_class)) {
+                        $subjects[$subject->subject_id]['grades'][] = $subject->stream->school_class->class . '(' . $subject->stream->title . ')';
+                    }
+                }
+
+            return view('pages.profile', compact('user', 'subjects'));
         } catch (\Exception $e) {
             $bug = $e->getMessage();
             return redirect()->back()->with('error', $bug);

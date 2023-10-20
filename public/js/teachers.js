@@ -189,9 +189,20 @@
                 $('#stream_id_subjects').prop('disabled', false)
                 $('#subject_id').html(response.subjects).select2()
                 $('#subject_id').prop('disabled', false)
+                $('#all_streams').prop('disabled', false)
             }
         })
     })
+
+    $('#all_streams').on('click', function () {
+        if($(this).is(':checked')) {
+            $('#stream_id_subjects').prop('disabled', true);
+            $('#stream_id_subjects').prop('required', false);
+        } else {
+            $('#stream_id_subjects').prop('disabled', false);
+            $('#stream_id_subjects').prop('required', true);
+        }
+    }) 
 
     $('#teacher_detail_table').DataTable();
     $('select').select2();

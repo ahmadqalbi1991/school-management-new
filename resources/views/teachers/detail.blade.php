@@ -91,10 +91,16 @@
                                         <div class="form-group">
                                             <label for="class_id">{{ __('Stream')}}<span
                                                     class="text-red">*</span></label>
-                                            <select name="stream_id" id="stream_id_subjects"
-                                                    class="select2 form-control" required>
+                                            <select name="stream_ids[]" id="stream_id_subjects"
+                                                    class="select2 form-control" required multiple>
                                                 <option value="">{{ __('Select Stream') }}</option>
                                             </select>
+                                            <div class="form-check mx-2">
+                                                <label class="custom-control custom-checkbox">
+                                                    <input type="checkbox" value="1" name="all_streams" class="custom-control-input" id="all_streams" disabled="" data-parsley-multiple="all_students">
+                                                    <span class="custom-control-label">&nbsp; Assign selected learning areas to all streams</span>
+                                                </label>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-sm-6">

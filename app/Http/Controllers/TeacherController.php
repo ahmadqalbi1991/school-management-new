@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Jobs\EmailJob;
 use App\Models\AssignedSubject;
 use App\Models\School;
+use App\Models\Stream;
 use App\Models\SchoolClass;
 use App\Models\TeacherManagement;
 use App\Models\User;
@@ -267,17 +268,32 @@ class TeacherController extends Controller
     {
         try {
             $input = $request->except('_token');
+            $stream_ids = [];
+            if (!empty($input['all_streams'])) {
+                $streams = Stream::where('class_id', $input['class_id'])->get();
+                if ($streams->count()) {
+                    $stream_ids = $streams->pluck('id')->toArray();
+                }
+            } else {
+                if (!empty($input['stream_ids'])) {
+                    $stream_ids = $input['stream_ids'];
+                    unset($input['stream_ids']);
+                }
+            }
             $subject_ids = $input['subject_ids'];
             unset($input['subject_ids']);
-            $exist = TeacherManagement::where($input)->first();
-            if (!$exist) {
-                TeacherManagement::create($input);
-            }
+            foreach ($stream_ids as $key => $stream_id) {
+                $exist = TeacherManagement::where(['teacher_id' => $input['teacher_id'], 'class_id' => $input['class_id'], 'stream_id' => $stream_id])->first();
+                if (!$exist) {
+                    TeacherManagement::create(['teacher_id' => $input['teacher_id'], 'class_id' => $input['class_id'], 'stream_id' => $stream_id]);
+                }
 
-            foreach ($subject_ids as $id) {
-                $assigned = AssignedSubject::where(['teacher_id' => $input['teacher_id'], 'subject_id' => $id])->first();
-                if (!$assigned) {
-                    AssignedSubject::create(['teacher_id' => $input['teacher_id'], 'subject_id' => $id, 'stream_id' => $input['stream_id']]);
+                foreach ($subject_ids as $id) {
+                    $assigned = AssignedSubject::where(['teacher_id' => $input['teacher_id'], 'subject_id' => $id, 'stream_id' => $stream_id])->first();
+
+                    if (!$assigned) {
+                        AssignedSubject::create(['teacher_id' => $input['teacher_id'], 'subject_id' => $id, 'stream_id' => $stream_id]);
+                    }
                 }
             }
 

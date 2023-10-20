@@ -127,31 +127,15 @@
                                 <h5>{{ __('My Subjects') }}</h5>
                                 <div class="col-12">
                                     <div class="row">
-                                        @foreach($user->subjects as $subject)
+                                        @foreach($subjects as $subject)
                                             <div class="col-md-4 col-sm-12">
                                                 <a href="javascript:void(0)">
-                                                    <div class="class-wrapper">
+                                                    <div class="class-wrapper profile-class-wrapper">
                                                         <h3><i class="fas fa-book-open"></i></h3>
-                                                        <p class="m-0">{{ $subject->subject->title }}</p>
-                                                        @if(!empty($subject->stream->school_class))
-                                                            <span>{{ $subject->stream->school_class->class }} ({{ $subject->stream->title }})</span>
-                                                        @endif
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        @endforeach
-                                    </div>
-                                </div>
-                                <hr>
-                                <h5>{{ __('My Classes') }}</h5>
-                                <div class="col-12">
-                                    <div class="row">
-                                        @foreach($user->streams as $stream)
-                                            <div class="col-md-4 col-sm-12">
-                                                <a href="javascript:void(0)">
-                                                    <div class="class-wrapper">
-                                                        <h3><i class="fas fa-graduation-cap"></i></h3>
-                                                        <p>{{ $stream->class->class }} - {{ $stream->stream->title }}</p>
+                                                        <p class="m-0">{{ $subject['title'] }}</p>
+                                                        @foreach($subject['grades'] as $grade)
+                                                            <span>{{ $grade }}</span>
+                                                        @endforeach
                                                     </div>
                                                 </a>
                                             </div>

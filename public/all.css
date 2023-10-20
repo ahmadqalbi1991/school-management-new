@@ -11641,6 +11641,11 @@ div.dt-buttons button.btn.processing:after, div.dt-buttons div.btn.processing:af
     text-align: center;
 }
 
+.profile-class-wrapper {
+    height: auto !important;
+    padding: 20px 0;
+}
+
 .formative-assessment {
     width: 180px;
     text-align: center;
